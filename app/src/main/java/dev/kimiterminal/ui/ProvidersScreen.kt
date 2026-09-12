@@ -75,7 +75,7 @@ fun ProvidersDialog(vm: AgentViewModel, onClose: () -> Unit) {
     val activeId by vm.activeProvider.collectAsState()
 
     AlertDialog(
-        onDismiss = onClose,
+        onDismissRequest = onClose,
         containerColor = Surface1,
         title = { Text(if (draft == null) "Провайдеры" else "Провайдер", color = TermFg, fontSize = 17.sp) },
         text = {
@@ -97,7 +97,7 @@ fun ProvidersDialog(vm: AgentViewModel, onClose: () -> Unit) {
                     all.forEach { p ->
                         ProviderRow(
                             p = p,
-                            active = activeId == p.id,
+                            active = activeId?.id == p.id,
                             onPick = { vm.activateProvider(p.id) },
                             onEdit = {
                                 err = null; showKey = false; draft = Draft(p.id, p.label, p.kind, p.baseUrl, p.model)
@@ -161,7 +161,7 @@ fun ProvidersDialog(vm: AgentViewModel, onClose: () -> Unit) {
                         },
                     ) { err = null; draft = d.copy(keyInput = it) }
                     Text(
-                        "Оставите поле ключа пустым — ключ не изменится." +
+                        "Оставьте поле ключа пустым — ключ не изменится." +
                             " Хранится в AndroidKeyStore (AES/GCM), на диск не пишется открытым.",
                         color = Dim, fontSize = 11.sp, modifier = Modifier.padding(top = 4.dp),
                     )
@@ -226,7 +226,9 @@ private fun ProviderRow(
     // Удаление — в два нажатия. Один тап за «×», и это же «×» стирает ключ без шанса
     // одуматься; для секрета, который пользователь копировал из платёжного аккаунта,
     // это слишком дорогая оплошность.
-    var sure by remember { mutableStateOf(false) }
+    // Ключ remember — p.id: без него после удаления строки состояние «уверен?»
+    // переезжает на соседа, и первое же нажатие «×» на другой записи удаляет её сразу.
+    var sure by remember(p.id) { mutableStateOf(false) }
     Card(
         colors = CardDefaults.cardColors(containerColor = if (active) SurfaceV else Surface1),
         shape = RoundedCornerShape(14.dp),

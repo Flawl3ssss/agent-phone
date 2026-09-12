@@ -87,7 +87,7 @@ class ProviderRegistry(
 ) {
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = false; prettyPrint = false }
 
-    @Serializable private class Doc(val providers: List<Provider> = emptyList(), val activeId: String? = null)
+    @Serializable private data class Doc(val providers: List<Provider> = emptyList(), val activeId: String? = null)
 
     private var doc: Doc = read()
 
