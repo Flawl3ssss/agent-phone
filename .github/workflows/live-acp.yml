@@ -87,8 +87,22 @@ jobs:
           ACP_CWD="$RUNNER_TEMP" PROBE_PROMPT=0 PROBE_ALLOW_NO_AUTH=1 \
             node acp-live-probe.mjs
 
+      # `secrets` в step-level if НЕВЕДОМ — и это валило не один шаг, а ВЕСЬ файл:
+      # GitHub отвечал «failed to parse workflow: Unrecognized named-value: 'secrets'»,
+      # прогон получал нуль джобов и статус failure. Гейт, который не умеет
+      # запускаться, не гейт: он выглядит как «всё плохо всегда», и к этому
+      # прикипаешь. Признак авторизации считаем шагом ниже и читаем через steps.
+      - name: Есть ли ключ (значение не светится)
+        id: gate
+        env:
+          KEY_PRESENT: ${{ secrets.KIMI_API_KEY }}
+        run: |
+          if [ -n "$KEY_PRESENT" ]; then echo "has_key=true" >> "$GITHUB_OUTPUT"
+          else echo "has_key=false" >> "$GITHUB_OUTPUT"; fi
+          echo "полный прогон запрошен: ${{ github.event.inputs.full_turn }}"
+
       - name: Probe full turn (auth)
-        if: ${{ github.event.inputs.full_turn == 'true' && secrets.KIMI_API_KEY != '' }}
+        if: ${{ steps.gate.outputs.has_key == 'true' && github.event.inputs.full_turn == 'true' }}
         working-directory: tools
         continue-on-error: false
         run: |
