@@ -81,7 +81,7 @@ dependencies {
  *
  * events("started") — видно, КАКОЙ тест встал, ещё до его конца.
  * exceptionFormat FULL — текст расхождения, а не только имя класса исключения.
- * showStandardStreams — stderr мокагентa («[mock-kimi] ...») попадает в лог CI.
+ * showStandardStreams — stderr мокагента («[mock-kimi] ...») попадает в лог CI.
  * timeout — жёсткий потолок таска, чтобы висячий тест давал FAILED+стек,
  * а не молчаливое cancelled через полчаса.
  */

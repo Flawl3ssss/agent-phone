@@ -44,6 +44,11 @@ jobs:
           gradle-version: '8.11.1'
           cache-read-only: false
 
+      # Дешёвая проверка текста до компиляции: CJK-огрызки и смешение алфавитов в
+      # комментариях не ловятся ни компилятором, ни глазом, но означают битый текст.
+      - name: Check source text
+        run: python3 tools/check-text.py app
+
       # Протокольный слой (Kotlin-клиент против живого мокагента) — до сборки APK.
       - name: Unit tests
         run: gradle --no-daemon :app:testSideloadDebugUnitTest
