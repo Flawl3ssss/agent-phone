@@ -63,6 +63,56 @@ class AgentViewModel(
     /** Настройки — единый источник и для UI, и для агента (через мост). */
     val settings = PrefsSettingsStore(appContext)
 
+    // ── провайдеры и ключи ───────────────────────────────────────────────────
+    //
+    // Реестр поднят здесь, а не в Activity, по двум причинам: ключ нужен не только UI
+    // (его получает агент при старте — env/конфиг гостя), и жить он должен дольше, чем
+    // один экран. Список отдаётся StateFlow, иначе Compose не перерисует экран после
+    // сохранения: обычный List в свойстве рекомпозиции не триггерит.
+    private val registry = dev.kimiterminal.secrets.Secrets.registry(appContext)
+    private val _providers = MutableStateFlow(registry.all())
+    val providers: StateFlow<List<dev.kimiterminal.secrets.Provider>> = _providers
+    private val _activeProvider = MutableStateFlow(registry.active())
+    val activeProvider: StateFlow<dev.kimiterminal.secrets.Provider?> = _activeProvider
+
+    private fun refreshProviders() {
+        _providers.value = registry.all()
+        _activeProvider.value = registry.active()
+    }
+
+    fun activateProvider(id: String) { registry.setActive(id); refreshProviders() }
+
+    fun deleteProvider(id: String) { registry.remove(id); refreshProviders() }
+
+    /**
+     * Сохранение. Валидация в реестре сделана на `require`, а летящее исключение из
+     * onClick уронило бы composition — поэтому сюда оно приходит строкой и возвращается
+     * строкой же (null = успех).
+     */
+    fun saveProvider(
+        id: String, label: String, kind: dev.kimiterminal.secrets.ProviderKind,
+        baseUrl: String, model: String, apiKey: String,
+    ): String? {
+        // runCatching без явного параметра вывел бы Result<Nothing?> из `null` в блоке,
+        // и getOrElse с String уже не подошёл бы по типу.
+        return runCatching<String?> {
+            registry.upsert(id, label, kind, baseUrl, model, apiKey)
+            refreshProviders()
+            null
+        }.getOrElse { it.message ?: "не сохранилось" }
+    }
+
+    /** Секрет наружу — только по явному «показать» в форме. В логи и ленту не попадает. */
+    fun revealProviderKey(id: String): String? = registry.secretOf(id)
+
+    /**
+     * Окружение для запуска агента. Пустой список, если ключей нет: живой kimi при
+     * отсутствии ключа обязан упасть внятно, а не молча ходить в 401.
+     */
+    fun agentEnv(): Map<String, String> =
+        runCatching { registry.envFor() }.getOrDefault(emptyMap())
+
+
     /** Ярус 1 браузера. На реальном устройстве заменяется на WebView-backed. */
     var browser: BrowserControl = MockBrowserControl()
 

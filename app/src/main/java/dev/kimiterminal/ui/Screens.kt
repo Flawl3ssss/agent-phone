@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -163,8 +164,11 @@ fun MainScreen(vm: AgentViewModel) {
     val permission by vm.permission.collectAsState()
     val busy by vm.busy.collectAsState()
     val init by vm.init.collectAsState()
+    val mode by vm.mode.collectAsState()
+    val activeProvider by vm.activeProvider.collectAsState()
     var showCaps by remember { mutableStateOf(false) }
     var showLog by remember { mutableStateOf(false) }
+    var showProviders by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = Bg,
@@ -176,6 +180,17 @@ fun MainScreen(vm: AgentViewModel) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text("Agent Phone", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
                             Spacer(Modifier.width(8.dp))
+                            // Мок не должен притворяться агентом даже видом: пока работает
+                            // MockAcpAgent, в шапке висит явный знак. Без него скриншот
+                            // «0.42.0-mock-kotlin» можно принять за живой Kimi, и человек
+                            // будет полчаса искать, почему «Kimi» ничего не думает.
+                            if (mode !is Mode.Kimi) {
+                                AssistChip(
+                                    onClick = { showCaps = true },
+                                    label = { Text("МОК", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
+                                    modifier = Modifier.padding(end = 6.dp),
+                                )
+                            }
                             AssistChip(onClick = { showCaps = true }, label = {
                                 Text(init?.agentInfo?.let { "${it.name?.split(" ")?.last() ?: "agent"} ${it.version}" } ?: "не подключено",
                                     fontSize = 11.sp, fontFamily = FontFamily.Monospace)
@@ -183,6 +198,13 @@ fun MainScreen(vm: AgentViewModel) {
                         }
                     },
                     actions = {
+                        TextButton(onClick = { showProviders = true }) {
+                            Text(
+                                if (activeProvider?.hasKey == true) "ключ ${activeProvider?.masked}" else "ключи",
+                                color = if (activeProvider?.hasKey == true) Primary else Warning,
+                                fontSize = 12.sp, fontFamily = FontFamily.Monospace,
+                            )
+                        }
                         TextButton(onClick = { showLog = true }) { Text("лог", color = Secondary, fontSize = 13.sp) }
                         OutlinedButton(onClick = { vm.connectOrRestart() }, shape = RoundedCornerShape(12.dp)) {
                             Text(if (init == null) "старт" else "рестарт", fontSize = 13.sp)
@@ -208,6 +230,7 @@ fun MainScreen(vm: AgentViewModel) {
     permission?.let { PermissionDialog(it) { outcome -> it.reply(outcome) } }
     if (showCaps) init?.let { CapsDialog(it) { showCaps = false } }
     if (showLog) LogDialog(vm.stderrTail()) { showLog = false }
+    if (showProviders) ProvidersDialog(vm) { showProviders = false }
 }
 
 @Composable
