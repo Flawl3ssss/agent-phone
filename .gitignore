@@ -10,3 +10,8 @@ local.properties
 .cxx/
 *.salive
 tools/node_modules/
+
+# payload in-app рантайма: собирается tools/runtime/assemble.sh, в git не хранится
+app/src/main/jniLibs/
+app/src/main/assets/runtime/
+.runtime-cache/

@@ -23,7 +23,11 @@
 | 11 | Шебанг `main.mjs` — `#!/usr/bin/env node`, на Android такого пути нет → запускать строго `node <абсолютный путь>/main.mjs` | `head -1` |
 | 12 | node нужно 7 библиотек, весь glibc-стек — **2,7 МБ**; `strip -s` бинаря node: 122 → 104 МБ, работает | `readelf -d`, `strip` |
 | 13 | **W^X**: приложение с `targetSdk >= 29` не может `exec()` файлы из своего домашнего каталога, но может из read-only `/data/app/.../lib/arm64/` (`nativeLibraryDir`) при `android:extractNativeLibs="true"` | termux/termux-app#1072 + wiki «Termux and Android 10» |
-| 14 | AGP выносит из `jniLibs/<abi>/` только файлы вида `lib*.so` → исполняемые ELF храним как `libnode.so`, `libldr.so`, `libbash.so`; имена с soname (`libc.so.6`) копируем в `filesDir/runtime/lib` — **читать** там разрешено | то же issue + практика |
+| 14 | Собранный payload (файлы, которые поедут в APK) поднимает живой Kimi: `libldr.so --library-path assets/runtime/lib libnode.so …/main.mjs acp` → `initialize` с `Kimi Code CLI 0.42.0`, `audio:false`, `authMethods.args=["--login"]`; `session/new` без токена → `-32000 Authentication required` | `tools/runtime/payload-probe.mjs` |
+| 15 | Цена раскладки: jniLibs 110 МБ + assets 38 МБ → **~53 МБ в APK** после deflate; 48 исполняемых ELF | `assemble.sh`, замеры |
+| 16 | В `ubuntu-base` НЕТ `git`, `ssh`, `vi`, `less`, `wget`, `nc`, `ping` — минимальный образ. Для полноценного терминала их надо брать отдельными `.deb` (следующий шаг, см. §5) | прогон сборщика |
+| 17 | `readlink -f` и `-e` не годятся для поиска файлов внутри rootfs: symlink-цели там абсолютны (`/etc/alternatives/awk`), без chroot они смотрят в файловую систему хоста. Нужен свой канонизатор с перепривязкой к корню + проверка `-L` наравне с `-e` (из-за этого `awk` сначала «пропал») | трассировка `sh -x` |
+| 18 | AGP выносит из `jniLibs/<abi>/` только файлы вида `lib*.so` → исполняемые ELF храним как `libnode.so`, `libldr.so`, `libbash.so`; имена с soname (`libc.so.6`) копируем в `filesDir/runtime/lib` — **читать** там разрешено | то же issue + практика |
 
 Артефакты и пины:
 
@@ -41,7 +45,7 @@ nativeLibraryDir/            (apk_data_file, exec разрешён)
   libldr.so                  = ld-linux-aarch64.so.1
   libnode.so                 = node ( stripped )
   libbash.so                 = Ubuntu bash
-  libbusybox.so              = статический busybox (200+ applet'ов одним файлом)
+  libls.so, libcat.so, …     = ubuntu-утилиты, по одной на команду (48 файлов)
   libkexec.so                = наш Bionic-диспетчер (см. §3)
   libagentpty.so             = PTY для терминала
 filesDir/runtime/
@@ -60,8 +64,9 @@ Node спавнит дочерние команды **по имени через
 
 1. `basename(argv[0])` → таблица соответствия (`sh`→busybox, `bash`→bash, `node`→node, `ls`→busybox…).
 2. `execv(nativeDir/libldr.so, ["ld.so", "--library-path", <filesDir/runtime/lib>, <target>, …])`.
-3. Для applet'ов busybox цель вызывается как `busybox <applet> args…` — потому что
-   `ld.so` переустанавливает `argv[0]` на путь цели, и обычная диспетчеризация по имени сломалась бы.
+3. Каждая утилита — отдельный ELF (`libls.so`, `libgrep.so`, `libawk.so` …), поэтому
+   хитрости с `argv[0]` из busybox не нужны: `ld.so` может спокойно переустанавливать
+   `argv[0]` на путь цели. Busybox из плана исключён сознательно.
 
 Симлинки в `filesDir/runtime/bin` безопасны: SELinux проверяет метку целевого файла
 (`apk_data_file`), а не ссылки. Это утверждение — единственное, что останется проверить
@@ -81,7 +86,11 @@ Node спавнит дочерние команды **по имени через
 
 ## 5. Порядок сборки
 
-1. `RuntimeSpec` + `RuntimeLayout` — чистая логика, JVM-тесты (готово, этот коммит).
+1. ✅ `RuntimeSpec` + `RuntimeLayout` — чистая логика, JVM-тесты (прогон #27 зелёный).
+1. ⚠️ Расхождение, которое надо убрать следующим коммитом: `RuntimeSpec.BUSYBOX_APPLETS`
+   и `Dispatch.prefix` устарели — источник истины должен быть `MANIFEST.json`,
+   который генерирует `assemble.sh`, иначе спецификация в Kotlin и дерево в APK
+   разъедутся (половина контракта не проверена).
 2. `tools/runtime/assemble.sh` — собирает `jniLibs/arm64-v8a/*` и payload из pinned-архивов;
    запускается и локально, и в CI.
 3. NDK: `libkexec.so` (диспетчер) и `libagentpty.so` (`forkpty` + `TIOCSPTLCK`), сборка в CI.
