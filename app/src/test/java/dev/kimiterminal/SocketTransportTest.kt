@@ -67,10 +67,12 @@ class SocketTransportTest {
         val received = ConcurrentLinkedQueue<String>()
         private val socketRef = AtomicReference<Socket?>(null)
         private val accepted = CountDownLatch(1)
+        @Volatile var lastError: String? = null
+            private set
 
         init {
             val t = Thread({
-                runCatching {
+                try {
                     val s = server.accept()
                     socketRef.set(s)
                     accepted.countDown()
@@ -79,8 +81,10 @@ class SocketTransportTest {
                         val line = rd.readLine() ?: break
                         if (line.isNotBlank()) { received.add(line); onLine(line) }
                     }
-                } catch (_: Exception) {
-                    // Сервер закрыт tearDown'ом — выходим молча, это штатный конец теста.
+                } catch (e: Exception) {
+                    // Обычно это «Socket closed» из tearDown — штатный конец теста. Причину
+                    // сохраняем, чтобы упавший awaitAccepted показывал её, а не пустой текст.
+                    lastError = "${e.javaClass.simpleName}: ${e.message}"
                 }
             }, "fake-bridge")
             t.isDaemon = true
@@ -125,7 +129,7 @@ class SocketTransportTest {
         val port = openBridge { bridge!!.sendLine("""{"jsonrpc":"2.0","id":7,"result":{"ok":true}}""") }
         agent = AcpSocketAgent(port = port)
         val link: AcpLink = agent!!.start()
-        assertTrue("мост не принял соединение за 8 с", bridge!!.awaitAccepted())
+        assertTrue("мост не принял соединение за 8 с (${bridge!!.lastError})", bridge!!.awaitAccepted())
 
         runBlocking {
             withTimeout(8000) {
@@ -158,7 +162,7 @@ class SocketTransportTest {
         val port = openBridge { }
         agent = AcpSocketAgent(port = port)
         val link = agent!!.start()
-        assertTrue(bridge!!.awaitAccepted())
+        assertTrue("мост не принял соединение (${bridge!!.lastError})", bridge!!.awaitAccepted())
 
         val done = CountDownLatch(1)
         val closer = Thread({
@@ -182,7 +186,7 @@ class SocketTransportTest {
         val port = openBridge { }
         agent = AcpSocketAgent(port = port)
         val link = agent!!.start()
-        assertTrue(bridge!!.awaitAccepted())
+        assertTrue("мост не принял соединение (${bridge!!.lastError})", bridge!!.awaitAccepted())
         // Рвём с другой стороны: клиент должен увидеть EOF, закрыть канал и погасить
         // alive. Иначе любой incoming.receive() висит навечно, а UI показывает «думает».
         bridge!!.close()
