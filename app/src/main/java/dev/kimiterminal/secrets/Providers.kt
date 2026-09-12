@@ -152,7 +152,10 @@ class ProviderRegistry(
         }
         val p = Provider(
             id = id,
-            label = label.ifBlank { kind.title },
+            // Тот же контракт, что и у ключа: пустое поле в форме означает «не
+            // трогали», а не «назови его как пресет». Прежняя метка сохраняется,
+            // kind.title — только для провайдера, у которого метки ещё не было.
+            label = label.trim().ifBlank { p0?.label ?: kind.title },
             kind = kind,
             // Пресет материализуется в запись: и UI, и env, и отладочный лог
             // видят один и тот же адрес, а не «пусто, но effectiveBaseUrl() дорешит».

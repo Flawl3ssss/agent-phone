@@ -170,7 +170,9 @@ class ProvidersTest {
         assertTrue("hasKey остался", p.hasKey)
 
         // Смена типа: старое имя переменной больше не отдаётся, новое — да.
-        h.reg.upsert("a", "A", ProviderKind.ANTHROPIC, "", "claude-3", "")
+        h.reg.upsert("a", "", ProviderKind.ANTHROPIC, "", "claude-3", "")
+        // Метка передана пустой: это «поле не трогали» (тот же контракт, что и у
+        // ключа), поэтому ниже и ожидается, что label переименование сохранило.
         val env = h.reg.envFor()
         assertEquals("антропиково имя", before, env["ANTHROPIC_API_KEY"])
         assertNull("луншотово имя исчезло", env["MOONSHOT_API_KEY"])
