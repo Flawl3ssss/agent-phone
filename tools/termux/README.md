@@ -37,7 +37,12 @@ Xiaomi/MIUI/HyperOS убивают фоновые процессы, и мост 
 
 Одной командой внутри Termux:
 
-    curl -fsSL https://raw.githubusercontent.com/Flawl3ssss/agent-phone/main/tools/termux/setup-kimi.sh | bash
+    curl -fsSL -H "Accept: application/vnd.github.raw" \
+      "https://api.github.com/repos/Flawl3ssss/agent-phone/contents/tools/termux/setup-kimi.sh?ref=main" | bash
+
+Это не придирка к красоте: на этом же устройстве `raw.githubusercontent.com`
+не резолвился вообще, а `api.github.com` отвечал. Если API недоступен, вариант
+обычный — `curl -fsSL https://raw.githubusercontent.com/Flawl3ssss/agent-phone/main/tools/termux/setup-kimi.sh | bash`.
 
 Скрипт ставит Node LTS, локально (не `-g`) тянет `@moonshot-ai/kimi-code` и ACP SDK,
 качает инструменты и **обязательно прогоняет selftest моста против мока** — до всякого
@@ -46,14 +51,20 @@ Kimi. Смысл порядка: если падает selftest, виноват 
 
 Дальше руками (оба шага интерактивные):
 
-    ~/agent-phone/node_modules/.bin/kimi login      # откроется браузер с подтверждением
-    ~/agent-phone/node_modules/.bin/kimi /login     # проверить статус
+Входить отдельно заранее **не нужно**: зонд ниже сам вызывает ACP-`authenticate`
+(terminal-метод), и Kimi показывает ссылку подтверждения прямо в терминале. Если
+всё же хочется войти руками — интерактивный `$BIN/kimi`, внутри него команда
+`/login`. Точных CLI-субкоманд логина я не проверяла и не выдумываю.
 
 ## 3. Настоящий Kimi против протокола (гейт G3′ на живом агенте)
 
     cd ~/agent-phone
-    PROBE_PROMPT=1 ACP_AGENT_CMD="$HOME/agent-phone/node_modules/.bin/kimi --print-config plain acp" \
+    KIMI_BIN=$HOME/agent-phone/node_modules/.bin/kimi ACP_CWD=$HOME PROBE_PROMPT=1 \
         node tools/acp-live-probe.mjs
+
+Имя переменной — `KIMI_BIN` и ничего другого: зонд сам дописывает аргумент `acp`.
+`ACP_AGENT_CMD` в пробе нет, и с ней зонд тихо запустил бы `kimi` из PATH — а это
+совсем другой бинарь и обидная «победа».
 
 Зонд сверяет заявленные capabilities с документированным контрактом и прогоняет полный
 ход. Это единственный шаг, который тратит токены, и единственный, который доказывает,

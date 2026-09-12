@@ -46,7 +46,10 @@ const PORT = Number(process.env.BRIDGE_PORT ?? 8712);
 const DEBUG = process.env.BRIDGE_DEBUG === "1";
 const MAX_CLIENTS = Number(process.env.MAX_CLIENTS ?? 4);
 const DEFAULT_CMD = path.join(process.env.HOME ?? "/root", "agent-phone", "node_modules", ".bin", "kimi");
-const AGENT_CMD = process.env.KIMI_ACP_CMD ?? `${DEFAULT_CMD} --print-config plain acp`;
+// Канон запуска — `kimi acp` (см. BLUEPRINT). Никаких «улучшайшеров» вроде
+// --print-config: несуществующий флаг убьёт ребёнка на старте, а приложение
+// увидит просто закрытый сокет вместо внятной ошибки.
+const AGENT_CMD = process.env.KIMI_ACP_CMD ?? `${DEFAULT_CMD} acp`;
 
 const stamp = () => new Date().toISOString().slice(11, 19);
 const log = (...a) => console.log(`[bridge ${stamp()}]`, ...a);

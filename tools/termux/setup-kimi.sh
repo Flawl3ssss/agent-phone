@@ -10,7 +10,11 @@
 # понадобился мост.
 set -uo pipefail
 
-REPO_RAW="https://raw.githubusercontent.com/Flawl3ssss/agent-phone/main"
+REPO=Flawl3ssss/agent-phone
+REF=main
+# raw-домен иногда вообще не резолвится (проверено на этом же устройстве),
+# поэтому он у нас третий по приоритету, а не единственный.
+REPO_RAW="https://raw.githubusercontent.com/$REPO/$REF"
 WORK="$HOME/agent-phone"
 BIN="$WORK/node_modules/.bin"
 
@@ -19,6 +23,7 @@ check_only=0
 
 say() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 bad() { printf '\033[31m!! %s\033[0m\n' "$*" >&2; }
+ok() { printf '\033[32m   %s\033[0m\n' "$*"; }
 
 # ── 0. мы точно в Termux? ────────────────────────────────────────────────────
 # Сверяем путь префикса, а не наличие команды `pkg`: функция pkg может быть и в
@@ -78,33 +83,62 @@ npm install --no-audit --no-fund --no-save ws >/dev/null 2>&1 || \
     printf 'подсказка: ws не поставился — это блокирует только kimi-acp-bridge-ws.mjs, основной мост не трогай\n'
 
 # ── 3. инструменты проекта ───────────────────────────────────────────────────
-say "3/5  Качаем ACP-инструменты"
-# Каждый файл — отдельной загрузкой в .tmp и с проверкой синтаксиса. curl при сетевом
-# сбое оставляет ПРОШЛЫЙ файл на месте, и он выглядит свежим; а битый скачанный .mjs
-# вылится невнятной ошибкой времени выполнения вместо «файл не докачался».
-fetch() {
-    local rel="$1"
-    rm -f "tools/$rel.tmp"
-    if curl -fsSL --connect-timeout 15 --max-time 90 --retry 3 --retry-delay 2 \
-            -o "tools/$rel.tmp" "$REPO_RAW/tools/$rel"; then
-        mv "tools/$rel.tmp" "tools/$rel"
-        printf '  ok   tools/%-32s %s Б\n' "$rel" "$(wc -c < "tools/$rel")"
-    else
-        rm -f "tools/$rel.tmp"
-        bad "tools/$rel скачать не удалось"
-        return 1
-    fi
+say "3/5  Инструменты из $REPO@$REF"
+mkdir -p "$HOME/agent-phone" "$HOME/agent-phone/tools"
+cd "$HOME/agent-phone"
+
+# Один источник — это точка отказа. Здесь их три, и каждый с ретраями: DNS рвёт
+# выборочно (на этом же устройстве api.github.com работал весь день, а
+# raw.githubusercontent.com не резолвился ни разу; через минуту наоборот).
+curl_retry() {
+    local n=1
+    while [ $n -le 4 ]; do
+        if curl -fsSL --connect-timeout 15 --max-time 120 "$@"; then return 0; fi
+        sleep 3; n=$((n + 1))
+    done
+    return 1
 }
-for f in acp-mock-agent.mjs acp-live-probe.mjs termux/kimi-acp-bridge.mjs; do
-    fetch "$f" || exit 1
-done
-fetch termux/kimi-acp-bridge-ws.mjs || printf '  (опциональный WS-мост не скачан — не страшно)\n'
 
+got_all=0
+# 1) весь tools/ одной загрузкой архива — меньше запросов, атомарнее
+if curl_retry -o /tmp/ap.tar.gz "https://codeload.github.com/$REPO/tar.gz/refs/heads/$REF" \
+   && tar -tzf /tmp/ap.tar.gz >/dev/null 2>&1; then
+    top=$(tar -tzf /tmp/ap.tar.gz | head -1 | cut -d/ -f1)
+    if [ -n "$top" ] && tar -xzf /tmp/ap.tar.gz -C /tmp && [ -d "/tmp/$top/tools" ]; then
+        cp -r "/tmp/$top/tools/." "$HOME/agent-phone/tools/" && got_all=1
+        ok "весь tools/ взят из архива"
+    fi
+    rm -rf "/tmp/$top" /tmp/ap.tar.gz
+fi
+
+# 2) и 3) по файлам: сначала API, потом raw
+fetch_one() {
+    local rel="$1" dst="tools/$1"
+    [ "$got_all" = 1 ] && [ -s "$dst" ] && return 0
+    mkdir -p "$(dirname "$dst")"
+    rm -f "$dst"
+    if curl_retry -H "Accept: application/vnd.github.raw" -o "$dst" \
+          "https://api.github.com/repos/$REPO/contents/tools/$rel?ref=$REF" && [ -s "$dst" ]; then
+        return 0
+    fi
+    rm -f "$dst"
+    curl_retry -o "$dst" "$REPO_RAW/tools/$rel" && [ -s "$dst" ]
+}
+
+for f in acp-mock-agent.mjs acp-live-probe.mjs termux/kimi-acp-bridge.mjs termux/README.md; do
+    if fetch_one "$f"; then printf '  ok   tools/%-32s %s Б\n' "$f" "$(wc -c < "tools/$f")"
+    else bad "tools/$f не скачался ни с одного из трёх источников"; exit 1; fi
+done
+# опциональный WS-мост: его отсутствие — не поломка
+fetch_one termux/kimi-acp-bridge-ws.mjs \
+    || printf '  (WS-вариант моста не скачан — он только для отладки из браузера)\n'
+
+# Скачанное ОБЯЗАНО читаться: curl при обрыве оставляет предыдущий файл, и он
+# выглядит свежим, а битый .mjs упал бы потом невнятной ошибкой выполнения.
 for f in tools/acp-mock-agent.mjs tools/acp-live-probe.mjs tools/termux/kimi-acp-bridge.mjs; do
-    node --check "$f" 2>/dev/null || { bad "$f не читается как JS — перескачайте"; exit 1; }
+    node --check "$f" 2>/dev/null || { bad "$f не читается как JS — удалите каталог и повторите"; exit 1; }
 done
-printf 'синтаксис всех файлов ok\n'
-
+printf 'синтаксис всех скачанных файлов ok\n'
 # ── 4. мост должен работать ЕЩЁ ДО Kimi ──────────────────────────────────────
 say "4/5  Selftest моста против мока (без токенов и сети)"
 # Порядок важен: сначала доказываем, что фрейминг/сокет/убийство процесса живы на этом
@@ -126,15 +160,17 @@ say "5/5  Готово. Дальше — два шага руками"
 cat <<EOF
 Оба интерактивные, скрипт за вас их не сделает.
 
-  1) Войти в Kimi (откроется браузер со ссылкой подтверждения):
-        $BIN/kimi login
-     Статус проверить так:
-        $BIN/kimi /login
-
-  2) Проверить протокол против НАСТОЯЩЕГО kimi (тратит токены):
+  1) Проверить протокол против НАСТОЯЩЕГО kimi (тратит токены):
         cd $WORK
-        PROBE_PROMPT=1 ACP_AGENT_CMD="$BIN/kimi --print-config plain acp" \\
-            node tools/acp-live-probe.mjs
+        KIMI_BIN=$BIN/kimi ACP_CWD=$HOME node tools/acp-live-probe.mjs
+
+     Имя переменной — KIMI_BIN (не ACP_AGENT_CMD: такой в пробе нет, и проба
+     молча запустила бы `kimi acp` из PATH). Probe сама дёрнет ACP-authenticate,
+     поэтому вход обычно происходит прямо здесь: Kimi покажет ссылку подтверждения.
+
+     Если дойдёте до «✔ session/new» — протокол с живым Kimi сходится, можно
+     в приложение. Если проба откажет по авторизации, зайдите вручную через
+     интерактивный `$BIN/kimi` (там команда /login) и повторите.
 
 Потом — мост и приложение:
         node $WORK/tools/termux/kimi-acp-bridge.mjs        # держать Termux открытым
