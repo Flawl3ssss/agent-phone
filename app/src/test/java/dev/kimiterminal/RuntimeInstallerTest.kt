@@ -46,9 +46,16 @@ class RuntimeInstallerTest {
         MessageDigest.getInstance("SHA-256").digest(text.toByteArray())
             .joinToString("") { byte -> "%02x".format(byte) }
 
-    /** Пишет файл в payload и возвращает строку манифеста для него. */
+    /**
+     * Пишет файл в «assets»-корень и возвращает строку манифеста. Манифест говорит о путях
+     * как о путях репозитория (app/src/main/...), а установщик спрашивает AssetManager
+     * (assets/...) — фикстура обязана лежать во второй системе координат.
+     */
+    private fun payloadFile(manifestPath: String): File =
+        File(payloadRoot, manifestPath.removePrefix("app/src/main/"))
+
     private fun row(relPath: String, content: String): String {
-        val f = File(payloadRoot, relPath)
+        val f = payloadFile(relPath)
         f.parentFile.mkdirs()
         f.writeText(content)
         return """{"path": "$relPath", "sha256": "${sha(content)}", "bytes": ${content.toByteArray().size}}"""
@@ -137,8 +144,10 @@ class RuntimeInstallerTest {
 
     @Test
     fun `отсутствующий ELF в nativeLibraryDir останавливает установку`() {
+        val inst = installer()
+        // Порядок важен: manifestText() расставляет ELF заново, поэтому удаляем после.
         File(nativeDir, "libnode.so").delete()
-        val problems = installer().install()
+        val problems = inst.install()
         assertTrue("должна быть названа причина", problems.any { it.contains("libnode") || it.contains("node") })
         assertFalse("запись не началась", layout.readyFile.exists())
     }
@@ -147,7 +156,7 @@ class RuntimeInstallerTest {
     fun `повреждённый файл в apk ловится по sha256`() {
         val inst = installer()
         // Портим источник после того, как манифест уже составлен: так выглядит битая сборка.
-        File(payloadRoot, "app/src/main/assets/runtime/kimi/${RuntimeSpec.KIMI_ENTRYPOINT}")
+        payloadFile("app/src/main/assets/runtime/kimi/${RuntimeSpec.KIMI_ENTRYPOINT}")
             .writeText("мусор вместо cli")
         val problems = inst.install()
         assertEquals("одна причина, названная честно", 1, problems.size)
@@ -158,7 +167,7 @@ class RuntimeInstallerTest {
     @Test
     fun `отсутствующий в apk файл не превращается в пустой`() {
         val inst = installer()
-        File(payloadRoot, "app/src/main/assets/runtime/ssl/ca-certificates.crt").delete()
+        payloadFile("app/src/main/assets/runtime/ssl/ca-certificates.crt").delete()
         val problems = inst.install()
         assertEquals(1, problems.size)
         assertTrue("ожидалась жалоба на отсутствующий файл: ${problems[0]}", problems[0].contains("нет файла"))
