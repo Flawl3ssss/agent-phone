@@ -15,6 +15,12 @@ MIXED = re.compile(r'[а-яёА-ЯЁ][a-zA-Z]|[a-zA-Z][а-яёА-ЯЁ]')
 # Файлы/строки, где смешение алфавитов легально: экранирования (\nКирилл), домены, URL.
 ALLOW = re.compile(r'\\[ntrb$]\S*[а-яё]|\bhttps?://|@|\.(com|ru|ai|dev|io)\b')
 
+# Имя теста в backticks — это имя метода JVM: точки, скобки и слэши в нём компилируются
+# в «Name contains illegal characters» и валят прогон целиком. Дешевле поймать здесь,
+# чем тратить цикл CI (реальный случай: `… + main.mjs + acp` в названии теста).
+FUN_NAME = re.compile(r'fun `([^`]*)`')
+ILLEGAL_IN_NAME = re.compile(r'[.;:\[\]<>{}]')
+
 def main(root: str) -> int:
     bad = 0
     for f in sorted(pathlib.Path(root).rglob('*.kt')) + sorted(pathlib.Path(root).rglob('*.kts')):
@@ -26,6 +32,9 @@ def main(root: str) -> int:
                 hits.append('CJK')
             if MIXED.search(line) and not ALLOW.search(line):
                 hits.append('mixed-alphabet')
+            m = FUN_NAME.search(line)
+            if m and ILLEGAL_IN_NAME.search(m.group(1)):
+                hits.append('illegal chars in test name')
             if hits:
                 print(f'{f}:{i}: [{",".join(hits)}] {line.strip()[:110]}')
                 bad += 1

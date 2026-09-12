@@ -35,7 +35,7 @@ class RuntimeLayoutTest {
     }
 
     @Test
-    fun `команда агента = загрузчик + node + main.mjs + acp, без SHELL-обёртки kimi`() {
+    fun `команда агента = загрузчик + node + entry + acp, без shell-обёртки kimi`() {
         val cmd = layout.agentCommand()
         assertEquals(6, cmd.size)
         assertTrue("исполняется встроенный glibc-загрузчик", cmd[0].endsWith("/libldr.so"))
