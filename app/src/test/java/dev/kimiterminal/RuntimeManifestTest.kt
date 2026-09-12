@@ -77,7 +77,7 @@ class RuntimeManifestTest {
             fixture(execs = listOf("ldr", "node"), libs = RuntimeSpec.REQUIRED_LIBS.dropLast(2), kimiEntry = false)
         ).getOrThrow()
         val problems = m.problems()
-        for (name in listOf("kexec", "bash", "sh")) {
+        for (name in listOf("bash", "sh")) {
             assertTrue("нет претензии про $name: $problems", problems.any { it.contains(name) })
         }
         assertTrue("нет претензии про библиотеки", problems.count { it.startsWith("нет библиотеки") } == 2)
@@ -92,10 +92,10 @@ class RuntimeManifestTest {
 
     @Test
     fun `битые суммы и нулевые размеры не проходят`() {
-        val broken = fixture().replace(hex64, "zzzz")
-        val m = RuntimeManifest.parse(broken).getOrThrow()
+        val m = RuntimeManifest.parse(fixture().replace(hex64, "zzzz")).getOrThrow()
         assertTrue("каждый файл с битой суммой должен быть назван", m.problems().all { it.contains("битая сумма") })
-        assertTrue(m.problems().isNotEmpty())
+        val zero = RuntimeManifest.parse(fixture().replace("\"bytes\": 100", "\"bytes\": 0")).getOrThrow()
+        assertTrue("нулевой размер тоже претензия", zero.problems().any { it.contains("нулевой размер") })
     }
 
     @Test

@@ -77,14 +77,18 @@ data class RuntimeManifest(
                 ubuntuBase = str("ubuntu_base"),
                 node = str("node"),
                 kimiVersion = str("kimi_version"),
-                executables = rows("native").map { baseName(it.path) }.distinct().sorted(),
-                sharedLibs = rows("runtime_lib").map { baseName(it.path) }.distinct().sorted(),
+                executables = rows("native").map { exeName(it.path) }.distinct().sorted(),
+                sharedLibs = rows("runtime_lib").map { it.path.substringAfterLast('/') }.distinct().sorted(),
                 entries = entries,
             )
         }
 
-        /** `app/src/main/jniLibs/arm64-v8a/libnode.so` -> `node` */
-        private fun baseName(path: String): String =
+        /**
+         * `app/src/main/jniLibs/arm64-v8a/libnode.so` -> `node`.
+         * Только для исполняемых: у библиотек имя выглядит как `libc.so.6`, и срезание
+         * «lib»/« .so» превращало бы его в `c.so.6` (проверено падением теста).
+         */
+        private fun exeName(path: String): String =
             path.substringAfterLast('/').removeSuffix(".so").removePrefix("lib")
 
         private fun JsonObject.strOf(key: String): String =
