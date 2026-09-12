@@ -1,3 +1,6 @@
+import java.time.Duration
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -83,10 +86,10 @@ dependencies {
  * а не молчаливое cancelled через полчаса.
  */
 tasks.withType<Test>().configureEach {
-    timeout = java.time.Duration.ofMinutes(10)
+    timeout = Duration.ofMinutes(10)
     testLogging {
         events("started", "passed", "failed", "skipped")
-        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        exceptionFormat = TestExceptionFormat.FULL
         showStandardStreams = true
     }
 }
