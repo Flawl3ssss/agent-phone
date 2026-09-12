@@ -47,6 +47,7 @@ class AcpTransport(
 ) : AcpLink {
 
     private val writeMutex = Mutex()
+    private val started = java.util.concurrent.atomic.AtomicBoolean(false)
     private val _incoming = Channel<JsonObject>(Channel.UNLIMITED)
     override val incoming: ReceiveChannel<JsonObject> = _incoming
 
@@ -74,7 +75,15 @@ class AcpTransport(
         }
     }
 
+    init {
+        // Транспорт обязан начать читать сам. Иначе конструктор «успешен», канал есть,
+        // но входящих нет никогда: каждый запрос молча доживает до таймаута — ровно тот
+        // самый «вечный spinner», который мы обещали ловить на гейте G3.
+        startReading()
+    }
+
     fun startReading() {
+        if (!started.compareAndSet(false, true)) return
         scope.launch(Dispatchers.IO) {
             try {
                 while (true) {

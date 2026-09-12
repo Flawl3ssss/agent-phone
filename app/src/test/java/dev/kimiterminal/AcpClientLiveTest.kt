@@ -148,7 +148,7 @@ class AcpClientLiveTest {
         assertEquals("stopReason", StopReason.EndTurn, res.stopReason)
 
         assertEquals("fs/read path", "$cwd/config.json", withTimeout(20_000) { gotFsRead.await() })
-        assertEquals("permission title", "Edit config.json", withTimeout(20_000) { gotPermission.await() })
+        assertEquals("permission title", "Edit $cwd/config.json", withTimeout(20_000) { gotPermission.await() })
         assertEquals("fs/write path", "$cwd/config.json", withTimeout(20_000) { gotFsWrite.await() })
         assertEquals("terminal cmd", "node", withTimeout(5_000) { gotTermCreate.await() })
         assertEquals("elicitation", "Деплоить на itch сейчас?", withTimeout(5_000) { gotElicit.await() })

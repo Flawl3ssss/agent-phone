@@ -21,6 +21,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonArray
+import kotlinx.serialization.json.putJsonObject
 
 /**
  * MockKimiMain — ACP-агент на Kotlin поверх NDJSON в stdin/stdout.
@@ -249,9 +250,9 @@ class MockAcpAgent(private val stdin: BufferedReader, private val stdout: java.i
                     update(sid, toolDone("c2", "failed"))
                 }
 
-                update(sid, toolCall("c3", "Run `uname -s`", "execute", "in_progress"))
+                update(sid, toolCall("c3", "Run `node --version`", "execute", "in_progress"))
                 val term = requestClient("terminal/create", buildJsonObject {
-                    put("sessionId", sid); put("command", "uname"); putJsonArray("args") { add("-s") }; put("cwd", "/tmp"); putJsonArray("env") {}
+                    put("sessionId", sid); put("command", "node"); putJsonArray("args") { add("--version") }; put("cwd", cwd); putJsonArray("env") {}
                 })
                 val tid = term?.get("terminalId")?.jsonPrimitive?.content
                 if (tid != null) {
@@ -265,11 +266,48 @@ class MockAcpAgent(private val stdin: BufferedReader, private val stdout: java.i
                     update(sid, toolDone("c3", "failed"))
                 }
 
+                // Два апдейта, без которых тест не видел бы 8 из 11 вариантов SessionUpdate:
+                // real Kimi шлёт их на каждом turn (реестр слэш-команд и смена конфигурации).
+                update(sid, buildJsonObject {
+                    put("sessionUpdate", "available_commands_update")
+                    putJsonArray("availableCommands") {
+                        addJsonObject { put("name", "build"); put("description", "Собрать проект") }
+                        addJsonObject { put("name", "deploy"); put("description", "Выложить на itch") }
+                    }
+                })
+                update(sid, buildJsonObject {
+                    put("sessionUpdate", "config_option_update")
+                    putJsonArray("configOptions") {
+                        addJsonObject {
+                            put("id", "model"); put("name", "Модель"); put("type", "select")
+                            put("currentValue", "kimi-code")
+                            putJsonArray("options") {
+                                addJsonObject { put("value", "kimi-code"); put("name", "Kimi Code") }
+                            }
+                        }
+                    }
+                })
                 update(sid, buildJsonObject {
                     put("sessionUpdate", "usage_update"); put("used", 4213L); put("size", 200000L)
                     put("cost", buildJsonObject { put("amount", 0.037); put("currency", "USD") })
                 })
-                update(sid, textChunk("agent_message_chunk", "Готово. Ход №${st.turn} завершён — конфиг обновлён, терминал отработал."))
+
+                //elicitation/create: клиент обязан ответить, а не подвесить ход
+                val elicit = requestClient("elicitation/create", buildJsonObject {
+                    put("sessionId", sid)
+                    put("message", "Деплоить на itch сейчас?")
+                    put("requestedSchema", buildJsonObject {
+                        put("type", "object")
+                        putJsonObject("properties") {
+                            putJsonObject("deploy") { put("type", "boolean"); put("description", "Публикация") }
+                        }
+                        putJsonArray("required") { add("deploy") }
+                    })
+                })
+                val accepted = elicit?.get("action")?.jsonPrimitive?.content == "accept"
+                update(sid, textChunk("agent_message_chunk",
+                    if (accepted) "Готово. Ход №${st.turn} завершён — конфиг обновлён, терминал отработал, спрашивал про деплой."
+                    else "Готово. Ход №${st.turn} завершён; на деплой ответа не было."))
                 reply(id, buildJsonObject { put("stopReason", "end_turn") })
             }
 
