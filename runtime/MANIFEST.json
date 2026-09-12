@@ -1,0 +1,2014 @@
+{
+ "kimi_files": [
+  {
+   "bytes": 1068,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/LICENSE",
+   "sha256": "23cc68e17992e0b512ae2e80afc5787d7d8e0fbfbdb4fff54ec0245508fa400e"
+  },
+  {
+   "bytes": 3371,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/README.md",
+   "sha256": "cc97b77b149239b1b2421298f84a6ca9ea72ac12bd4ceccd2d86e15d6db92eac"
+  },
+  {
+   "bytes": 21134998,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/dist/main.mjs",
+   "sha256": "3f632148344f68c15633215244e1ca8c106116051cd0e744968906773230930a"
+  },
+  {
+   "bytes": 454422,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/dist/search-worker.mjs",
+   "sha256": "75264ba91d9f278f6c1a2c96701e8b1acc08b9744f2727672331cd6b37d1e19a"
+  },
+  {
+   "bytes": 4493,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/package.json",
+   "sha256": "2e617749b0a5659390c6d0036227b4cdbd736e863fc22fa95313efee23fc7a39"
+  },
+  {
+   "bytes": 7287,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall.mjs",
+   "sha256": "d60df1c0a647242764337c6b675c5c214f4028d74b7db7df3ef5b5f40c4c43ce"
+  },
+  {
+   "bytes": 12977,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall/migrate.mjs",
+   "sha256": "3d38c1587e06cccddcabbc1aa74c8af873f03f7b8d2a427cc849eeed6cbd708e"
+  },
+  {
+   "bytes": 753,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall/platform.mjs",
+   "sha256": "d125b833ca70a12eb0247a2f445a518bdc1f112147d24da4648ab658a0d7cf88"
+  },
+  {
+   "bytes": 16745,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall/reach.mjs",
+   "sha256": "4ea25193b7f8f498788b87f119b03c69ef9ff3ebf6b58e75abbbdad8d45fdad8"
+  },
+  {
+   "bytes": 2954,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall/takeover.mjs",
+   "sha256": "e7dc15c7fa6dcbfac8193630b7a44732473d3002b6b404789fae0c34202b1cfc"
+  },
+  {
+   "bytes": 20882,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/@moonshot-ai/kimi-code/scripts/postinstall/ui.mjs",
+   "sha256": "5153a04c77b92e8c274c1b559812880b74b83a915f84e5ad34e4cc62b7c49766"
+  },
+  {
+   "bytes": 744,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-regex/index.d.ts",
+   "sha256": "a902326b04490db2b99a85e58e0acb14a437ca7e2231e9adfb2fa91acdcc365c"
+  },
+  {
+   "bytes": 350,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-regex/index.js",
+   "sha256": "c92312790eb1f246b7c4c1fe9c1247b15441bbca3c6cb64d167beefc45302753"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-regex/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 841,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-regex/package.json",
+   "sha256": "8b2dc166f2b74d5098bad38bdd3dd2f4d4775c626199872f5e36dbb48c40931d"
+  },
+  {
+   "bytes": 2565,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-regex/readme.md",
+   "sha256": "3ebc0f845b1bab50600f823716040fbec355d3c356a3a76b8eb9eb593b6c7a3a"
+  },
+  {
+   "bytes": 6349,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-styles/index.d.ts",
+   "sha256": "6b5a49a699ffbccce553dead6c39d3b10a896f78869ef5507d30dfcdbf6f0977"
+  },
+  {
+   "bytes": 4139,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-styles/index.js",
+   "sha256": "d3f197d370760ddd8753c1355b4bdb585a787f1baa92bb8ed217f170c138b594"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-styles/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 1054,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-styles/package.json",
+   "sha256": "d405f010681d53f77691015e98461f8484b2afe6a9edfdd2ddb27b1e8a8e883d"
+  },
+  {
+   "bytes": 4327,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ansi-styles/readme.md",
+   "sha256": "5331953ca5464ee026f09bd413dfe0949049ce9a8bf2b01aad5c41b2712e66ac"
+  },
+  {
+   "bytes": 1280,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/camelcase/index.d.ts",
+   "sha256": "b8e7261f41dd775524077306a69c01796bd5a2a742c7338e6607ff4e689bc356"
+  },
+  {
+   "bytes": 2098,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/camelcase/index.js",
+   "sha256": "c335ea757e3898080795f25093827d97b8fb00d0f3ac04dd56c80eecdac8eef3"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/camelcase/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 746,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/camelcase/package.json",
+   "sha256": "b6d533c740d144de4da1493940b541978a77aae9d712dd0d609f60c58c83a73e"
+  },
+  {
+   "bytes": 2214,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/camelcase/readme.md",
+   "sha256": "086278e988c8104ea5aeaa9f296b5ffc18c66837f3b2dadb86253708ce4a3387"
+  },
+  {
+   "bytes": 2134,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/cliui/CHANGELOG.md",
+   "sha256": "2f287000906366901272e12d6c3270eeac27db4ef00073c78b951f05c509ee06"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/cliui/LICENSE.txt",
+   "sha256": "2dc0465729366c3a7890dfa9e972a1ba7048a26c02116fb8b419a6a1ac110149"
+  },
+  {
+   "bytes": 2656,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/cliui/README.md",
+   "sha256": "37f25fb12e21a84615cc819111e06c3bf480221ff4ad20fcbf492096392bf421"
+  },
+  {
+   "bytes": 8160,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/cliui/index.js",
+   "sha256": "2d892d362a5531867047b69e471ab1ca9e2222c313b2bd4d4bcf811bdfdab36d"
+  },
+  {
+   "bytes": 1192,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/cliui/package.json",
+   "sha256": "aefd282b90d2d0a055f3b40bbd2010531ba7cbf902e76a314fe09fe777491814"
+  },
+  {
+   "bytes": 1417,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/CHANGELOG.md",
+   "sha256": "ee2ea4fe91d043ec4214aa60aeaff595009acdfdbb9ed4030896191126d70849"
+  },
+  {
+   "bytes": 1087,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/LICENSE",
+   "sha256": "693866fc419c6f61c8570438ec00659d156ec2b4d4a4d04091711f5f11a365d4"
+  },
+  {
+   "bytes": 2853,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/README.md",
+   "sha256": "8cb35dae3a64e6edf1a680fecb9a850ea866795715aa46e09e211a1ba662d1c2"
+  },
+  {
+   "bytes": 17040,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/conversions.js",
+   "sha256": "7225058075157fc78115b8be998a2effdfc1e5b3316b004a130ee5f19303574b"
+  },
+  {
+   "bytes": 1708,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/index.js",
+   "sha256": "adb610f9a2fbba92548161871075262496b563dcd0e5e8f5c20f562160a74b34"
+  },
+  {
+   "bytes": 827,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/package.json",
+   "sha256": "9471d21744ca3137410448da6b3bd7b30ee91d42edce3b82ebcbf84faef74fb4"
+  },
+  {
+   "bytes": 2257,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-convert/route.js",
+   "sha256": "5f1420af4a106eaa68ed7b4bb5e46f47e0f251169e38841ec8262447e4691b5d"
+  },
+  {
+   "bytes": 1085,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-name/LICENSE",
+   "sha256": "c064f7a3e353bc1bc977f3c897941c75ef763f44f41677e0a15370ca0853d6e2"
+  },
+  {
+   "bytes": 384,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-name/README.md",
+   "sha256": "796aef7006b975d2a8a5bad00219c9884e67a51ef96d36b3a0df622e60924c1c"
+  },
+  {
+   "bytes": 4617,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-name/index.js",
+   "sha256": "97dabd7ebb70c33c19ccfa6956377fc722d9769924903f42a3bede30d83a8592"
+  },
+  {
+   "bytes": 607,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/color-name/package.json",
+   "sha256": "4a557ea373907e4643badb89ff21b3f4b969d20631086d78eab2e03d05c2efa4"
+  },
+  {
+   "bytes": 323,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/decamelize/index.js",
+   "sha256": "d51dde17c67ddf486a827fec29a9ecb3036ad36bb39089729184ea285b3ded4e"
+  },
+  {
+   "bytes": 1119,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/decamelize/license",
+   "sha256": "6fb9754611c20f6649f68805e8c990e83261f29316e29de9e6cedae607b8634c"
+  },
+  {
+   "bytes": 717,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/decamelize/package.json",
+   "sha256": "fb07ecfb5937f8757b0721fdafa6febff75d3c159f6dc8ec0d6ad4e1d1be7d9c"
+  },
+  {
+   "bytes": 781,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/decamelize/readme.md",
+   "sha256": "1787832d248f06c9bca2f809f8dad1135adbc25510c23038fb3cad4a4ba6ea8e"
+  },
+  {
+   "bytes": 52,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/.travis.yml",
+   "sha256": "02f031d8c9212a339e175c47b6e83ee7633c1e662cc5f0f3527a0778fe775480"
+  },
+  {
+   "bytes": 248,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/CONTRIBUTING.md",
+   "sha256": "2ea541bbad6bcbdf4c1146b3dcf1793c2bf53c3a9f4fffa6d1630977812f3670"
+  },
+  {
+   "bytes": 714,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/LICENSE.md",
+   "sha256": "c46324e45a005413535a6fb7a97e9eacd3cc6bf30335b7d5c10b8ee3af9e60c2"
+  },
+  {
+   "bytes": 391,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/README.md",
+   "sha256": "a318033578d0f261e3706ee479e345124fec5659dbb306c1ed250dd67e8fcf6c"
+  },
+  {
+   "bytes": 5206,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/dijkstra.js",
+   "sha256": "7f5721e77332370a71314f1536b8c552f4f9dbd99bbc6c5aa10df3253eacfd5c"
+  },
+  {
+   "bytes": 1268,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/package.json",
+   "sha256": "b523e007019401be68405b83e846ef9da4682026e8be339ee4ee7888e90b865a"
+  },
+  {
+   "bytes": 2919,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/dijkstrajs/test/dijkstra.test.js",
+   "sha256": "d4b86cf4b085925f5e85414cb1d8b6c2959684e9b554c1bb13989cea3dda91f8"
+  },
+  {
+   "bytes": 1077,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/LICENSE-MIT.txt",
+   "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a"
+  },
+  {
+   "bytes": 2691,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/README.md",
+   "sha256": "83fa2a1a5a1dd7318b99cb17c76927b775098d8fff0d3136c00303e4a7d0b267"
+  },
+  {
+   "bytes": 11104,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/es2015/index.js",
+   "sha256": "8718dea4d28647912918dba60545890dc10ae672bfb186b6ec0af3fc5e826137"
+  },
+  {
+   "bytes": 11105,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/es2015/text.js",
+   "sha256": "aad6b3f580511fe1fd70ae4ddadff4f4ec6bd5143f1a53b93c7e16eaf608d552"
+  },
+  {
+   "bytes": 427,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/index.d.ts",
+   "sha256": "69922c48a8f28317217455373eedaf7303772d0c2370cd9b553f091e71f7d47b"
+  },
+  {
+   "bytes": 10286,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/index.js",
+   "sha256": "c56978800e47f095cfbfe96712b5e78d150d1f62e32bb4943675213fce481ef0"
+  },
+  {
+   "bytes": 1278,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/package.json",
+   "sha256": "7bec29b9ca68f2c4becc60e866c2f9342ecdc89fab39841a818ccd9eda15c148"
+  },
+  {
+   "bytes": 10287,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/emoji-regex/text.js",
+   "sha256": "4bae97c68c68cc8c56fa873fcbcbaf6869da926f3f38ddd9cb6ca22e8f60da41"
+  },
+  {
+   "bytes": 3676,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/find-up/index.d.ts",
+   "sha256": "0b3126e16e55540a97ecf1bf3bafa53aa97159ef09ed14acc871d7d84fedcbf9"
+  },
+  {
+   "bytes": 1940,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/find-up/index.js",
+   "sha256": "2c5674173aa95b0d714d876f2e2f865e3c5b641d4d6dd89c6a2f0b9c8d1ed768"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/find-up/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 851,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/find-up/package.json",
+   "sha256": "19b9626d190ae97ecbc47843ff5781c462b6acfca35a2652dccded7d046dce53"
+  },
+  {
+   "bytes": 4035,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/find-up/readme.md",
+   "sha256": "2714ec043949381e12704a80eed1e170d9cb1347380af32c1c697766ef19d5f9"
+  },
+  {
+   "bytes": 745,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/LICENSE.md",
+   "sha256": "902dbb4154679fb2b8d7c33878183f45b268d01eae5e5033dddaa8852d45f213"
+  },
+  {
+   "bytes": 1068,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/README.md",
+   "sha256": "de7b6d277d23b5b8a3cc7d31c7a0ba19972363df2818b88573b4a29e3e89ba07"
+  },
+  {
+   "bytes": 71,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/index.d.ts",
+   "sha256": "ac26d4fa29d2ba00092c3ed61a3cefbd0391b2d9fe95072c40072102da8b34be"
+  },
+  {
+   "bytes": 1108,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/index.js",
+   "sha256": "583aba43e0ae0ccfb6c3a790019486990ac9241337dc38005f0189586e18295a"
+  },
+  {
+   "bytes": 773,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/index.js.map",
+   "sha256": "f2d123b5756280a04cf41e21594ace05b6f6cb4629361ed1c998c8f57d90c6fa"
+  },
+  {
+   "bytes": 954,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/get-caller-file/package.json",
+   "sha256": "680a080d2885c05bc51dde429c80784bfb248ca3ef3685438079c5015721e2ae"
+  },
+  {
+   "bytes": 549,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/is-fullwidth-code-point/index.d.ts",
+   "sha256": "9a3e6bdffd8335b7d29c1d578ef7411703c57d07aff959bda92b27110f868532"
+  },
+  {
+   "bytes": 1756,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/is-fullwidth-code-point/index.js",
+   "sha256": "7db24c9c5d58273ba32eee1bec3dfebd393fdeddd0b5879ef01dc595476e6979"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/is-fullwidth-code-point/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 737,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/is-fullwidth-code-point/package.json",
+   "sha256": "5b48496ca129073ed44a677b777ea3b91366c8bc228bc75fe858749a78ac1a32"
+  },
+  {
+   "bytes": 843,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/is-fullwidth-code-point/readme.md",
+   "sha256": "17df4cd59773b379650f1d15fb4e4333a1c7ff9e391a91b99961f65eed39384a"
+  },
+  {
+   "bytes": 1577,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/locate-path/index.d.ts",
+   "sha256": "82bf3772616ba306ba63c84550e2c45072f829abdb4392a54defe39a4e587b26"
+  },
+  {
+   "bytes": 1336,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/locate-path/index.js",
+   "sha256": "8661c367be253a559e8cbcae21192e8520b1513b421a1f383558ec4d88c03698"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/locate-path/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 720,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/locate-path/package.json",
+   "sha256": "6fb0681c3501741d68594c69a0baae9f558f2d426c136946f2c7780a8c5e27bd"
+  },
+  {
+   "bytes": 1842,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/locate-path/readme.md",
+   "sha256": "d83ce2463d3599223d087ef5895444f6c756d46f6748a04b085c479dc39c457d"
+  },
+  {
+   "bytes": 1349,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-limit/index.d.ts",
+   "sha256": "f0f0fa01772a2d3baedca7341b361483e25bb275cb645bc3b52d9c8b569eb40f"
+  },
+  {
+   "bytes": 1114,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-limit/index.js",
+   "sha256": "b005ce7e192e136df67e3b724bfc156c396ac46928c79508d6fd532bef98cbec"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-limit/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 924,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-limit/package.json",
+   "sha256": "d4529e88d06488042103f25322b0b60d90dfc5de0ed61c3b7c7d27f2ac3fe1bb"
+  },
+  {
+   "bytes": 2894,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-limit/readme.md",
+   "sha256": "f33a3fea32927b4a53e8a07ccff4e6722c5e1e8c4c44175f266a914816d88903"
+  },
+  {
+   "bytes": 1868,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-locate/index.d.ts",
+   "sha256": "1337620a49d58c831eb77dddb944fc7ef8b4792d7c0a662d70484e31c9077978"
+  },
+  {
+   "bytes": 1239,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-locate/index.js",
+   "sha256": "44b91a10c69197d1928db80b5bb89d8b31082efbf6b49caf3a424b6ff85909bf"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-locate/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 876,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-locate/package.json",
+   "sha256": "26d44c5d05942d6b315ecde2f3dcf78972cfb3b4c81c932ac2573d3eea5f5e94"
+  },
+  {
+   "bytes": 2193,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-locate/readme.md",
+   "sha256": "f185e9ce4fe82baa71bcd091efcd3ca88bc6d2af50cdc4750ec195efc1c705bb"
+  },
+  {
+   "bytes": 1082,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-try/index.d.ts",
+   "sha256": "eed362bb69f02efd66fbe7050f1681f87751209cea8c877d5ee3e00d1ae36bb5"
+  },
+  {
+   "bytes": 211,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-try/index.js",
+   "sha256": "98b069ba5ff64b0f988162a310c47110d5c121d42c33aa7314817393f453c9e3"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-try/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 636,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-try/package.json",
+   "sha256": "ff793c821f36985cde9f9d9ff6297e6c1304f8e597aa2d48dc53eda83c11e54c"
+  },
+  {
+   "bytes": 1333,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/p-try/readme.md",
+   "sha256": "2389e9cb72fae2955b9c76b1f45c9a626c23dd506a44a474796fc5212c16607b"
+  },
+  {
+   "bytes": 429,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/path-exists/index.d.ts",
+   "sha256": "1cbab72f53316e0997d014579384ad715731e1e701ab0f2b76667161a16f16ff"
+  },
+  {
+   "bytes": 347,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/path-exists/index.js",
+   "sha256": "379a30047a60f8d7b3bbbc2fa1fa0362f53e11ab7e63859fedfa7f2e25a99601"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/path-exists/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 607,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/path-exists/package.json",
+   "sha256": "5e258d1a0d185ae469fec34de2af18913421b94181ef61238efcfe0b00d1b2c3"
+  },
+  {
+   "bytes": 1427,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/path-exists/readme.md",
+   "sha256": "9b41614e1a564d590df6e1367a4ee28f27efc0886e98bbfee104c5fa725db7b7"
+  },
+  {
+   "bytes": 31,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/.eslintignore",
+   "sha256": "085af2cfa7c300e3d95158ed1a6f8612e85155aad12a929bbbf24141af444585"
+  },
+  {
+   "bytes": 320,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/.eslintrc.json",
+   "sha256": "c1d37735f88f9bf614c8bfce8f18c7baf8fd05b38b9a4bdede21d6049e9c7b7e"
+  },
+  {
+   "bytes": 43,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/.prettierignore",
+   "sha256": "c7d3904032d9abaa8b6d59b7e28f38827c353f4007a84e4371d9c36f8d9454a7"
+  },
+  {
+   "bytes": 1151,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/LICENSE",
+   "sha256": "176b07a18c0bb3836aaeb61088fd0bf11a38f66e6f15e3fbda85faa225250d6e"
+  },
+  {
+   "bytes": 13396,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/README.md",
+   "sha256": "ab0b7c2c0a11b3065b176be5cd9f253351c2892dba832b677f440fd832e0b74e"
+  },
+  {
+   "bytes": 480994,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/browser.js",
+   "sha256": "99450bad8923cd4f3e9133faaf961bdb4ff4836246501b76033ff1e88aeece50"
+  },
+  {
+   "bytes": 5462,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/base.css",
+   "sha256": "5ba8f9c44e5eb2dc31a9f280c9dfa27e03f65a96459aa5e1a18b937bacb0e9da"
+  },
+  {
+   "bytes": 35272,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/bitmapper.js.html",
+   "sha256": "eaedf103b49e7d77dddc1fb2f5f24bbf603a0c36401f2aa749e40e0823f492e6"
+  },
+  {
+   "bytes": 26997,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/bitpacker.js.html",
+   "sha256": "cfa2e249b2e1604cd2c501d8e7375735bb3917864bb74d91918682a3887026ee"
+  },
+  {
+   "bytes": 2122,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/block-navigation.js",
+   "sha256": "ced077507cd5b25b6c8e9a37af35c3faad8707068be50214d0aeaec9bb031e3f"
+  },
+  {
+   "bytes": 25531,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/chunkstream.js.html",
+   "sha256": "a2363c9f88efd00189c0cda3d67277eac9e58b19acd7898ccb347f50fa497f99"
+  },
+  {
+   "bytes": 6490,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/constants.js.html",
+   "sha256": "89ad0d4adff587f607699b9426f395b12d81f66189635ba6642cd046a8b7bc88"
+  },
+  {
+   "bytes": 7347,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/crc.js.html",
+   "sha256": "213fb8ff920a31fa4791e751a869a201e317fdc8ce20605980e4dd2eba5f160e"
+  },
+  {
+   "bytes": 540,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/favicon.png",
+   "sha256": "5846cbbc06e3c41959c9c0ad0d6ae8b00ba104306cf3219866e2a9046babec6d"
+  },
+  {
+   "bytes": 23736,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/filter-pack.js.html",
+   "sha256": "bee4d4573734dd55f9f0f97257fd0940556fd26d4e5acedf1734320f1a2fdea0"
+  },
+  {
+   "bytes": 5587,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/filter-parse-async.js.html",
+   "sha256": "8e511e88d47a9872761dd0530dd7c52e00f8e9e419d2a8c47741b2657357677e"
+  },
+  {
+   "bytes": 5250,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/filter-parse-sync.js.html",
+   "sha256": "6ba6b833ff28ccd1a64addc1b6b7a6e4132d334d9cc6f916ec74b7ab8f0feeef"
+  },
+  {
+   "bytes": 24004,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/filter-parse.js.html",
+   "sha256": "ac25de6f8ef5f816fc0648a239b8fdf051700e35ada9a2cccb36555581839995"
+  },
+  {
+   "bytes": 13759,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/format-normaliser.js.html",
+   "sha256": "eb0e304c7aaf884a4082555b2b953712021ca2f4876ad2fb66987d773dea9501"
+  },
+  {
+   "bytes": 18773,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/index.html",
+   "sha256": "88237339684ba69234c6a2efcd855cee0aad63b2e05f738796649b96e5aa3373"
+  },
+  {
+   "bytes": 13499,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/interlace.js.html",
+   "sha256": "ca75f8dba12107db18c4685df3585f507dd3444618a98dbbe3d242169028bac8"
+  },
+  {
+   "bytes": 8610,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/packer-async.js.html",
+   "sha256": "44051764a40709eb8cc465e3d78168816f24e9673e8f34b0281c95598f2c5790"
+  },
+  {
+   "bytes": 10369,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/packer-sync.js.html",
+   "sha256": "0d6cfb937e724d5604a4bae1e259fcac879fdfca3c883822a348ddbda0def899"
+  },
+  {
+   "bytes": 19095,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/packer.js.html",
+   "sha256": "b2341bf6b0af2579249a34b22f0324f3bece06134b0388b5faf1fdb5e18bf6ed"
+  },
+  {
+   "bytes": 4716,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/paeth-predictor.js.html",
+   "sha256": "c304c4527bb23ff87b57ed1078d5c1df5fe6ba13f7f4bbf5bc0c7411e60cd7e8"
+  },
+  {
+   "bytes": 23205,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/parser-async.js.html",
+   "sha256": "d04fd113f8fd422f7cdb4d789dba54012425c008818099275a4fe26e1239c64c"
+  },
+  {
+   "bytes": 15603,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/parser-sync.js.html",
+   "sha256": "9865c91d68ed106839c47ccc9c9412d7963160609472e72ebf215d53aae88d43"
+  },
+  {
+   "bytes": 38742,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/parser.js.html",
+   "sha256": "c26d86d02f9ef4b5430cb5afde6ba6d828f53d9ec2e206d5de9f1ead1921ba2b"
+  },
+  {
+   "bytes": 4309,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/png-sync.js.html",
+   "sha256": "3081da37e24f1dc1a687caf0ada7ccfb6aa9edd8c83faf535d1db1edfae58d8f"
+  },
+  {
+   "bytes": 28551,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/png.js.html",
+   "sha256": "87fb644c824ee9f052a3278374dac347e9c424a537343aac7172e2d3c0e3a287"
+  },
+  {
+   "bytes": 1060,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/prettify.css",
+   "sha256": "31c66a00ede9f0a6ac6dfc0c3819a6cb925ebb771cde59d8228ec8bc8595a91b"
+  },
+  {
+   "bytes": 27207,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/prettify.js",
+   "sha256": "8bfb90ed950473c414193ad349ba4f1302955c2a500b6e5ed55e841b398fc1f1"
+  },
+  {
+   "bytes": 209,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/sort-arrow-sprite.png",
+   "sha256": "cc0509bb6793ce64f35b199d39fea7bada13ecc2d395a43957d0d8aae4f05864"
+  },
+  {
+   "bytes": 4495,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/sorter.js",
+   "sha256": "c3b624472100170dc6f36f4742424645b3056ab61c411fc3a52c06bc52fc0d72"
+  },
+  {
+   "bytes": 24234,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/sync-inflate.js.html",
+   "sha256": "50867093a5f8da4052c02f7d471cfffbcf0e00a2581be0c5ba573a0a3a944fab"
+  },
+  {
+   "bytes": 8436,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov-report/sync-reader.js.html",
+   "sha256": "5788f32a3f7298469b28189ea56d76fbefff1fb50aff7519374517c3341772bf"
+  },
+  {
+   "bytes": 28336,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/coverage/lcov.info",
+   "sha256": "625830753142e349a3327c99a72fea7b561cb782e9f7761fd37e8ced6030896a"
+  },
+  {
+   "bytes": 6477,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/bitmapper.js",
+   "sha256": "3f2f720e3a2b4e41cdc03e9f58bb1794bec26dcd1b22568e41ce0b84ab20aeb5"
+  },
+  {
+   "bytes": 4670,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/bitpacker.js",
+   "sha256": "3f7bfabcbc82bedd0cc8551bc210b44dc1fb179fa2ce3b8b1d39fa307d8af204"
+  },
+  {
+   "bytes": 4249,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/chunkstream.js",
+   "sha256": "43c5507901554a29c5a29e555aaeb3c3987b84fb3aa8c681c1b30794a477aa85"
+  },
+  {
+   "bytes": 662,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/constants.js",
+   "sha256": "9e3b4f994ac93751e9ccb4d453e85e4f25a0b086a9f24ec92c7dcb06995bdf6c"
+  },
+  {
+   "bytes": 853,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/crc.js",
+   "sha256": "57e2328cfa361fb54f1f4b3a59e071c1ccc864095e4f3759a957cd15aa2a8b65"
+  },
+  {
+   "bytes": 4279,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/filter-pack.js",
+   "sha256": "500c1b3b34702c895e9e689143f44280687cac363447523679ec13d12bd564f6"
+  },
+  {
+   "bytes": 558,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/filter-parse-async.js",
+   "sha256": "328b6173f1a2a4d91425220a0fa421699552f254006a57ede9f4018ced50a7ee"
+  },
+  {
+   "bytes": 483,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/filter-parse-sync.js",
+   "sha256": "201a08dfab26a2903c0dabcbdfe0406b3fa33d60f59b591878329f590fac48ff"
+  },
+  {
+   "bytes": 4798,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/filter-parse.js",
+   "sha256": "b8aad6f29371f5b13b232643781a7c49f7d36d565136ddda1ed7fbaca987ce2c"
+  },
+  {
+   "bytes": 2329,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/format-normaliser.js",
+   "sha256": "1a6602c8fd0ecbe2c340954af4ae4e3446c98acd98c8211ab4b27a7553fb4a7f"
+  },
+  {
+   "bytes": 2004,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/interlace.js",
+   "sha256": "3bb5d57153078ff586667e9a9d2c06db993c8ff1638e0521a9883cdeea6e1e3f"
+  },
+  {
+   "bytes": 1162,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/packer-async.js",
+   "sha256": "f50df0610749ce7b1a99abbe9e4596df7c16f96efd3848f12dd632b22cb02b45"
+  },
+  {
+   "bytes": 1193,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/packer-sync.js",
+   "sha256": "1b516238168a42704e62ba44528406188864a6ddda2ae92d1b91e5e078cdaa2d"
+  },
+  {
+   "bytes": 3723,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/packer.js",
+   "sha256": "b5f9956364c80d67c28d615ace639a5fb4d4d79d3acb235237f3050dca220e03"
+  },
+  {
+   "bytes": 372,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/paeth-predictor.js",
+   "sha256": "48555b909af708593dade8e8df75d18ecdffdb6577e362eac01eae357ef1e0e9"
+  },
+  {
+   "bytes": 4317,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/parser-async.js",
+   "sha256": "3f9f14c61e5c313e522d21352eb4ed1dc6ce9f3f62e02e59df0340c0c431eefd"
+  },
+  {
+   "bytes": 2543,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/parser-sync.js",
+   "sha256": "040cba5289f75be9946076c19d1310b86bf4113a4257b09133c61e04d0b7f0c0"
+  },
+  {
+   "bytes": 7720,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/parser.js",
+   "sha256": "574e43fea28a28cc6feb7ab62a480a86bb75411ee4bfaba76a7e9d7310b6e94c"
+  },
+  {
+   "bytes": 252,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/png-sync.js",
+   "sha256": "867b1a78dcd3e45458eb4f0af01acd48f38d3a31225bd7cb8dd8ee3966ab54be"
+  },
+  {
+   "bytes": 4418,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/png.js",
+   "sha256": "e02cecbd36327829758386dc3f0ca4a36a2339ccb5d5e824ca3556e2c3f89726"
+  },
+  {
+   "bytes": 3751,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/sync-inflate.js",
+   "sha256": "08cb8afb79a4c0ab58e94601dab22261daf6638382b211d6a7f6bfbc16d27a0b"
+  },
+  {
+   "bytes": 1116,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/lib/sync-reader.js",
+   "sha256": "fa8997f47f5dcd998b6a0873099de7f575673ea2af6eac9517be4abb180761c5"
+  },
+  {
+   "bytes": 1805,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/pngjs/package.json",
+   "sha256": "1f3fbe71a51c03470a83044efb2f7dfcca4877f22f1d54f9d952081cb28fbedf"
+  },
+  {
+   "bytes": 22372,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/README.md",
+   "sha256": "2c562622aa4a285617dbf412fa51ae73b6f00a73c8423c295103c4bbbae72035"
+  },
+  {
+   "bytes": 3640,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/bin/qrcode",
+   "sha256": "d304dd7918e13800cde038ce37f51087816ccbe42c3688fbe638fd39c04bab5c"
+  },
+  {
+   "bytes": 57,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/helper/to-sjis-browser.js",
+   "sha256": "fd53562ed783c453278f656c3d851c6f2d5e5bde8aa50046c311126a229510ce"
+  },
+  {
+   "bytes": 22178,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/helper/to-sjis.js",
+   "sha256": "ca432a194287a573ba2b1600e01c647c9c2dcec45f92cc0412a11cb5121f3eaf"
+  },
+  {
+   "bytes": 1886,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/browser.js",
+   "sha256": "868da79917b05db1f3d4402f4875148fb06ce843cbd74c65429cd6ef960b1638"
+  },
+  {
+   "bytes": 275,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/can-promise.js",
+   "sha256": "fd18906803bd4cfe4f23801a7032c5a1e10be31274ba25dc34541932cdd8f253"
+  },
+  {
+   "bytes": 2996,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/alignment-pattern.js",
+   "sha256": "7e642a801c5c3d114bcceeeb08a3930369ec16fe874bdb617f02efb43aaea9ba"
+  },
+  {
+   "bytes": 1822,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/alphanumeric-data.js",
+   "sha256": "cf8f81197e02c0db069155a2e82c098d26329019cfd06cc0e4479124636fa1ea"
+  },
+  {
+   "bytes": 719,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/bit-buffer.js",
+   "sha256": "c6f982814aa373da6e44183a61f75762c8559909087fff76603885b180bac0ad"
+  },
+  {
+   "bytes": 1501,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/bit-matrix.js",
+   "sha256": "77e051929fbc9d3b3ba91bd9b190f9a1ab3ccea162d627696ad2c01bf41e51bd"
+  },
+  {
+   "bytes": 675,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/byte-data.js",
+   "sha256": "24614cb942165dcc5378117a951cc1d68fbfc2e60043830111ae99283cd9aa94"
+  },
+  {
+   "bytes": 3415,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/error-correction-code.js",
+   "sha256": "03683cae6cc410b83f8ad0e87fa394df5102b52ca4ce843e507aa9f6acce13e5"
+  },
+  {
+   "bytes": 893,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/error-correction-level.js",
+   "sha256": "7f31b2250223cb7549bf3c305cce948ad9b0ee67cb9ee93b6c08352b7fa2b7f6"
+  },
+  {
+   "bytes": 599,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/finder-pattern.js",
+   "sha256": "e5808e9b8ed06fd7c3ed201a03f7e7341a5c80f6a8b4cc78c9a94c3ee0ddd6e2"
+  },
+  {
+   "bytes": 1126,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/format-info.js",
+   "sha256": "889b133cd6a86f4079a3a5d1dfd94c495ca71d4fde4ec88ce9e9a5de358629d0"
+  },
+  {
+   "bytes": 1899,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/galois-field.js",
+   "sha256": "d487207ce5040b49f95441bedafb6dbc9c010b245a0f0f47b9e3f10f8d9530a6"
+  },
+  {
+   "bytes": 1584,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/kanji-data.js",
+   "sha256": "2dcd7d5aee492392e0c47976ae718e9783c5b13234487804ed21558fbd4a62de"
+  },
+  {
+   "bytes": 6101,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/mask-pattern.js",
+   "sha256": "c8cfdab7b8d8276f9c1128ab8e5d930759df7594f03211f72b80c3002af91aa9"
+  },
+  {
+   "bytes": 3983,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/mode.js",
+   "sha256": "25d3574cf4b0cdbd62363ff2c57eb46da41d21124e6d37eb0e84f979799bd530"
+  },
+  {
+   "bytes": 1211,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/numeric-data.js",
+   "sha256": "3e506376e4c84b88162024c1d840b5bc3721da3b0d02f18784161adea5e3b2e8"
+  },
+  {
+   "bytes": 1589,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/polynomial.js",
+   "sha256": "34cb4e4216fc51fe75ac1c4bb00c4f4fc118a51da50c8250aec951062ff3a3c4"
+  },
+  {
+   "bytes": 15128,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/qrcode.js",
+   "sha256": "216e490908ed95df74992a05d44efa35ea7bc8dcab27b49b446725964704e833"
+  },
+  {
+   "bytes": 1625,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/reed-solomon-encoder.js",
+   "sha256": "080273fcf5a73c2348330f3edb55f3968c78853e298dc55a074becd7cee3faa2"
+  },
+  {
+   "bytes": 1084,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/regex.js",
+   "sha256": "974d9358148d11c8e48713ef2da8fc12e597b76f4e6fc6bde00cfe7c8094efa1"
+  },
+  {
+   "bytes": 9331,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/segments.js",
+   "sha256": "abd08a6ddd778c92e36e2a303d2b4a3b4ad1d9089d2a7605bee8b9d06da7846a"
+  },
+  {
+   "bytes": 1621,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/utils.js",
+   "sha256": "1b66145cb9afddadf46ea7314b168e0b8369b2ab4938256fe64bd1c465a473bd"
+  },
+  {
+   "bytes": 268,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/version-check.js",
+   "sha256": "9cffe3a6f9cbb978022c0d0b1652fb2f3d381b9e48b7e01dfc744ded28736da2"
+  },
+  {
+   "bytes": 4928,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/core/version.js",
+   "sha256": "1221665a29e6927d3823912bde8bd711c114c61188d7ce862997a33d47fcfba9"
+  },
+  {
+   "bytes": 303,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/index.js",
+   "sha256": "c1f2fa38779ae32562a32a1392f7f747649d3ec839eebb934950cee25fb1c2b4"
+  },
+  {
+   "bytes": 1501,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/canvas.js",
+   "sha256": "0ce857661e234786295c9b4042cad6dc1f4d7a496c4990f52870d2bc4ab1e6a9"
+  },
+  {
+   "bytes": 1776,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/png.js",
+   "sha256": "26c35ca2087bde13f91a69cbb755870b6e9ca97e2ca9999f11afaafda16a681a"
+  },
+  {
+   "bytes": 1971,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/svg-tag.js",
+   "sha256": "2f733e88d0b0155fae4aa4827de0fb9ae73cbbfdfc0cae52dc9d5ed17ae0447d"
+  },
+  {
+   "bytes": 532,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/svg.js",
+   "sha256": "21a5e38ca570d96c9be324c9395950e8959b2d82f23c256614ac3f517d1337ef"
+  },
+  {
+   "bytes": 271,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/terminal.js",
+   "sha256": "227348f2f20ab09dda29e404c95a58a90b25c5511f9208c71516dc69f0b88fa3"
+  },
+  {
+   "bytes": 2398,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/terminal/terminal-small.js",
+   "sha256": "1b1d711cea09c0e96dab8eb1f12373315eb730016215dd2ad26beacda4ffcd80"
+  },
+  {
+   "bytes": 1220,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/terminal/terminal.js",
+   "sha256": "298a44e0a8f8080d4c76fd7078ebfb9cecbd0b869207fb70cd583e40b89dba23"
+  },
+  {
+   "bytes": 1579,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/utf8.js",
+   "sha256": "a47dc2b5147bff1e503e299d9effb2b83ddd379e976e9fe66f4d4519034565f4"
+  },
+  {
+   "bytes": 2894,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/renderer/utils.js",
+   "sha256": "03ffb1b5f7e629bef61a83835107b391efc0b7a71ab9329a950708b20f361b87"
+  },
+  {
+   "bytes": 3571,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/lib/server.js",
+   "sha256": "67555d163f483ee6309fa8f5a038ea2b649347f159c2b31159fdf073ab71a744"
+  },
+  {
+   "bytes": 1076,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/license",
+   "sha256": "8df47c6ad9ac2c41eb9b2a72def9908959da0ede8dadd56c7b249c1bdb0c5ce6"
+  },
+  {
+   "bytes": 1766,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/qrcode/package.json",
+   "sha256": "cbe26d7282c802f4ab9c1f790c5d8450d2b5c82e8bb5f67e3a5c2641ea347d1d"
+  },
+  {
+   "bytes": 1853,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/.jshintrc",
+   "sha256": "2338f248b4ae48525907b524f49de077bc53f6f387d912150f15ca849413689d"
+  },
+  {
+   "bytes": 8,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/.npmignore",
+   "sha256": "17d3035a74abeaaf2ac3156d1388eaa1efad46a68717edf4fa3bcb4d0c5554b7"
+  },
+  {
+   "bytes": 36,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/.travis.yml",
+   "sha256": "5e5329df283badd5487a0556f7cfcedd1f80361915cf246795a475074f64cf81"
+  },
+  {
+   "bytes": 1099,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/LICENSE",
+   "sha256": "a92e52eb1fa7cd746e3827bf01d3a3589bbc8e1e51348b1da042aad165525ad1"
+  },
+  {
+   "bytes": 5175,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/README.markdown",
+   "sha256": "958e646593907b1757b5a359844bdf69374392f6089eb009a6e0d6591d866497"
+  },
+  {
+   "bytes": 2867,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/index.js",
+   "sha256": "65eaf8b7b519d6ae7be7ea20382d91a117d9c689897897ce4c2ee798e128a2d3"
+  },
+  {
+   "bytes": 1033,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-directory/package.json",
+   "sha256": "5690bdddd6eb4abd795fa5319df7552279508df9d562d571e3132ddff3045a71"
+  },
+  {
+   "bytes": 852,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-main-filename/CHANGELOG.md",
+   "sha256": "c34727bb46dcdc250b1b2403bbe733a961f4e1afedb192d05ee1b3aa7e5add6c"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-main-filename/LICENSE.txt",
+   "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+  },
+  {
+   "bytes": 1064,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-main-filename/README.md",
+   "sha256": "5c71d0b3841b668697cea30d8ad369a695e54add095cee40fdd8db3e37d27013"
+  },
+  {
+   "bytes": 427,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-main-filename/index.js",
+   "sha256": "2ef41461635fc6b9689fdf72a9989dd2f675757483d85658968056ccec0eab21"
+  },
+  {
+   "bytes": 854,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/require-main-filename/package.json",
+   "sha256": "cc3853357a59a82c9a0e5cebbe52221eccc4a52bced4557300b69bbec17fa41b"
+  },
+  {
+   "bytes": 718,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/set-blocking/CHANGELOG.md",
+   "sha256": "d3b4a111a1f1849b18cfeeffdc5d69f06522f37257b97db1041a7cb2186f6629"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/set-blocking/LICENSE.txt",
+   "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+  },
+  {
+   "bytes": 1538,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/set-blocking/README.md",
+   "sha256": "e07ef2948101128a2273a88cd0ddd30b90f7c0d8e5de12ab59cffa9ec873c4f1"
+  },
+  {
+   "bytes": 252,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/set-blocking/index.js",
+   "sha256": "8b238f1de62bb2a7b35a9e6b0364a64ce0f357cb63251580ff5a25429712e1d1"
+  },
+  {
+   "bytes": 985,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/set-blocking/package.json",
+   "sha256": "e0c598215c66f2c35edbc3cb2a3433d45f9d4b726524c095c93e7376d87a3bce"
+  },
+  {
+   "bytes": 792,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/string-width/index.d.ts",
+   "sha256": "08f234e8871dacf59e1f194fd83c11d002d8d4d488f7be138900755e3e637a24"
+  },
+  {
+   "bytes": 923,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/string-width/index.js",
+   "sha256": "ed69ea4f757130e46dc48a0cc31beb6257e61a31c70936d82b8a3f02ffd64df5"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/string-width/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 941,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/string-width/package.json",
+   "sha256": "6457a02418f004fe5d3fbbb19c7cbcc1450a8b887ff9a471dc6985ac83a48d36"
+  },
+  {
+   "bytes": 1396,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/string-width/readme.md",
+   "sha256": "cd4aaf53cc7df4210595512d1fdfcd78b671da703a7e695673fcecc167ec66a3"
+  },
+  {
+   "bytes": 369,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/strip-ansi/index.d.ts",
+   "sha256": "4b0f7f88fc46a672cb59eeb2782af271c203600d602f57a717ef07f96092caf8"
+  },
+  {
+   "bytes": 154,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/strip-ansi/index.js",
+   "sha256": "bf37cd692bf030c2ec270945bc26aa8b19ad379fa5916f12304758f709ab0978"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/strip-ansi/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 798,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/strip-ansi/package.json",
+   "sha256": "0130850b9da0584f54cc20d3dab6365c807e9436ac78e016d5009efa99bd0530"
+  },
+  {
+   "bytes": 1599,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/strip-ansi/readme.md",
+   "sha256": "cb384db30337ecec75919b4c69aab67358b4f4e384406956687894b6d777413b"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/which-module/LICENSE",
+   "sha256": "852bf81203aa93aa89afc9f881ebb035322dc7334aaceff435c557634c94a815"
+  },
+  {
+   "bytes": 2140,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/which-module/README.md",
+   "sha256": "9f419c36b60ea4cb30e83839134f88d3bae8dd43154da8b51f8bf0380805a5ea"
+  },
+  {
+   "bytes": 248,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/which-module/index.js",
+   "sha256": "cd3b335884bb4d258e863128b87f90a8025ce97c9cde64b9114e8cfbfc71618c"
+  },
+  {
+   "bytes": 917,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/which-module/package.json",
+   "sha256": "02f6f6833d09c32100317a390892888ae44da4f712b2271d4b308bcace09a99f"
+  },
+  {
+   "bytes": 4686,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/wrap-ansi/index.js",
+   "sha256": "1877d6fb2104414dcf488eadc2a783bef939a58173d97d7c4a0b1f332d3d5f65"
+  },
+  {
+   "bytes": 1109,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/wrap-ansi/license",
+   "sha256": "48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0"
+  },
+  {
+   "bytes": 945,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/wrap-ansi/package.json",
+   "sha256": "ee3d1495da354ea19d3900e3f28a4e93cc202966623fee4ad6fe54346b385075"
+  },
+  {
+   "bytes": 2760,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/wrap-ansi/readme.md",
+   "sha256": "308f129e80db2de7054fe7c1c50838ae6c3f214b6fb008d669f48e32edf1702f"
+  },
+  {
+   "bytes": 1183,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/LICENSE",
+   "sha256": "2b29dcfe0d6471f7e8c92c5fb38c9f93edee10330937055440192f1832b1ecef"
+  },
+  {
+   "bytes": 15306,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/README.md",
+   "sha256": "bb979132f3cbff08ce47f36d041e18071f8f534d01f591c0b129ba7abf1e480e"
+  },
+  {
+   "bytes": 176,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/browser.js",
+   "sha256": "010da44addea1d88b2b732540c3f1fd0cbcb28926b96623d4c64222e0ead2d0e"
+  },
+  {
+   "bytes": 796,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/index.js",
+   "sha256": "924564d5be26d59b9682c4263f68320e48dde7240bd2d1ad17ec305537429dd2"
+  },
+  {
+   "bytes": 3056,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/buffer-util.js",
+   "sha256": "8b0a45739132f82e25ea13163780abf547ccfe989267f3eb7abb475beec92da3"
+  },
+  {
+   "bytes": 503,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/constants.js",
+   "sha256": "391e823142b8b370e55a2fd32b022deaf03b8415c56000009674ebc86a0b4f86"
+  },
+  {
+   "bytes": 7321,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/event-target.js",
+   "sha256": "c45d3c6e12d170c860c0c3f1a050aa0f864d9806632b609a1e607d675aba128c"
+  },
+  {
+   "bytes": 6183,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/extension.js",
+   "sha256": "852564f0f6b460287043803eae732666fb5610f676874354fc89f06aa4e986ed"
+  },
+  {
+   "bytes": 1034,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/limiter.js",
+   "sha256": "e0469d4b83f6ba764b15f80e1766b75c136fbff68f048f4c050f0b1c7f065f69"
+  },
+  {
+   "bytes": 14669,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/permessage-deflate.js",
+   "sha256": "16a91536988a53c23047ee5882392068728a839a244178c3b09b8c54982f58b0"
+  },
+  {
+   "bytes": 17439,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/receiver.js",
+   "sha256": "a6ada33c9a2d54eaf595824b821ea89ca2c6395f89aa06755c52142148274884"
+  },
+  {
+   "bytes": 16886,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/sender.js",
+   "sha256": "d0791d30c3defd44dcabbddb879a901c757993fea2c00a7ffea01d53b23b4b77"
+  },
+  {
+   "bytes": 4204,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/stream.js",
+   "sha256": "a56fcb6e2b152097ee820b6f5410b1f71e59819b45d08d9f8bda588fe39070ec"
+  },
+  {
+   "bytes": 1498,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/subprotocol.js",
+   "sha256": "be3f6323d6f549568577dcba9004c1479d95c65a7abb0fe0c582875b9fac0b7c"
+  },
+  {
+   "bytes": 3903,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/validation.js",
+   "sha256": "41ce8e83d0d434132e1704895fedb91f6703a701b42d91c80954ab29b2845593"
+  },
+  {
+   "bytes": 17022,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/websocket-server.js",
+   "sha256": "6d8dd89a841748c80445fd5fcdb5ba8005369b53cc3525135e11304c8b9c55e5"
+  },
+  {
+   "bytes": 37367,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/lib/websocket.js",
+   "sha256": "de5add831db49e159d3ee0adb1c5e042eba3af13166374c5584f4fc520d1e734"
+  },
+  {
+   "bytes": 1829,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/package.json",
+   "sha256": "a56a3fd55945a3ce177e3ca165dafae6f7eb03b7aefd58c092ac723d5741a6fb"
+  },
+  {
+   "bytes": 554,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/ws/wrapper.mjs",
+   "sha256": "fe154662301fd558f935f9c217fccbe7a7dac02ff39e648a000589403ff27c7f"
+  },
+  {
+   "bytes": 1250,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/y18n/CHANGELOG.md",
+   "sha256": "aaf519e5a685a2c79b52248a55cd0a8cb043207b6459a4e10eddb79acbb9810f"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/y18n/LICENSE",
+   "sha256": "2034cce3b6fafcddd642c4175e01d3ddfc332a53b9f20fdc46b1466dc89ac469"
+  },
+  {
+   "bytes": 2848,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/y18n/README.md",
+   "sha256": "230eff3f840c6d29b3f03293d37c446e0cc30148ab72843893cd91720b27027f"
+  },
+  {
+   "bytes": 5273,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/y18n/index.js",
+   "sha256": "ca78904cb3c3dc166f0fe659d2fa554847b52405249dffe3074e11bb32991657"
+  },
+  {
+   "bytes": 889,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/y18n/package.json",
+   "sha256": "5995de811ffa1b8a8e9ed9bd0444f60058dba9ce1ccbe12f2d5e12c31a975d9c"
+  },
+  {
+   "bytes": 24865,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/CHANGELOG.md",
+   "sha256": "b80549ac9e2caf9606189d06491286325b6d15399c96d364ce32356d4991c737"
+  },
+  {
+   "bytes": 731,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/LICENSE.txt",
+   "sha256": "365496ca1f56da40b23c9815fc40fa9005847b2f8f8fd1c1a4929ef25ec8cd1d"
+  },
+  {
+   "bytes": 10308,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/README.md",
+   "sha256": "41abc6f2ae790207873dabcaa3d8959a83078b4a66ba43ef34c0ad179be46434"
+  },
+  {
+   "bytes": 33760,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/index.js",
+   "sha256": "f0b180abc21d5baf8411c4c38f11a88034112731b298fe97f806d2f2b9cf2b4a"
+  },
+  {
+   "bytes": 856,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/lib/tokenize-arg-string.js",
+   "sha256": "0bdd27fba96af18d246e54e5369bcc775c89d25aaf3e7aaf55295f2ecf42adaa"
+  },
+  {
+   "bytes": 962,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs-parser/package.json",
+   "sha256": "2de71e9a1ff3e5bce791f5e3de66e1ad86f4f143d8c3ce4fbaad7a615e5c5e70"
+  },
+  {
+   "bytes": 24871,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/CHANGELOG.md",
+   "sha256": "2e82050b92684b91c6f9968aad6a41c7953e51b01185d6f58a3ff19910e013b2"
+  },
+  {
+   "bytes": 1146,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/LICENSE",
+   "sha256": "2f1a503bfab84b3ba7393627308b3274501e459e3b5185bbb56bbf16cb1602d4"
+  },
+  {
+   "bytes": 3906,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/README.md",
+   "sha256": "bbafb2911ee5da96e1e569afd8a007e7755c41fbfed4ddd073906f026a7b3384"
+  },
+  {
+   "bytes": 152,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/apply-extends.d.ts",
+   "sha256": "ea0894945e17b90936c26d7e02350581ab7f963d2350c41046f10a2bf21bcd15"
+  },
+  {
+   "bytes": 2488,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/apply-extends.js",
+   "sha256": "16bd39c938b97b8d834ac8e7ab86e4d0723dfecbd7f755678a6d15bf7aaeee92"
+  },
+  {
+   "bytes": 178,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/argsert.d.ts",
+   "sha256": "aefe0bb5cf603fe62c4f469d7d6d4ff9ce7f3e97f10305d0b6a4eb48f862664f"
+  },
+  {
+   "bytes": 2751,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/argsert.js",
+   "sha256": "5932f5a1e49b4150d78bb033e78ae437e42545df5a0e467e5dac8e8dada00b29"
+  },
+  {
+   "bytes": 3146,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/command.d.ts",
+   "sha256": "d58eef2363745ae57ea6bf6ff839b9062868b0f2ca5df500883f2b00cbca44d9"
+  },
+  {
+   "bytes": 18037,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/command.js",
+   "sha256": "9474e83f9ebd9c7ead2f2ef58b776c73733f46f0e2075c36ccac1b7190f64696"
+  },
+  {
+   "bytes": 1209,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/common-types.d.ts",
+   "sha256": "7a38357a59cc0cfc2300a5ee246626600001ab9213789caacd6e4e38ae983809"
+  },
+  {
+   "bytes": 774,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/common-types.js",
+   "sha256": "3cae601eec527ee688893639ced607bed7ada2364b7f7711cf42b826a0f9f196"
+  },
+  {
+   "bytes": 1462,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/completion-templates.d.ts",
+   "sha256": "626bfa7c87bfb27d7e5a3c809e5f1f7cfaebfa45cdab4718a139252912d54567"
+  },
+  {
+   "bytes": 1530,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/completion-templates.js",
+   "sha256": "bfa4c9c625577bde70168e72ca3a3b5c1aefff22341d34484985cec21f68c786"
+  },
+  {
+   "bytes": 994,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/completion.d.ts",
+   "sha256": "da9c20ef27edd1a509fd31b9206890265e95179fddd0422a7f0a192102a22942"
+  },
+  {
+   "bytes": 6184,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/completion.js",
+   "sha256": "c2bf1d7345bcca7feb28a334e32b8f3782cc3b796a58dde57f447bf38857332e"
+  },
+  {
+   "bytes": 96,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/is-promise.d.ts",
+   "sha256": "dbb8ec3a61ea0dc6da01f6cde1bb0c2c347740584dbdcd30594dedb661f3a641"
+  },
+  {
+   "bytes": 284,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/is-promise.js",
+   "sha256": "9c1127f2fdc3019ff216d3d35df44f2ef60e299577363364d561dcd4f92f3e49"
+  },
+  {
+   "bytes": 67,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/levenshtein.d.ts",
+   "sha256": "35126a9ca15de89f18677536d24d4b4ac14cd45fc9362705f8c0a87df7cab13b"
+  },
+  {
+   "bytes": 2354,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/levenshtein.js",
+   "sha256": "478054c3ec4f1097e9798a5959a1987da85d2ed81847ccd1f7f3181ae519683d"
+  },
+  {
+   "bytes": 764,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/middleware.d.ts",
+   "sha256": "8316be13bd38a59b7b75a65614296adc6f9623f24736c0d9e8d49d071abfe6d6"
+  },
+  {
+   "bytes": 2518,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/middleware.js",
+   "sha256": "3e39d055563827f02075e807f2bb80843f28ffea0ec33377580580580fa8f3ee"
+  },
+  {
+   "bytes": 119,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/obj-filter.d.ts",
+   "sha256": "3ef2c55bc20ebcd8bc4371ac54fb32db92dca19f308f1e9b28efcdf81d88088f"
+  },
+  {
+   "bytes": 438,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/obj-filter.js",
+   "sha256": "eb02edac893d85c591029bb11559269e71c0fdcd504324243ffba4cea39e6c65"
+  },
+  {
+   "bytes": 309,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/parse-command.d.ts",
+   "sha256": "6d0f8785177e153618eb077a751c472a19784675a2aad5800deae2ef7738ae0d"
+  },
+  {
+   "bytes": 1195,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/parse-command.js",
+   "sha256": "9915c3493895846d65fbb78dfa9eeabd18cca0b3c8cf3adcf77b7fcdc9488da3"
+  },
+  {
+   "bytes": 115,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/process-argv.d.ts",
+   "sha256": "f7725da8d44f739b42da0c0057ddecd35509e5d07cc8cdbac8a8dde99f758404"
+  },
+  {
+   "bytes": 1382,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/process-argv.js",
+   "sha256": "74f093a7705bbec1b12fce12915ef2100c351fa078a2961217779c849e4a4534"
+  },
+  {
+   "bytes": 2100,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/usage.d.ts",
+   "sha256": "e71a249bda4436dd64966505bab524d1e432c903ade453e2fe32a4fefc576746"
+  },
+  {
+   "bytes": 20418,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/usage.js",
+   "sha256": "098740f81ce810b420afa6d6479d3195d2ec453ab41f310d0d0721fc1d96cfe4"
+  },
+  {
+   "bytes": 1746,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/validation.d.ts",
+   "sha256": "c24e3aab30e3de66df7b987d3f5709a37680c287a0acf43ad96d5d2eeafce539"
+  },
+  {
+   "bytes": 13441,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/validation.js",
+   "sha256": "d6cbaaea7297252ee53a48aeb33b90efb8ad1ea09321b6036a5a6d80d12524fa"
+  },
+  {
+   "bytes": 12433,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/yargs.d.ts",
+   "sha256": "ee6a9d7a09303b3b870a641fdf173e3dff75b186e5deabe734a670bf8de843c2"
+  },
+  {
+   "bytes": 48661,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/yargs.js",
+   "sha256": "e89c2fbd14370b3e4ac098eac7543fcb1e35f921f141253e465bdc2f8e67ce35"
+  },
+  {
+   "bytes": 102,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/yerror.d.ts",
+   "sha256": "2718ec8e433160bc1aba92cada91f56d8589a0cb236af53bbf4e302eaac673de"
+  },
+  {
+   "bytes": 301,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/build/lib/yerror.js",
+   "sha256": "48b8954ee3977f7e9eef400a1b194770258fe7d754336541af3efaf45b3b5721"
+  },
+  {
+   "bytes": 1093,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/index.js",
+   "sha256": "de66bcdfdb3828be052a142ec3ef38f727671a24230be3bf2734964c77598b16"
+  },
+  {
+   "bytes": 2602,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/be.json",
+   "sha256": "134235e6c034c2ff51eeef9f00032cd47cbd4f836744fae0821143207c857edf"
+  },
+  {
+   "bytes": 1805,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/de.json",
+   "sha256": "dd49fd237f42a5c3da5140730ff81dbfa543bd8eb9a529331b876e00d46902e1"
+  },
+  {
+   "bytes": 1917,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/en.json",
+   "sha256": "cd7fbd66c1d52da7b7897dfc44e270ebaf3970e1cc34468efe5e346f74674573"
+  },
+  {
+   "bytes": 1885,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/es.json",
+   "sha256": "5e9eab1fbfdde64463e1cae36fbbafe035d0a80fbfe13ec99557d38e5ac9e020"
+  },
+  {
+   "bytes": 2113,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/fi.json",
+   "sha256": "04633d64ab6fcbe1fb96ef3c3a347f73995621b97e560729c64d170521ad7aa0"
+  },
+  {
+   "bytes": 2117,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/fr.json",
+   "sha256": "12fcfb7c6d0f59c378db746bbf018a1fc3b662b9a4fcc7caa6a037e0f5c375f0"
+  },
+  {
+   "bytes": 3074,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/hi.json",
+   "sha256": "66aed85c3d7e2b6564e401c32d12d406983b69f5b965f01aab1b7cbb1c3ba2cf"
+  },
+  {
+   "bytes": 1883,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/hu.json",
+   "sha256": "5149e6aaec4cd1facd504efbae03a5cc2d5f6d24cd6c6418c818740b8abd72a2"
+  },
+  {
+   "bytes": 1821,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/id.json",
+   "sha256": "3745df73a41c026c2ef8fff048c56afd4e1e362deacc43c04be260fb0d3df93c"
+  },
+  {
+   "bytes": 1855,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/it.json",
+   "sha256": "2eed3f6e2f402a7a5c1049ef323d6670e427e9905233ce66b38fbfa8cef282f2"
+  },
+  {
+   "bytes": 2411,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/ja.json",
+   "sha256": "b63a4a4d7b7dfbbcd25a5359197171a783c824e7d408c3b2ccc2e360810e3a15"
+  },
+  {
+   "bytes": 2262,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/ko.json",
+   "sha256": "adb39ecd2e9811c4097155e20e41b404f4d0b2794120ada8d3752dba60c51683"
+  },
+  {
+   "bytes": 1680,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/nb.json",
+   "sha256": "8de6f5381e45e448536b0143a6cc6130b7d87ea495881e5bebc4e9569238ebe6"
+  },
+  {
+   "bytes": 1958,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/nl.json",
+   "sha256": "638c26e2d638bc08023e4e9924237c2c0f67130eb4d454c824b15cd4da916671"
+  },
+  {
+   "bytes": 1661,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/nn.json",
+   "sha256": "466b2d749e6115b0bc8fe0fce420f4e049f3c7e69831ae4ab0e66b402230a627"
+  },
+  {
+   "bytes": 569,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/pirate.json",
+   "sha256": "0e66add12f48117254852ebac22250ad18bbc859b5de40301dd047800be40e36"
+  },
+  {
+   "bytes": 2075,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/pl.json",
+   "sha256": "64d84f86e74e9b14e6cb8159e65cb2a2b0302e848d61fdd25f8710e70446665c"
+  },
+  {
+   "bytes": 1917,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/pt.json",
+   "sha256": "d36c160b1f4757b6275cb5dd4135d2d8262d8d1b79147e3c3fcf9acecc1b89d2"
+  },
+  {
+   "bytes": 1932,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/pt_BR.json",
+   "sha256": "503075049239e50e8fe82b7d06d062f5a1d69f26346d05af487dc8b3e090596e"
+  },
+  {
+   "bytes": 2674,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/ru.json",
+   "sha256": "05cd63df5acbbfa2017384f291ac55ec2573424cdd682aed41e0c07562a48519"
+  },
+  {
+   "bytes": 3278,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/th.json",
+   "sha256": "3ff78ad6e861403ff1c94707d6e13dd87e948424008156debc0e7d3a4f4500d3"
+  },
+  {
+   "bytes": 1912,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/tr.json",
+   "sha256": "4744c36d2531029ed93d593a25c595f4ea1f9c2f4f037867aa8f36161f959886"
+  },
+  {
+   "bytes": 1907,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/zh_CN.json",
+   "sha256": "bacf8a4dcdd23146ff5834e7853536a7d97a1baca15a8ad5939c719e583a3f59"
+  },
+  {
+   "bytes": 1831,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/locales/zh_TW.json",
+   "sha256": "213dc59eb7abce94422f164022d964924dcd52ff9739db14d3eea46986e9f7cb"
+  },
+  {
+   "bytes": 2256,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/package.json",
+   "sha256": "be417ad995e4f608d6f5243ad90b28f3f2604c73abb30d72382ae13358a74949"
+  },
+  {
+   "bytes": 403,
+   "path": "app/src/main/assets/runtime/kimi/node_modules/yargs/yargs.js",
+   "sha256": "5896a98055ac899211a2189494afba500dcf1fafba23cb761e5e32caaecfcc8b"
+  }
+ ],
+ "kimi_version": "0.42.0",
+ "native": [
+  {
+   "bytes": 199152,
+   "path": "app/src/main/jniLibs/arm64-v8a/libawk.so",
+   "sha256": "38a07fb3962f22f50f09ed60bb7cc945053f25cd48519b974e597c4ee7a97a0c"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libbase64.so",
+   "sha256": "3da7d10190ed45716720d68cd1693aa57149abceb3049afd8053863fe7266cb4"
+  },
+  {
+   "bytes": 1543048,
+   "path": "app/src/main/jniLibs/arm64-v8a/libbash.so",
+   "sha256": "af955ef55333c8fc9c5aa50df91ad1a629d9a79a9afa125cd5e9629585f78015"
+  },
+  {
+   "bytes": 67928,
+   "path": "app/src/main/jniLibs/arm64-v8a/libcat.so",
+   "sha256": "a863af24b73420272dec4d15e5c5228362a074b802b73679a6a2c56e8141fc67"
+  },
+  {
+   "bytes": 67952,
+   "path": "app/src/main/jniLibs/arm64-v8a/libchmod.so",
+   "sha256": "46ea3767cc9457255964999b7887c384f1b48351cb38df251e2f612a6c819284"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libchown.so",
+   "sha256": "304a850ecc70c05d9f09bf13f967e15e207205a1e22c9913895899058f2f0ce5"
+  },
+  {
+   "bytes": 133496,
+   "path": "app/src/main/jniLibs/arm64-v8a/libcp.so",
+   "sha256": "ce2936220ea04c2e3f3e60e91246ddd8987ad4aff99f3466cefb1005beb19cb7"
+  },
+  {
+   "bytes": 67952,
+   "path": "app/src/main/jniLibs/arm64-v8a/libcut.so",
+   "sha256": "5f6a0bba9eaf1068e6a51fdd2a6b82deaffcb2aaa43f48ab180ff08227a361e5"
+  },
+  {
+   "bytes": 133480,
+   "path": "app/src/main/jniLibs/arm64-v8a/libdate.so",
+   "sha256": "ea27d35746fd20a4029ea9ac3b7370f9439b53493b6004b9d7f88525eecd112b"
+  },
+  {
+   "bytes": 134064,
+   "path": "app/src/main/jniLibs/arm64-v8a/libdf.so",
+   "sha256": "525d6e59c39f134fa6fe614bee5f0638c332b403163b83c5878620db540c60e6"
+  },
+  {
+   "bytes": 133488,
+   "path": "app/src/main/jniLibs/arm64-v8a/libdu.so",
+   "sha256": "5fbc41316b6645b4e15efecaf5c9a849f4c0748053c00effb6d078a9c5f82362"
+  },
+  {
+   "bytes": 67792,
+   "path": "app/src/main/jniLibs/arm64-v8a/libecho.so",
+   "sha256": "d389930dc6d14170ba44a13ed573195ec766d867587b7be5602fb54fa6f8250b"
+  },
+  {
+   "bytes": 265440,
+   "path": "app/src/main/jniLibs/arm64-v8a/libfind.so",
+   "sha256": "1ee9e96c55e9d3551cebb991882087c5b21d18c4b4ead73203ca84ab54940ce1"
+  },
+  {
+   "bytes": 67744,
+   "path": "app/src/main/jniLibs/arm64-v8a/libfree.so",
+   "sha256": "75f10d9f7265e2d7aa3a422c609315a30cf5befbd81cf61d5506b247d57c3371"
+  },
+  {
+   "bytes": 198872,
+   "path": "app/src/main/jniLibs/arm64-v8a/libgrep.so",
+   "sha256": "fb7efa5f6b958b44258b08ab860b086aaa0446b8b50564b3d43367b2ba4ed407"
+  },
+  {
+   "bytes": 134024,
+   "path": "app/src/main/jniLibs/arm64-v8a/libgzip.so",
+   "sha256": "51641b277c149e1b1e33b4ff1debcdfe29c9520b5826ae693927eb7c16a182c4"
+  },
+  {
+   "bytes": 67952,
+   "path": "app/src/main/jniLibs/arm64-v8a/libhead.so",
+   "sha256": "c91e1374ea5fdc55c0bd433df2f3e9969277cfc4b489e2aa3640b34b33c6d10c"
+  },
+  {
+   "bytes": 67952,
+   "path": "app/src/main/jniLibs/arm64-v8a/libid.so",
+   "sha256": "ce2103736364a121f350e57917fc27cc9d09979387fa0eeef590e37c475b2de1"
+  },
+  {
+   "bytes": 67744,
+   "path": "app/src/main/jniLibs/arm64-v8a/libkill.so",
+   "sha256": "073d3e537f9659193d91b546d3dd58e077e2aef4b0dc5bb5b65220137a50a243"
+  },
+  {
+   "bytes": 203968,
+   "path": "app/src/main/jniLibs/arm64-v8a/libldr.so",
+   "sha256": "393384096ffa869e1be20d2f91fdf08dfadb9f3e531dfe724085d8501d3f85d9"
+  },
+  {
+   "bytes": 67952,
+   "path": "app/src/main/jniLibs/arm64-v8a/libln.so",
+   "sha256": "453b16282ab1c1aa17bd492fb749322fb33ec0104f421c35a9fc9df9cf52da3d"
+  },
+  {
+   "bytes": 199464,
+   "path": "app/src/main/jniLibs/arm64-v8a/libls.so",
+   "sha256": "14aec4ad11ed7971a16c95505c58a8c58edf08654057b8b26595977c35bceda6"
+  },
+  {
+   "bytes": 67896,
+   "path": "app/src/main/jniLibs/arm64-v8a/libmd5sum.so",
+   "sha256": "3013cb8d14a9baf550b19b8b5839b3b8b1c5b2bd8e8798d1cdb84cf852cb2a52"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libmkdir.so",
+   "sha256": "5bb41de66c90eb01f90b2a483f26665da2cc06754a0c8d2d670a84f7f8c2ce33"
+  },
+  {
+   "bytes": 67752,
+   "path": "app/src/main/jniLibs/arm64-v8a/libmore.so",
+   "sha256": "ce02da5d8964b5cdc389406a5ccabaa7e80f9970301fc8f56f50ea6804ccc615"
+  },
+  {
+   "bytes": 133496,
+   "path": "app/src/main/jniLibs/arm64-v8a/libmv.so",
+   "sha256": "819ab9ff7ba77fce6f650208333f821317ff2ee0a35a3e8c59d5f740c396df2f"
+  },
+  {
+   "bytes": 103750800,
+   "path": "app/src/main/jniLibs/arm64-v8a/libnode.so",
+   "sha256": "65a48f434b9a098a96fdf45aed772d1f4035833a6438e89014a5fef1f424ea96"
+  },
+  {
+   "bytes": 67872,
+   "path": "app/src/main/jniLibs/arm64-v8a/libprintf.so",
+   "sha256": "d1aa1c0acfb1d71cdf2336443d7ce1cb1306d0a09bbec25029a06b6af63c3c11"
+  },
+  {
+   "bytes": 199440,
+   "path": "app/src/main/jniLibs/arm64-v8a/libps.so",
+   "sha256": "3fa1c04e29647304817b1ffe9a7600dc80c879ea4c8a9302032799830e0c2133"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libpwd.so",
+   "sha256": "76d792925a8dc7694c18c7fb84fc9cfc4b2e1aee58ec8388bc2aadfc6afa1a3a"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/librm.so",
+   "sha256": "2d9a633908ea48c163bb387102231d861702eb17d9df166124fea652b99aea21"
+  },
+  {
+   "bytes": 67888,
+   "path": "app/src/main/jniLibs/arm64-v8a/librmdir.so",
+   "sha256": "96bbb28f89e1941c06cbb256956fa90691e1ce37a3ef074f2d6ead2cad22166a"
+  },
+  {
+   "bytes": 133456,
+   "path": "app/src/main/jniLibs/arm64-v8a/libsed.so",
+   "sha256": "875bbfa64ca563363629ce4aa4778e937e48ffc668562a798159095dcaf365be"
+  },
+  {
+   "bytes": 133608,
+   "path": "app/src/main/jniLibs/arm64-v8a/libsh.so",
+   "sha256": "c883d9c27228339580994a1d0ea960645368c7d1b960a712bd0c655860c2d0d7"
+  },
+  {
+   "bytes": 67896,
+   "path": "app/src/main/jniLibs/arm64-v8a/libsha256sum.so",
+   "sha256": "0d7b5c0cc4132d6a17b3a005f2949d0e2b16bbd7f43c35c9de251ef673742f19"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libsleep.so",
+   "sha256": "4a069d112561c6b5533ee0184aa2ee867be45176c6bb07d732bcde4e6ba58a89"
+  },
+  {
+   "bytes": 133736,
+   "path": "app/src/main/jniLibs/arm64-v8a/libsort.so",
+   "sha256": "7a9c9d10ad6b60c0fe7c4f7942842281b17db609c9380a2f2deef3eb8a5d940f"
+  },
+  {
+   "bytes": 133488,
+   "path": "app/src/main/jniLibs/arm64-v8a/libstat.so",
+   "sha256": "3325d2affb7f9f4fee485b10cff2627d671e4cf9856254bb1b80fbc77c17da64"
+  },
+  {
+   "bytes": 67968,
+   "path": "app/src/main/jniLibs/arm64-v8a/libtail.so",
+   "sha256": "48bae55381acf7e3df87f97b7c54d37f1b814cb61c8f1ebaf95a1b119130b47c"
+  },
+  {
+   "bytes": 472584,
+   "path": "app/src/main/jniLibs/arm64-v8a/libtar.so",
+   "sha256": "867ff0dfd2d702cfebcff6a64eee5835c928fe359b9deced92e442211362d16d"
+  },
+  {
+   "bytes": 138624,
+   "path": "app/src/main/jniLibs/arm64-v8a/libtop.so",
+   "sha256": "c87663a75421984791e955deb071cd233930a69dc5f2acbf89f71ed196c3f264"
+  },
+  {
+   "bytes": 133480,
+   "path": "app/src/main/jniLibs/arm64-v8a/libtouch.so",
+   "sha256": "c9b5e156e394ede6e9449d8800a3b9115cd3e1c70e318d33a1b0a46e7070aa11"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libtr.so",
+   "sha256": "bb1c5a0c1b56cd963b9d52e89f3bbc4dcfd51f28f93aa24fe2fe0605a27cfabc"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libuname.so",
+   "sha256": "c82a4cb57ddcf5320968bb33f7aa2c23f138e8363738dd3a28914c8a384da262"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libuniq.so",
+   "sha256": "04693e64c265af6dffff2635c22185de181c8f88135f54b7a1bb0ee1accae314"
+  },
+  {
+   "bytes": 67960,
+   "path": "app/src/main/jniLibs/arm64-v8a/libwc.so",
+   "sha256": "62fc97aed460b9c4a328e6731f9869aa132d13bbf835caef1356e85234347e10"
+  },
+  {
+   "bytes": 67944,
+   "path": "app/src/main/jniLibs/arm64-v8a/libwhoami.so",
+   "sha256": "b343d2897406079412602444fa770ab77883d10fe1a6377037c685e661a099c2"
+  },
+  {
+   "bytes": 67784,
+   "path": "app/src/main/jniLibs/arm64-v8a/libxargs.so",
+   "sha256": "e4d376e8f56a26f8e968566585c6cdbf593e5c77d271b5a16d85d449e57d5993"
+  }
+ ],
+ "node": "v22.23.2",
+ "runtime_lib": [
+  {
+   "bytes": 203968,
+   "path": "app/src/main/assets/runtime/lib/ld-linux-aarch64.so.1",
+   "sha256": "393384096ffa869e1be20d2f91fdf08dfadb9f3e531dfe724085d8501d3f85d9"
+  },
+  {
+   "bytes": 67432,
+   "path": "app/src/main/assets/runtime/lib/libacl.so.1",
+   "sha256": "c2620a549ea1cb2137e3a77a453f2ec4916c8caa65d108d408fa140facb34104"
+  },
+  {
+   "bytes": 67432,
+   "path": "app/src/main/assets/runtime/lib/libattr.so.1",
+   "sha256": "58740b26b2bc737b4a2275def54fc1f7edd2c72e224cc060eefd776701af3ec4"
+  },
+  {
+   "bytes": 1722920,
+   "path": "app/src/main/assets/runtime/lib/libc.so.6",
+   "sha256": "fe5966a43e068ad7cb389c3affa069f4ee6f296e07d7ccc0398a23cfde4f0b7e"
+  },
+  {
+   "bytes": 67704,
+   "path": "app/src/main/assets/runtime/lib/libcap.so.2",
+   "sha256": "c2f7d3a8594ea3a24b8ffcea8f929e8fbd0d6c24256f8ece625f0be6a3d4e1f0"
+  },
+  {
+   "bytes": 4597928,
+   "path": "app/src/main/assets/runtime/lib/libcrypto.so.3",
+   "sha256": "3d51e64ad7113b2ab863b9582866ad2b31e545d1fe9f197c634a65a8f2611786"
+  },
+  {
+   "bytes": 67440,
+   "path": "app/src/main/assets/runtime/lib/libdl.so.2",
+   "sha256": "97387fb55ccfc0cc109dfe99b81de2b7bbaac723d1c215107dc69a068c4b1fae"
+  },
+  {
+   "bytes": 133696,
+   "path": "app/src/main/assets/runtime/lib/libgcc_s.so.1",
+   "sha256": "1a8c3655af0173b4dd4a3444233778098f2e1a4c33bcc65752f3342f9eeae9a5"
+  },
+  {
+   "bytes": 1000536,
+   "path": "app/src/main/assets/runtime/lib/libgcrypt.so.20",
+   "sha256": "763eeb8f170de52b8bc7268eaf433f72f03c980c04511130229a338a0ee2bb06"
+  },
+  {
+   "bytes": 198648,
+   "path": "app/src/main/assets/runtime/lib/libgpg-error.so.0",
+   "sha256": "ff2dccba4993ef97775b70c1ed1144f70dfe8581ee48c1eb25c76878c6cdfdf7"
+  },
+  {
+   "bytes": 133136,
+   "path": "app/src/main/assets/runtime/lib/liblz4.so.1",
+   "sha256": "d1482a2f74152881d8b83708fedae7bca039f5608024f1178dc21a17df9887a7"
+  },
+  {
+   "bytes": 198584,
+   "path": "app/src/main/assets/runtime/lib/liblzma.so.5",
+   "sha256": "cb4d37d810d354f1c3be46bd2897ba47c9f7388da7e6470a79e3accfa8e81f41"
+  },
+  {
+   "bytes": 591800,
+   "path": "app/src/main/assets/runtime/lib/libm.so.6",
+   "sha256": "d5b262e559d38769e4959f036a1cc2c4009fa60b4ec836a7a19ca8554aebf5a5"
+  },
+  {
+   "bytes": 592328,
+   "path": "app/src/main/assets/runtime/lib/libpcre2-8.so.0",
+   "sha256": "aa4e91ff910dbb8e40472ed4fcaaeebfef19ad13fe925d9ed8e22e87d45ce13b"
+  },
+  {
+   "bytes": 264616,
+   "path": "app/src/main/assets/runtime/lib/libproc2.so.0",
+   "sha256": "17c60a42826de5654217ced39891463f1fb77c91131ea0ed60b122754640579f"
+  },
+  {
+   "bytes": 67440,
+   "path": "app/src/main/assets/runtime/lib/libpthread.so.0",
+   "sha256": "97b288827c0ab29659dfcdcfab6c2e9e1225c19fc5abfe106d8a53c2c7b34402"
+  },
+  {
+   "bytes": 198800,
+   "path": "app/src/main/assets/runtime/lib/libselinux.so.1",
+   "sha256": "bc36fbbc9f066f882948ba3429f272cc75840a096e0a3e3461c3badaed18c5ba"
+  },
+  {
+   "bytes": 2633224,
+   "path": "app/src/main/assets/runtime/lib/libstdc++.so.6",
+   "sha256": "3f0d3c8aa8284c6d268e3f6984f43e5905ddb92d695db9571fd762e8eac3ad5c"
+  },
+  {
+   "bytes": 989464,
+   "path": "app/src/main/assets/runtime/lib/libsystemd.so.0",
+   "sha256": "f1db21e4bb449d1844ac033d7b6f2e3921e140f386370a4a32f9043ea1437b9e"
+  },
+  {
+   "bytes": 265416,
+   "path": "app/src/main/assets/runtime/lib/libtinfo.so.6",
+   "sha256": "7bbaee1535d845b4baf8323e75f25cb58d3bcab18bd1bc5b231932a17bc029e8"
+  },
+  {
+   "bytes": 657432,
+   "path": "app/src/main/assets/runtime/lib/libzstd.so.1",
+   "sha256": "fe726238b170b83aa83bf1f8a79109b8b61b9eb45234304511d093bbe5f5fb20"
+  }
+ ],
+ "spec_version": "2",
+ "ssl_files": [
+  {
+   "bytes": 188900,
+   "path": "app/src/main/assets/runtime/ssl/ca-certificates.crt",
+   "sha256": "f66dff1bdf8f96060b8177976f8b7d9254bc89bc4db933d769f7384d28480bc9"
+  }
+ ],
+ "ubuntu_base": "24.04.4"
+}

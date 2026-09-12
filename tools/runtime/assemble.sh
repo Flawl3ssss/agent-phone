@@ -21,13 +21,20 @@ WORK=$WORK_DIR
 : "${UBUNTU_VERSION:=24.04.4}"
 : "${NODE_VERSION:=v22.23.2}"
 : "${KIMI_VERSION:=0.42.0}"
-: "${SPEC_VERSION:=1}"
+: "${SPEC_VERSION:=2}"
 
 NATIVE=$ROOT/app/src/main/jniLibs/arm64-v8a
 ASSETS=$ROOT/app/src/main/assets/runtime
+SSLDIR=$ASSETS/ssl
+TRACKED=$ROOT/runtime
 UB=$WORK/ubuntu
 NODE_DIR=$WORK/node
 KIMI=$WORK/kimi
+
+# Пакеты для «настоящего» терминала. Node в них не нуждается (у него встроенный магазин
+# сертификатов, проверено прогоном), а git/curl ходят в /etc/ssl/certs, коего в Android нет.
+CA_SHA256="f66dff1bdf8f96060b8177976f8b7d9254bc89bc4db933d769f7384d28480bc9"
+CA_URL="https://curl.se/ca/cacert.pem"
 
 UB_SHA=04207713ece899c3740823d33690441ad3a7f0ded1101aca744e2b0f37ac7ff2
 NODE_SHA=fff4078c5def658577f92c88db7db3bc0072924bfb93fe52c1e744a54e94abb8
@@ -108,7 +115,7 @@ resolve_bin() {
 }
 
 say "== 1. артефакты"
-mkdir -p "$CACHE" "$WORK" "$NATIVE" "$ASSETS/lib"
+mkdir -p "$CACHE" "$WORK" "$NATIVE" "$ASSETS/lib" "$SSLDIR" "$TRACKED"
 fetch "https://cdimage.ubuntu.com/ubuntu-base/releases/$UBUNTU_VERSION/release/ubuntu-base-$UBUNTU_VERSION-base-arm64.tar.gz" \
       "$UB_SHA" "$CACHE/ubuntu-base.tar.gz"
 fetch "https://nodejs.org/dist/$NODE_VERSION/node-$NODE_VERSION-linux-arm64.tar.xz" \
@@ -179,6 +186,10 @@ if [ ! -d "$KIMI/node_modules/@moonshot-ai/kimi-code" ]; then
         "@moonshot-ai/kimi-code@$KIMI_VERSION") > "$CACHE/npm.log" 2>&1 \
         || die "npm install упал, см. $CACHE/npm.log"
 fi
+fetch "$CA_URL" "$CA_SHA256" "$WORK/ca.pem"
+cp "$WORK/ca.pem" "$SSLDIR/ca-certificates.crt"
+say "  корневых сертификатов: $(grep -c 'BEGIN CERTIFICATE' "$SSLDIR/ca-certificates.crt")"
+
 rm -rf "$ASSETS/kimi"
 mkdir -p "$ASSETS/kimi/node_modules"
 # dist-web (34 МБ) и native/ (darwin+win32) выкинуты: проверено, что `kimi acp`
@@ -196,7 +207,7 @@ chmod 644 "$KDIR/dist/main.mjs" 2>/dev/null || true
 
 say "== 7. MANIFEST"
 python3 - "$ROOT" "$SPEC_VERSION" "$UBUNTU_VERSION" "$NODE_VERSION" "$KIMI_VERSION" <<'PY'
-import hashlib, json, os, sys
+import hashlib, json, os, pathlib, sys
 root, spec, ub, node, kimi = sys.argv[1:6]
 def rows(d, base):
     out = []
@@ -208,12 +219,16 @@ def rows(d, base):
                         "sha256": h, "bytes": os.path.getsize(p)})
     return sorted(out, key=lambda r: r["path"])
 nat = os.path.join(root, "app/src/main/jniLibs/arm64-v8a")
+ssl = os.path.join(root, "app/src/main/assets/runtime/ssl")
 lib = os.path.join(root, "app/src/main/assets/runtime/lib")
 kim = os.path.join(root, "app/src/main/assets/runtime/kimi")
 man = {"spec_version": spec, "ubuntu_base": ub, "node": node, "kimi_version": kimi,
-       "native": rows(nat, root), "runtime_lib": rows(lib, root), "kimi_files": rows(kim, root)}
-open(os.path.join(root, "app/src/main/assets/runtime/MANIFEST.json"), "w").write(
-    json.dumps(man, indent=1, sort_keys=True) + "\n")
+       "native": rows(nat, root), "runtime_lib": rows(lib, root),
+       "kimi_files": rows(kim, root), "ssl_files": rows(ssl, root)}
+for target in ("app/src/main/assets/runtime/MANIFEST.json", "runtime/MANIFEST.json"):
+    path = pathlib.Path(root, target)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(man, indent=1, sort_keys=True) + "\n")
 for k in ("native", "runtime_lib"):
     print(f"  {k}: {len(man[k])} файлов, {sum(f['bytes'] for f in man[k]) / 1e6:.1f} МБ")
 PY

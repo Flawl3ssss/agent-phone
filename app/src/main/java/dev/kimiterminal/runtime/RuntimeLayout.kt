@@ -2,22 +2,21 @@ package dev.kimiterminal.runtime
 
 import java.io.File
 
-/** Куда идёт `kexec` по имени: целевой ELF из `nativeLibraryDir` и его аргументы-префикс. */
-data class Dispatch(val target: String, val prefix: List<String> = emptyList())
-
 /**
- * Раскладка in-app рантайма: пути, команды, окружение.
+ * Раскладка собранного рантайма на устройстве и команды, которые из неё собираются.
  *
- * Класс сознательно ничего не создаёт и не скачивает (кроме чтения READY-маркера):
- * вся логика тестируется на JVM, без устройства. Единственный I/O-участник —
- * [missingPieces], и он только статист.
+ * Класс ничего не создаёт и не скачивает (кроме чтения READY-маркера): вся логика
+ * проверяется на JVM без устройства. I/O-часть — в RuntimeInstaller, терминал и агент
+ * получают отсюда только список аргументов.
  *
- * Ключевое ограничение платформы (docs/RUNTIME-PLAN.md, п.13–14): с targetSdk >= 29
- * приложение не может исполнять файлы из своего домашнего каталога, поэтому исполняемые
- * ELF живут в `nativeLibraryDir` под именами `lib*.so`, а читаемые библиотеки — в
- * `filesDir/runtime/lib` под настоящими soname.
+ * @param executables имена ELF из манифеста сборки (`lib<имя>.so` в nativeLibraryDir).
+ *   По умолчанию — минимум, достаточный для агента и оболочки.
  */
-class RuntimeLayout(val nativeLibDir: File, val filesDir: File) {
+class RuntimeLayout(
+    val nativeLibDir: File,
+    val filesDir: File,
+    val executables: List<String> = RuntimeSpec.CORE_EXECUTABLES,
+) {
 
     val root = File(filesDir, "runtime")
     val libDir = File(root, "lib")
@@ -26,49 +25,43 @@ class RuntimeLayout(val nativeLibDir: File, val filesDir: File) {
     val tmpDir = File(root, "tmp")
     val workDir = File(root, "work")
     val kimiDir = File(root, "kimi")
+    val gitCoreDir = File(root, "git-core")
+    val sslCertFile = File(root, "ssl/ca-certificates.crt")
     val bashrcFile = File(root, "bashrc")
     val readyFile = File(root, "READY")
 
-    /** Точка входа CLI. Обёрткой `kimi` не пользуемся: шебанг там `#!/usr/bin/env node`. */
+    /** Точка входа CLI внутри распакованного npm-пакета. */
     val kimiEntry: File = RuntimeSpec.kimiEntryIn(kimiDir)
 
-    /** Исполняемый ELF в nativeLibraryDir (AGP фильтрует jniLibs по маске lib*.so). */
+    /** Исполняемые ELF живут в nativeLibraryDir: только оттуда разрешён exec (docs/RUNTIME-PLAN.md §1). */
     fun elf(name: String): File = File(nativeLibDir, "lib$name.so")
 
-    /** SONAME-файл, который только читают. */
-    fun lib(name: String): File = File(libDir, name)
+    fun lib(soname: String): File = File(libDir, soname)
+
+    /** Имена, которые стоит раздать в PATH. Загрузчик и диспетчер сами по себе команды. */
+    fun linkedNames(): List<String> = executables.filter { it != "ldr" && it != "kexec" }.sorted()
 
     /**
-     * Таблица «имя в PATH → что исполнить». Для applet'ов busybox цель вызывается как
-     * `busybox <applet> …`: glibc-загрузчик переустанавливает argv[0] на путь цели,
-     * и обычная диспетчеризация busybox по argv[0] не сработала бы.
+     * Команда через glibc-загрузчик: `libldr.so --library-path <lib> lib<name>.so args…`.
+     *
+     * Обёртка обязательна: `PT_INTERP` у всех ubuntu-ELF указывает на `/lib/ld-linux-aarch64.so.1`,
+     * которого в монтированном виде файловой системы Android нет, и прямой execve даёт ENOEXEC.
      */
-    fun dispatch(): Map<String, Dispatch> {
-        val table = LinkedHashMap<String, Dispatch>()
-        table["bash"] = Dispatch("bash")
-        table["node"] = Dispatch("node")
-        table["git"] = Dispatch("git")
-        table["ssh"] = Dispatch("ssh")
-        for (applet in RuntimeSpec.BUSYBOX_APPLETS) table[applet] = Dispatch("busybox", listOf(applet))
-        return table
-    }
-
-    /** Команда целиком: загрузчик + library-path + цель + префикс + аргументы. */
     fun command(name: String, args: List<String> = emptyList()): List<String> {
-        val d = dispatch()[name] ?: throw IllegalArgumentException("нет команды в рантайме: $name")
-        return listOf(elf("ldr").path, "--library-path", libDir.path, elf(d.target).path) + d.prefix + args
+        require(name in executables) { "в рантайме нет команды $name" }
+        return listOf(elf("ldr").path, "--library-path", libDir.path, elf(name).path) + args
     }
 
-    /** ACP-агент — ровно та командная строка, на которой kimi 0.42.0 ответил живым handshake. */
+    /** ACP-агент: `node <kimi>/dist/main.mjs acp` — форма подтверждена живым handshake. */
     fun agentCommand(): List<String> = command("node", listOf(kimiEntry.path, "acp"))
 
-    /** Отдельный процесс входа: device-code поток, `kimi acp --login`. */
+    /** Вход отдельным процессом: у настоящего Kimi это `kimi acp --login` (device-code поток). */
     fun loginCommand(): List<String> = command("node", listOf(kimiEntry.path, "acp", "--login"))
 
-    /** Оболочка терминала. rc-file свой: /etc/profile здесь android-овский, а не ubuntu-овский. */
+    /** Оболочка терминала. --rcfile наш: /etc/profile принадлежит Android, а не rootfs. */
     fun shellCommand(): List<String> = command("bash", listOf("--rcfile", bashrcFile.path, "-i"))
 
-    /** Окружение и агента, и терминала. PATH первым ставит binDir — иначе kexec не найдётся. */
+    /** Окружение для дочерних процессов. Всё внутри runtime-дерева — вне его писать нечего. */
     fun environment(): Map<String, String> = linkedMapOf(
         "PATH" to binDir.path + ":/system/bin:/system/xbin",
         "HOME" to homeDir.path,
@@ -76,29 +69,45 @@ class RuntimeLayout(val nativeLibDir: File, val filesDir: File) {
         "LANG" to "C.UTF-8",
         "LC_ALL" to "C.UTF-8",
         "TERM" to "xterm-256color",
+        // Node не трогает эти переменные: у него встроенный магазин Mozilla (проверено
+        // прогоном — TLS работает и с SSL_CERT_FILE=/nonexistent). Бандл нужен git и curl,
+        // которые ходят в /etc/ssl/certs, а такого пути в Android нет.
+        "SSL_CERT_FILE" to sslCertFile.path,
+        "GIT_SSL_CAINFO" to sslCertFile.path,
+        "GIT_EXEC_PATH" to gitCoreDir.path,
+        "GIT_TEMPLATE_DIR" to File(gitCoreDir, "templates").path,
+        // kexec читает корень рантайма отсюда; пути в APK неизвестны на этапе сборки.
+        "AGENT_PHONE_RUNTIME" to root.path,
     )
 
-    /** Симлинки PATH: имя -> kexec. SELinux смотрит метку цели (apk_data_file), не ссылки. */
-    fun binLinks(): Map<String, String> =
-        dispatch().keys.toList().sorted().associateWith { elf("kexec").path }
+    /** Имя в PATH -> ELF-диспетчер. SELinux смотрит метку цели (apk_data_file), а не ссылки. */
+    fun binLinks(): Map<String, String> = linkedNames().associateWith { elf("kexec").path }
 
-    /** Чего не хватает. Пустой список == рантайм собран и агент готов к запуску. */
+    /** Чего не хватает, чтобы запуститься. Пустой список — рантайм собран и симлинки на месте. */
     fun missingPieces(): List<String> {
         val out = mutableListOf<String>()
-        for (name in RuntimeSpec.EXEC_ELFS) if (!elf(name).isFile) out += "elf:$name"
-        for (soname in RuntimeSpec.SHARED_LIBS) if (!lib(soname).isFile) out += "lib:$soname"
+        for (name in executables) if (!elf(name).isFile) out += "elf:$name"
+        // Диспетчер обязателен независимо от манифеста: каждая ссылка в bin/ на него указывает.
+        if (!elf("kexec").isFile) out += "elf:kexec"
+        for (soname in RuntimeSpec.REQUIRED_LIBS) if (!lib(soname).isFile) out += "lib:$soname"
         if (!kimiEntry.isFile) out += "kimi:main.mjs"
+        // Требуем бандл только когда в наборе есть git: агенту он не нужен, а ложная
+        // тревога в диагностике хуже отсутствия диагностики.
+        if ("git" in executables && !sslCertFile.isFile) out += "ssl:ca-certificates"
+        for (name in RuntimeSpec.ALWAYS_LINKED) {
+            if (name in executables && !File(binDir, name).exists()) out += "link:$name"
+        }
         return out
     }
+
+    /** Каталоги, которые установщик обязан создать. */
+    fun directories(): List<File> =
+        listOf(root, libDir, binDir, homeDir, tmpDir, workDir, kimiDir, gitCoreDir, sslCertFile.parentFile)
 
     fun readyVersion(): String? = runCatching { readyFile.readText().trim() }.getOrNull()
 
     fun isReady(): Boolean = readyVersion() == RuntimeSpec.SPEC_VERSION && missingPieces().isEmpty()
 
-    /** Каталог рабочей сессии — его отдаём Kimi как cwd. */
+    /** Куда Kimi кладёт свои файлы проекта. */
     fun sessionCwd(): File = workDir
-
-    /** Что нужно создать установщику. Только каталоги: файлы и симлинки — дело инсталлятора. */
-    fun directories(): List<File> =
-        listOf(libDir, binDir, homeDir, tmpDir, workDir, kimiDir)
 }
