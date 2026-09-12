@@ -122,6 +122,13 @@ class ProviderRegistry(
         // У CUSTOM нет дефолтного URL по определению: пустой base означает, что агент
         // уйдёт в запрос на пустой адрес и получит «connection refused» без внятной причины.
         require(kind != ProviderKind.CUSTOM || b.isNotEmpty()) { "для своего провайдера нужно указать base URL" }
+        // Модель своего эндпоинта угадать нечем: defaultModel(CUSTOM) == "default" — заглушка,
+        // на которой живой сервер отвечает 400 «model not found», и по ошибке не понять, что
+        // пользователь просто оставил поле пустым. Пресетам пустая модель допустима: у них
+        // дефолт осмысленный.
+        require(kind != ProviderKind.CUSTOM || model.trim().isNotEmpty()) {
+            "для своего провайдера нужно указать модель"
+        }
         val p0 = doc.providers.firstOrNull { it.id == id }
         var masked = p0?.masked ?: ""
         var hasKey = p0?.hasKey ?: false

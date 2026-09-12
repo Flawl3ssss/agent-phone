@@ -65,6 +65,27 @@ class ProvidersTest {
         assertEquals("CUSTOM не добавился", 1, h.reg.all().size)
     }
 
+    @Test fun `свой провайдер без модели отклоняется а пресету модель даётся дефолтом`() {
+        val h = Harness()
+        // Другой конец того же контракта: у CUSTOM заглушка «default» гарантировала бы
+        // 400 на живом эндпоинте, а у пресета дефолт настоящий — его стирать нельзя.
+        val ex = kotlin.runCatching {
+            h.reg.upsert("c2", "Custom2", ProviderKind.CUSTOM, "https://gw.internal/v1", "   ", goodKey)
+        }.exceptionOrNull()
+        assertTrue("без модели бросается исключение", ex is IllegalArgumentException)
+        assertTrue(
+            "сообщение должно быть про модель, а не про base URL: $ex",
+            ex?.message?.contains("модель") == true,
+        )
+        assertEquals("CUSTOM не добавился", 0, h.reg.all().size)
+
+        val preset = h.reg.upsert("m2", "Moonshot", ProviderKind.MOONSHOT, "", "", goodKey)
+        assertEquals("пресету модель подставилась из дефолта", "kimi-k2-0905-preview", preset.model)
+
+        val custom = h.reg.upsert("c3", "Custom3", ProviderKind.CUSTOM, "https://gw.internal/v1", " llama-4 ", goodKey)
+        assertEquals("модель тримится, но не выдумывается", "llama-4", custom.model)
+    }
+
     @Test fun `ключ не попадает в сериализуемое состояние`() {
         val h = Harness()
         h.reg.upsert("p1", "Основной", ProviderKind.ANTHROPIC, "", "claude-sonnet-4-5", goodKey)
