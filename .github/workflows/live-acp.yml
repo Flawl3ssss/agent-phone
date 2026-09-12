@@ -1,0 +1,102 @@
+name: G3 - live ACP probe
+
+# Единственный гейт, который проверяет нас с НАСТОЯЩИМ Kimi Code, а не с моком.
+# Runner'ы GitHub — Ubuntu, то есть glibc: требование §4.2 («host с glibc, потому что
+# Bun на musl падает») выполняется здесь само. В PRoot-песочнице этот гейт непроходим,
+# и tools/acp-smoke.sh там честно отказывается его засчитывать.
+#
+# ДВА УРОВНЯ СТРОГОСТИ, нарочно разные:
+#   handshake + матрица capabilities  → падают жёлтым. Клиент читает capabilities
+#     динамически (§3.5), расхождение не ломает его, но значит, что факты in-app
+#     расходятся с upstream и по ним нельзя планировать.
+#   авторизованная часть              → падает красным. Она стоит токенов, поэтому
+#     идёт только на manual/dispatch с заполненным KIMI_API_KEY.
+#
+# Ключ в репозиторий не кладётся: только через Secrets, и лог перед печатью фильтруется.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "версия Kimi Code"
+        required: false
+        default: "0.42.0"
+        type: string
+      full_turn:
+        description: "полный прогон с авторизацией (тратит токены)"
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: live-acp
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    name: probe live kimi acp
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      KIMI_VERSION: ${{ github.event.inputs.version || '0.42.0' }}
+      KIMI_API_KEY: ${{ secrets.KIMI_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: SDK для зонда
+        working-directory: tools
+        run: npm ci --no-audit --no-fund
+
+      - name: Download agent
+        run: |
+          set -euo pipefail
+          BASE=https://github.com/MoonshotAI/kimi-code/releases/download
+          TAG=%40moonshot-ai%2Fkimi-code%40${KIMI_VERSION}
+          F=kimi-code-linux-x64.tar.gz
+          curl -fsSL --retry 4 --retry-delay 3 -o "$F" "$BASE/$TAG/$F"
+          curl -fsSL --retry 4 --retry-delay 3 -o "$F.sha256" "$BASE/$TAG/$F.sha256"
+          # Сверка обязательна: без неё битая закачка превращается в «загадочный» Segfault.
+          sha256sum -c "$F.sha256"
+          mkdir -p "$HOME/kimi-bin"
+          tar -xzf "$F" -C "$HOME/kimi-bin" --strip-components=1
+          find "$HOME/kimi-bin" -maxdepth 2 -name kimi -type f -exec chmod +x {} \;
+          echo "KIMI_BIN=$(find "$HOME/kimi-bin" -maxdepth 2 -name kimi -type f | head -1)" >> "$GITHUB_ENV"
+          echo "домашний каталог агента: $HOME/kimi-bin"
+          ls -la "$HOME/kimi-bin"
+
+      - name: Version and capability surface
+        run: |
+          echo "=== версия ==="; "$KIMI_BIN" --version 2>&1 | head -3
+          echo "=== хелп (нужен, чтобы не угадывать формат config.toml) ==="
+          "$KIMI_BIN" --help 2>&1 | head -40 || true
+          for sub in acp provider config models login; do
+            echo "--- $sub ---"; "$KIMI_BIN" $sub --help 2>&1 | head -25 || true
+          done
+
+      - name: Probe handshake and capabilities
+        working-directory: tools
+        run: |
+          ACP_CWD="$RUNNER_TEMP" PROBE_PROMPT=0 PROBE_ALLOW_NO_AUTH=1 \
+            node acp-live-probe.mjs
+
+      - name: Probe full turn (auth)
+        if: ${{ github.event.inputs.full_turn == 'true' && secrets.KIMI_API_KEY != '' }}
+        working-directory: tools
+        continue-on-error: false
+        run: |
+          ACP_CWD="$RUNNER_TEMP" PROBE_PROMPT=1 \
+            node acp-live-probe.mjs
+
+      - name: Не светить ключ в случае падения
+        if: failure()
+        run: |
+          echo "Если шаг упал на авторизации — проверь, что секрет KIMI_API_KEY заполнен."
+          env | grep -i '^KIMI_' | sed 's/=.*/=<скрыто>/' || true
