@@ -107,6 +107,9 @@ class AgentSession(
      * (packages/acp-server/src/convert.ts:188) и подключается сам.
      */
     private var mcpServers: List<dev.kimiterminal.acp.McpServer> = emptyList(),
+    /** Окружение агента. Для локального рантайма это обязательная часть контракта:
+     *  без PATH/HOME своего каталога дочерние процессы kimi не найдут ни утилит, ни дома. */
+    private val environment: Map<String, String> = emptyMap(),
 ) {
     private val _items = MutableStateFlow<List<Item>>(emptyList())
     val items: StateFlow<List<Item>> = _items
@@ -138,7 +141,7 @@ class AgentSession(
     val stats: String get() = "fs +$readCount/-$writeCount · отказов $deniedCount · терминалов ${if (::terminals.isInitialized) terminals.liveCount else 0}"
 
     private val process: AcpAgentProcess? = if (command.isEmpty()) null
-        else AcpAgentProcess(command.toList()) { line ->
+        else AcpAgentProcess(command.toList(), environment) { line ->
             stderrRing.addLast(line); while (stderrRing.size > 400) stderrRing.pollFirst()
         }
     /** Транспорт, заданный извне (in-process мок на Android). Имеет приоритет над [command]. */
@@ -327,6 +330,26 @@ class AgentRuntime(
         val cwd = File(workRoot, name).apply { mkdirs() }
         val ck = File(checkpointRoot, name).apply { mkdirs() }
         val s = AgentSession(cwd.absolutePath, scope, launcher.command(mode), ck, mcpServers = mcpServers)
+        _sessions.value = _sessions.value + s
+        return s
+    }
+
+    /**
+     * Агент из in-app рантайма: команду и окружение собрал RuntimeLayout. Ни сокета, ни
+     * внешнего терминала — процесс наш, он умирает вместе с приложением.
+     */
+    fun spawnLocal(
+        command: List<String>,
+        environment: Map<String, String>,
+        name: String = "session",
+        mcpServers: List<dev.kimiterminal.acp.McpServer> = emptyList(),
+    ): AgentSession {
+        val cwd = File(workRoot, name).apply { mkdirs() }
+        val ck = File(checkpointRoot, name).apply { mkdirs() }
+        val s = AgentSession(
+            cwd.absolutePath, scope, command, ck,
+            mcpServers = mcpServers, environment = environment,
+        )
         _sessions.value = _sessions.value + s
         return s
     }

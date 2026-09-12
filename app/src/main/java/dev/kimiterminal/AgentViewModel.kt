@@ -48,11 +48,15 @@ sealed class Mode {
      * подключаемся к мосту на 127.0.0.1 (см. [dev.kimiterminal.acp.AcpSocketAgent]).
      */
     data class Termux(val port: Int = 8712) : Mode()
+
+    /** Kimi из in-app рантайма: внешних приложений не участвует. */
+    object Local : Mode()
     val label: String get() = when (this) {
         is Mode.MockProcess -> "мок (процесс)"
         is Mode.MockInProcess -> "мок (in-app)"
         is Mode.Kimi -> "kimi acp"
         is Mode.Termux -> "kimi · Termux"
+        is Mode.Local -> "kimi · в приложении"
     }
 }
 
@@ -188,7 +192,17 @@ class AgentViewModel(
         viewModelScope.launch {
             try {
                 val mode = _mode.value
-                val s = runtime.spawn(
+                val local = localRuntime
+                val s = if (mode is Mode.Local && local != null) {
+                    // Команду и окружение даёт сам рантайм: транспорт процессный, stdio,
+                    // никаких сокетов — то есть путь, который мы не можем проверить с хоста,
+                    // зато проверяем одной строкой статуса ниже.
+                    if (!local.agentUsable()) {
+                        _status.value = "Рантайм не установлен: нажми «Установить» в баннере ниже."
+                        return@launch
+                    }
+                    runtime.spawnLocal(local.agentCommand(), local.agentEnvironment(), name = "proj")
+                } else runtime.spawn(
                     mode = if (mode is Mode.MockProcess) "mock" else "inproc",
                     name = "proj",
                 )

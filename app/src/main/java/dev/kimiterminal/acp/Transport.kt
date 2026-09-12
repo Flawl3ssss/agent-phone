@@ -152,12 +152,19 @@ val compactJson: Json = Json {
  * в proot-госте, и сюда попадает команда-обёртка (`proot ... kimi acp`). stdout — протокол,
  * stderr — логи, которые мы показываем в диагностике.
  */
-class AcpAgentProcess(private val command: List<String>, private val onStderr: (String) -> Unit = {}) {
+class AcpAgentProcess(
+    private val command: List<String>,
+    /** Окружение процесса. Без него glibc-дочерние процессы kimi не находят ни
+     *  друг друга (PATH), ни свою домашнюю директорию (HOME). */
+    private val environment: Map<String, String> = emptyMap(),
+    private val onStderr: (String) -> Unit = {},
+) {
 
     private var process: Process? = null
 
     fun start(): AcpLink {
         val pb = ProcessBuilder(command).redirectErrorStream(false)
+        if (environment.isNotEmpty()) pb.environment().putAll(environment)
         val p = pb.start()
         process = p
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
