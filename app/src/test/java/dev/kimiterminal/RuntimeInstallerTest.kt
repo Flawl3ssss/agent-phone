@@ -52,7 +52,7 @@ class RuntimeInstallerTest {
      * (assets/...) — фикстура обязана лежать во второй системе координат.
      */
     private fun payloadFile(manifestPath: String): File =
-        File(payloadRoot, manifestPath.removePrefix("app/src/main/"))
+        File(payloadRoot, manifestPath.removePrefix("app/src/main/assets/"))
 
     private fun row(relPath: String, content: String): String {
         val f = payloadFile(relPath)

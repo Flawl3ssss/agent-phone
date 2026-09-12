@@ -41,7 +41,9 @@ class RuntimeInstaller(
     private val log: (String) -> Unit = {},
 ) {
 
-    private val assetPrefix = "app/src/main/"
+    /** Манифест описывает пути от корня репозитория; AssetManager и filesDir живут без этого префикса. */
+    private val repoPrefix = "app/src/main/"
+    private val payloadPrefix = "app/src/main/assets/"
 
     /** Пустой список — успех; иначе человекочитаемые причины. В UI ничего не бросаем. */
     fun install(): List<String> {
@@ -54,7 +56,7 @@ class RuntimeInstaller(
         // ELF устанавливает система вместе с APK; скопировать их в nativeLibraryDir мы не
         // можем, поэтому проверяем до всякой записи: иначе half-installed рантайм потом
         // объяснять придётся пользователю.
-        for (e in manifest.entries.filter { it.path.startsWith(assetPrefix + "jniLibs/") }) {
+        for (e in manifest.entries.filter { it.path.startsWith(repoPrefix + "jniLibs/") }) {
             val name = e.path.substringAfterLast('/').removePrefix("lib").removeSuffix(".so")
             val target = layout.elf(name)
             if (!target.isFile) {
@@ -68,14 +70,14 @@ class RuntimeInstaller(
             return complaints
         }
 
-        val copies = manifest.entries.filter { it.path.startsWith(assetPrefix + "assets/") }
+        val copies = manifest.entries.filter { it.path.startsWith(payloadPrefix) }
         val links = layout.binLinks()
         val total = copies.size + links.size + 1
         var done = 0
 
         for (e in copies) {
             onProgress(InstallProgress(done, total, File(e.path).name))
-            val problem = copyAndVerify(e.path, File(layout.filesDir, e.path.removePrefix(assetPrefix)), e.sha256)
+            val problem = copyAndVerify(e.path, File(layout.filesDir, e.path.removePrefix(payloadPrefix)), e.sha256)
             if (problem != null) return listOf(problem)
             done++
         }
@@ -103,8 +105,8 @@ class RuntimeInstaller(
     private fun copyAndVerify(assetPath: String, target: File, expectedSha: String): String? {
         val attempt = runCatching {
             target.parentFile?.mkdirs()
-            val rel = assetPath.removePrefix(assetPrefix)
-            val input = source.open(rel) ?: return@runCatching "в APK нет файла $assetPath"
+            val input = source.open(assetPath.removePrefix(payloadPrefix))
+                ?: return@runCatching "в APK нет файла $assetPath"
             input.use { src -> target.outputStream().use { src.copyTo(it) } }
             if (sha256Of(target) != expectedSha) return@runCatching "повреждён $assetPath"
             null
