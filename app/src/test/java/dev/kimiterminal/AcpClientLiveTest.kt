@@ -51,6 +51,13 @@ import org.junit.Test
  */
 class AcpClientLiveTest {
 
+    /**
+     * Страховка от «тихого» зависания. JUnit-овский Timeout не просто валит тест —
+     * он печатает stack trace застрявшего потока, так что в логе CI видно КОНКРЕТНУЮ
+     * строку блокировки, а не 30 минут молчания до cancelled.
+     */
+    @get:Rule val hardTimeout = org.junit.rules.Timeout(150, java.util.concurrent.TimeUnit.SECONDS)
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     /** Рабочий каталог тестовой сессии: и в session/new, и в проверках путей — из одного места. */
     private val cwd = "/tmp"
@@ -84,7 +91,7 @@ class AcpClientLiveTest {
 
     /** Один и тот же сценарий для обоих транспортов. */
     private fun runScenario(transport: AcpLink) = runBlocking {
-        val client = AcpClient(transport, scope)
+        val client = AcpClient(transport, scope, requestTimeoutMs = 10_000)
         val updates = ConcurrentLinkedDeque<SessionUpdate>()
         val gotPermission = CompletableDeferred<String>()
         val gotFsRead = CompletableDeferred<String>()
@@ -209,7 +216,7 @@ class AcpClientLiveTest {
 
     @Test fun `смерть процесса агента не вешает клиента`() = runBlocking {
         val transport = spawnMockProcess()
-        val client = AcpClient(transport, scope)
+        val client = AcpClient(transport, scope, requestTimeoutMs = 10_000)
         client.startDispatch(AcpClient.Handlers())
         val init = withTimeout(20_000) { client.initialize(ClientCapabilities()) }
         assertEquals(1, init.protocolVersion)

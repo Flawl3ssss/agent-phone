@@ -69,3 +69,25 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
 }
+
+/*
+ * Диагностика зависаний. Первый же прогон CI съел 30 минут и не напечатал НИ ОДНОЙ
+ * строки результата: JUnit выдаёт итоги только когда тест закончился, а «неотвеченный»
+ * JSON-RPC запрос жрал по requestTimeoutMs (120 с) × ~9 вызовов × 2 сценария.
+ * runner просто упирался в timeout-minutes и завершался как cancelled.
+ *
+ * events("started") — видно, КАКОЙ тест встал, ещё до его конца.
+ * exceptionFormat FULL — текст расхождения, а не только имя класса исключения.
+ * showStandardStreams — stderr мокагентa («[mock-kimi] ...») попадает в лог CI.
+ * timeout — жёсткий потолок таска, чтобы висячий тест давал FAILED+стек,
+ * а не молчаливое cancelled через полчаса.
+ */
+tasks.withType<Test>().configureEach {
+    timeout = java.time.Duration.ofMinutes(10)
+    testLogging {
+        events("started", "passed", "failed", "skipped")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+        showStandardStreams = true
+    }
+}
+

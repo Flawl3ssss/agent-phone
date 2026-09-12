@@ -75,7 +75,10 @@ class MockAcpAgent(private val stdin: BufferedReader, private val stdout: java.i
         send(buildJsonObject {
             put("jsonrpc", "2.0"); put("id", JsonPrimitive(id)); put("method", method); put("params", params)
         })
-        return try { fut.get(60, TimeUnit.SECONDS) } catch (e: Exception) { st.pending.remove(id); null }
+        // Ждём ответ с потолком: «никогда не ответили» должно становиться ошибкой
+        // за секунды, а не блоком на минуту — иначе один потерянный RPC умножается
+        // на все последующие вызовы и съедает лимит job'а молча.
+        return try { fut.get(20, TimeUnit.SECONDS) } catch (e: Exception) { st.pending.remove(id); null }
     }
 
     private fun textChunk(kind: String, s: String) = buildJsonObject {
