@@ -53,6 +53,14 @@ jobs:
       - name: Unit tests
         run: gradle --no-daemon :app:testSideloadDebugUnitTest
 
+      - name: Assemble runtime payload
+        # jniLibs (glibc + ubuntu-бинарники) и assets (замыкание kimi) из pinned-архивов.
+        # Без этого шага APK соберётся, но рантайм на устройстве будет пустой.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq binutils-aarch64-linux-gnu >/dev/null
+          sh tools/runtime/assemble.sh
+
       - name: Assemble APK
         run: gradle --no-daemon :app:assembleSideloadDebug
 

@@ -16,7 +16,8 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AgentPhone">
+        android:theme="@style/Theme.AgentPhone"
+        android:extractNativeLibs="true">
 
         <activity
             android:name=".MainActivity"

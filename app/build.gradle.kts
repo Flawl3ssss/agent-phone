@@ -20,6 +20,25 @@ android {
         targetSdk = 35
         versionCode = 2
         versionName = "0.2.0-acp"
+
+        ndk {
+            // Payload (glibc-ELF из ubuntu) собран только под arm64-v8a.
+            abiFilters.apply { clear(); add("arm64-v8a") }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path = file("src/main/cpp/CMakeLists.txt")
+        }
+    }
+
+    packaging {
+        jniLibs {
+            // Распаковка в nativeLibraryDir обязательна: execve по файлу внутри APK ядро
+            // сделать не может, а из app data dir запрещает SELinux (W^X, targetSdk >= 29).
+            useLegacyPackaging = true
+        }
     }
 
     buildTypes {
