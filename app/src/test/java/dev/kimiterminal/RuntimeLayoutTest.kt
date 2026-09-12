@@ -51,7 +51,7 @@ class RuntimeLayoutTest {
     fun `вход отдельным процессом с --login, как обещает authMethods`() {
         val login = layout.loginCommand()
         assertEquals(listOf("acp", "--login"), login.takeLast(2))
-        assertEquals(layout.agentCommand().dropLast(1) + "--login", login)
+        assertEquals(layout.agentCommand() + "--login", login)
     }
 
     @Test
@@ -70,8 +70,11 @@ class RuntimeLayoutTest {
 
     @Test
     fun `все цели dispatch существуют в списке ELF`() {
-        val unknown = layout.dispatch().values.map { it.target }.distinct() - RuntimeSpec.EXEC_ELFS.toSet()
-        assertEquals(emptySet<String>(), unknown)
+        // minus(Set) у List возвращает List, так что сравнивать с emptySet() было бы
+        // вечно падающим тестом: проверяю isEmpty() и показываю, что именно не найдено.
+        val targets = layout.dispatch().values.map { it.target }.distinct()
+        val unknown = targets.filter { it !in RuntimeSpec.EXEC_ELFS }
+        assertTrue("цели вне списка ELF: $unknown", unknown.isEmpty())
     }
 
     @Test
