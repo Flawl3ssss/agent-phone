@@ -1,0 +1,4 @@
+#!/bin/sh
+# Обёртка для self-check транспорта: притворяется бинарём `kimi`, на деле — мок.
+# Нужна, чтобы acp-live-probe.mjs гонялся в CI без подписки и без сети.
+exec node "$(dirname "$0")/acp-mock-agent.mjs"

@@ -1,0 +1,11 @@
+{
+  "name": "agent-phone-tools",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Верификация ACP-контракта: мок-агент и живой зонд (гейты G3′/G10).",
+  "engines": { "node": ">=20.19.0" },
+  "dependencies": {
+    "@agentclientprotocol/sdk": "1.4.0"
+  }
+}
