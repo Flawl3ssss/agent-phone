@@ -110,9 +110,15 @@ class AcpTransport(
 
     override fun close() {
         _alive.value = false
-        runCatching { reader.close() }
+        // Reader НЕ закрываем. Поток чтения почти наверняка висит в readLine() и
+        // держит внутренний лок InputStreamReader; close() из другого потока ждёт
+        // его release() — то есть никогда. На этом висял тест stdio-процесса:
+        // весь сценарий проходил и умирал на последней строке — в shutdown().
+        // Трубу закрывает снизу AcpAgentProcess.stop(): destroy() даёт читальному
+        // потоку EOF/IOException, цикл выходит в свой finally и закрывает канал сам.
         runCatching { writer.close() }
         _incoming.close()
+        scope.cancel()
     }
 }
 
