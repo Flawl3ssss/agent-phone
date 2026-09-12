@@ -131,7 +131,7 @@ class AgentViewModel(
                 // Мост поднимаем ДО session/new: агент подключается к нему на старте сессии.
                 runCatching { runtime.setMcp(s, listOf(startBridge(s))) }
                 if (mode is Mode.MockInProcess) {
-                    val (link, stop) = dev.kimiterminal.acp.PipeTransport.inProcess(sScope) { r, w ->
+                    val (link, stop) = dev.kimiterminal.acp.PipeTransport.inProcess { r, w ->
                         dev.kimiterminal.agent.MockAcpAgent(r, w).run()
                     }
                     s.injectedTransport = link
@@ -233,8 +233,6 @@ class AgentViewModel(
     private fun log(s: String) { _log.value = (_log.value + s).takeLast(200) }
 
     override fun onCleared() { runtime.shutdown(); super.onCleared() }
-
-    private val sScope get() = viewModelScope
 
     companion object {
         private val EMPTY_ITEMS = MutableStateFlow<List<Item>>(emptyList())

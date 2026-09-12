@@ -109,7 +109,7 @@ class ToolSpec(
 private fun obj(vararg fields: Pair<String, JsonElement>): JsonObject = buildJsonObject {
     put("type", "object")
     put("properties", JsonObject(fields.toMap()))
-    val req = fields.filter { it.value.jsonObject["__required"]?.jsonPrimitive?.content == true }
+    val req = fields.filter { it.value.jsonObject["__required"]?.jsonPrimitive?.content == "true" }
         .map { it.first }
     if (req.isNotEmpty()) put("required", JsonArray(req.map { JsonPrimitive(it) }))
 }

@@ -187,7 +187,7 @@ class SessionHostState(private val session: AgentSession) : HostState {
 
     override fun sessions(): List<JsonObject> = listOf(
         buildJsonObject {
-            put("sessionId", session.sessionId.value ?: JsonNull)
+            put("sessionId", session.sessionId.value?.let { JsonPrimitive(it) } ?: JsonNull)
             put("state", session.stateMachine.state.value.name)
             put("cwd", session.cwd)
             put("busy", session.busy.value)
@@ -216,7 +216,7 @@ class SessionHostState(private val session: AgentSession) : HostState {
     override fun state(): SessionState? = session.stateMachine.state.value
     override fun busy(): Boolean = session.busy.value
     override fun stats(): String = session.stats
-    override fun stderrTail(n: Int): List<String> = session.stderrTail(n)
+    override fun stderrTail(n: Int): List<String> = session.stderrTail().takeLast(n.coerceAtLeast(1))
     override fun capabilitiesSummary(): String =
         session.init.value?.let { "${it.agentInfo?.name} ${it.agentInfo?.version}" } ?: "нет handshake"
 

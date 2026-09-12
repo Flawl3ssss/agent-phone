@@ -123,7 +123,7 @@ val compactJson: Json = Json {
  * в proot-госте, и сюда попадает команда-обёртка (`proot ... kimi acp`). stdout — протокол,
  * stderr — логи, которые мы показываем в диагностике.
  */
-class AcpAgentProcess(command: List<String>, private val onStderr: (String) -> Unit = {}) {
+class AcpAgentProcess(private val command: List<String>, private val onStderr: (String) -> Unit = {}) {
 
     private var process: Process? = null
 
