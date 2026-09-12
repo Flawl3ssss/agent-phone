@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- R3: тёмная тема дефолтом. Светлых экранов в продукте быть не должно,
+         поэтому базовая тема — Material3 Dark, а не DayNight. -->
+    <style name="Theme.AgentPhone" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/bg</item>
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:colorBackground">@color/bg</item>
+    </style>
+</resources>

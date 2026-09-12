@@ -1,0 +1,11 @@
+.gradle/
+build/
+app/build/
+localrepo/
+localrepo.init.gradle.kts
+*.iml
+.idea/
+local.properties
+.kotlin/
+.cxx/
+*.salive

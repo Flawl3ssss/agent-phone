@@ -1,0 +1,60 @@
+name: Build APK
+
+# Собираем на ubuntu-latest: там JDK и Android SDK есть из коробки,
+# а Gradle тянет зависимости с нормальной сетью (в локальной песочнице — OOM и рвущийся TLS).
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apk-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # compileSdk/buildTools заданы в app/build.gradle.kts — ставим ровно их,
+      # иначе AGP падает на отсутствующем платформенном jar.
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+          log-accepted-android-sdk-licenses: 'false'
+
+      # В репозитории нет gradle-wrapper, а пред установленный на раннере Gradle
+      # не гарантирует совместимость с AGP 8.7 (нужно >= 8.9). Пиним версию сами;
+      # кэш Gradle этот же экшен и делает (ручной cache-step не нужен).
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+          cache-read-only: false
+
+      # Протокольный слой (Kotlin-клиент против живого мокагента) — до сборки APK.
+      - name: Unit tests
+        run: gradle --no-daemon :app:testSideloadDebugUnitTest
+
+      - name: Assemble APK
+        run: gradle --no-daemon :app:assembleSideloadDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-phone-sideload-debug
+          path: app/build/outputs/apk/sideload/debug/*.apk
+          if-no-files-found: error
+          retention-days: 30
