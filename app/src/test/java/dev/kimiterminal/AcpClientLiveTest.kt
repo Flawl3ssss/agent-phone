@@ -52,6 +52,8 @@ import org.junit.Test
 class AcpClientLiveTest {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    /** Рабочий каталог тестовой сессии: и в session/new, и в проверках путей — из одного места. */
+    private val cwd = "/tmp"
     private var process: AcpAgentProcess? = null
     private var shutdown: (() -> Unit)? = null
 
@@ -73,7 +75,7 @@ class AcpClientLiveTest {
     }
 
     private fun spawnMockInProcess(): AcpLink {
-        val (link, stop) = PipeTransport.inProcess(scope) { r, w -> MockAcpAgent(r, w).run() }
+        val (link, stop) = PipeTransport.inProcess { r, w -> MockAcpAgent(r, w).run() }
         shutdown = stop
         return link
     }
@@ -133,7 +135,7 @@ class AcpClientLiveTest {
 
         // ── session/new с additionalDirectories и MCP ────────────────────────
         val ns = client.newSession(
-            "/tmp",
+            cwd,
             additionalDirectories = listOf("/tmp/extra"),
             mcpServers = listOf(McpServer(name = "game-preview", type = "http", url = "http://127.0.0.1:59100/mcp")),
         )
@@ -145,9 +147,9 @@ class AcpClientLiveTest {
         val res = withTimeout(40_000) { client.prompt(ns.sessionId, listOf(ContentBlock.text("собери проект"))) }
         assertEquals("stopReason", StopReason.EndTurn, res.stopReason)
 
-        assertEquals("fs/read path", "$CWD/config.json", withTimeout(20_000) { gotFsRead.await() })
+        assertEquals("fs/read path", "$cwd/config.json", withTimeout(20_000) { gotFsRead.await() })
         assertEquals("permission title", "Edit config.json", withTimeout(20_000) { gotPermission.await() })
-        assertEquals("fs/write path", "$CWD/config.json", withTimeout(20_000) { gotFsWrite.await() })
+        assertEquals("fs/write path", "$cwd/config.json", withTimeout(20_000) { gotFsWrite.await() })
         assertEquals("terminal cmd", "node", withTimeout(5_000) { gotTermCreate.await() })
         assertEquals("elicitation", "Деплоить на itch сейчас?", withTimeout(5_000) { gotElicit.await() })
 
