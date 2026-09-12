@@ -3,7 +3,10 @@ package dev.kimiterminal.acp
 import java.io.BufferedReader
 import java.io.BufferedWriter
 import java.io.IOException
+import java.io.InputStreamReader
 import java.io.OutputStreamWriter
+import java.net.InetSocketAddress
+import java.net.Socket
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,6 +47,13 @@ class AcpTransport(
     /** Жёсткий кап на один кадр. Kimi сам ограничивает вывод терминала 4 MiB; строка
      *  tool_call с диффом может быть больше — держим 8 MiB и честно падаем выше. */
     private val maxFrameBytes: Int = 8 * 1024 * 1024,
+    /**
+     * Вызывается, когда поток чтения оборвался — EOF или ошибка. Владеющему транспортом
+     * это нужно, чтобы отпустить читателя. У сокета единственный способ сделать это —
+     * закрыть сам сокет: закрытие OutputStream не порождает FIN, peer продолжает
+     * считать соединение живым, и наш читатель висит в readLine() до конца процесса.
+     */
+    private val onStreamEnd: (() -> Unit)? = null,
 ) : AcpLink {
 
     private val writeMutex = Mutex()
@@ -104,6 +114,10 @@ class AcpTransport(
             } finally {
                 _alive.value = false
                 _incoming.close()
+                // Вызываем ИЗ finally читателя: именно здесь становится известно, что
+                // входящих больше не будет. Ошибку владельца канала наружу не пускаем —
+                // иначе закрытие сокета выглядело бы как падение транспорта.
+                runCatching { onStreamEnd?.invoke() }
             }
         }
     }

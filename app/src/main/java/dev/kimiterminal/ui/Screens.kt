@@ -167,6 +167,7 @@ fun MainScreen(vm: AgentViewModel) {
     val mode by vm.mode.collectAsState()
     val activeProvider by vm.activeProvider.collectAsState()
     var showCaps by remember { mutableStateOf(false) }
+    var showMode by remember { mutableStateOf(false) }
     var showLog by remember { mutableStateOf(false) }
     var showProviders by remember { mutableStateOf(false) }
 
@@ -184,7 +185,9 @@ fun MainScreen(vm: AgentViewModel) {
                             // MockAcpAgent, в шапке висит явный знак. Без него скриншот
                             // «0.42.0-mock-kotlin» можно принять за живой Kimi, и человек
                             // будет полчаса искать, почему «Kimi» ничего не думает.
-                            if (mode !is Mode.Kimi) {
+                            // Termux-режим — тоже НЕ мок: там агент настоящий,
+                            // вешать на него знак «МОК» значит врать пользователю.
+                            if (mode !is Mode.Kimi && mode !is Mode.Termux) {
                                 AssistChip(
                                     onClick = { showCaps = true },
                                     label = { Text("МОК", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
@@ -194,6 +197,11 @@ fun MainScreen(vm: AgentViewModel) {
                             AssistChip(onClick = { showCaps = true }, label = {
                                 Text(init?.agentInfo?.let { "${it.name?.split(" ")?.last() ?: "agent"} ${it.version}" } ?: "не подключено",
                                     fontSize = 11.sp, fontFamily = FontFamily.Monospace)
+                            })
+                            // Режим на виду: иначе «почему агент молчит» распутывается
+                            // только через диалог, а молчание Termux-моста — частый случай.
+                            AssistChip(onClick = { showMode = true }, label = {
+                                Text(mode.label, fontSize = 11.sp, fontFamily = FontFamily.Monospace)
                             })
                         }
                     },
@@ -229,6 +237,11 @@ fun MainScreen(vm: AgentViewModel) {
 
     permission?.let { PermissionDialog(it) { outcome -> it.reply(outcome) } }
     if (showCaps) init?.let { CapsDialog(it) { showCaps = false } }
+    if (showMode) ModeDialog(
+        current = mode,
+        onDismiss = { showMode = false },
+        onPick = { m -> vm.setMode(m); showMode = false; vm.connectOrRestart() },
+    )
     if (showLog) LogDialog(vm.stderrTail()) { showLog = false }
     if (showProviders) ProvidersDialog(vm) { showProviders = false }
 }
@@ -501,5 +514,40 @@ fun LogDialog(lines: List<String>, onClose: () -> Unit) {
             }
         },
         confirmButton = { TextButton(onClick = onClose) { Text("закрыть", color = Primary) } },
+    )
+}
+
+/**
+ * Переключатель агента. Выбор сразу переподключает сессию: отдельная кнопка «применить»
+ * оставляет окно, в котором промпт может уйти не тому агенту.
+ */
+@Composable
+private fun ModeDialog(current: Mode, onDismiss: () -> Unit, onPick: (Mode) -> Unit) {
+    val options = listOf(
+        Mode.MockInProcess to "мок в этом процессе — UI и протокол работают без внешнего агента",
+        Mode.MockProcess to "мок отдельным JVM — нужен java на устройстве",
+        Mode.Termux() to "настоящий kimi acp из Termux: мост слушает 127.0.0.1:8712",
+    )
+    AlertDialog(
+        onDismissRequest = onDismiss, containerColor = Surface1,
+        title = { Text("Кого подключаем", color = TermFg, fontSize = 16.sp) },
+        text = {
+            Column {
+                Text(
+                    "Выбор сразу перезапускает сессию.",
+                    fontSize = 11.sp, fontFamily = FontFamily.Monospace, color = Secondary,
+                )
+                Spacer(Modifier.height(12.dp))
+                options.forEach { (m, hint) ->
+                    FilterChip(
+                        selected = m::class == current::class,
+                        onClick = { onPick(m) },
+                        label = { Text(m.label, fontSize = 12.sp, fontFamily = FontFamily.Monospace) },
+                    )
+                    Text(hint, fontSize = 10.sp, color = Secondary, modifier = Modifier.padding(bottom = 12.dp))
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text("закрыть", fontSize = 12.sp) } },
     )
 }

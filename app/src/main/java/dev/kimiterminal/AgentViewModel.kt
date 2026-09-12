@@ -42,10 +42,17 @@ sealed class Mode {
     object MockInProcess : Mode()
     /** Реальный `kimi acp` внутри proot-Ubuntu. */
     data class Kimi(val viaProot: List<String> = listOf("kimi", "acp")) : Mode()
+    /**
+     * Настоящий `kimi acp`, живущий в Termux. Приложение не запускает его само —
+     * Android запрещает исполнять бинарь из песочницы чужого приложения, поэтому мы
+     * подключаемся к мосту на 127.0.0.1 (см. [dev.kimiterminal.acp.AcpSocketAgent]).
+     */
+    data class Termux(val port: Int = 8712) : Mode()
     val label: String get() = when (this) {
         is Mode.MockProcess -> "мок (процесс)"
         is Mode.MockInProcess -> "мок (in-app)"
         is Mode.Kimi -> "kimi acp"
+        is Mode.Termux -> "kimi · Termux"
     }
 }
 
@@ -186,6 +193,14 @@ class AgentViewModel(
                     }
                     s.injectedTransport = link
                     s.shutdownInProcess = stop
+                }
+                if (mode is Mode.Termux) {
+                    val agent = dev.kimiterminal.acp.AcpSocketAgent(port = mode.port) { line -> log(line) }
+                    // connect() блокирующий: с главного потока ViewModel Android срежет
+                    // его NetworkOnMainThreadException, и вместо внятного «мост не запущен»
+                    // мы получим бессмысленную ошибку.
+                    s.injectedTransport = withContext(Dispatchers.IO) { agent.start() }
+                    s.shutdownInProcess = { agent.stop() }
                 }
                 withContext(Dispatchers.IO) { s.startBlocking() }
                 _session.value = s
