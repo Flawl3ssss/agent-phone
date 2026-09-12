@@ -15,7 +15,9 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
@@ -76,8 +78,26 @@ class AcpClient(
         handlers = h
         scope.launch {
             for (msg in link.incoming) {
-                // ВАЖНО: не ждём. Каждый кадр уходит в свою корутину.
-                launch { runCatching { dispatch(msg) } }
+                // Предикат — дословно тот же, что внутри dispatch(): кадр с явным
+                // "id": null тоже считается уведомлением. Разойдусь здесь — и часть
+                // кадров снова поедет вразнобой, только уже неочевидно.
+                val method = (msg["method"] as? JsonPrimitive)?.contentOrNull
+                val hasId = msg.containsKey("id") && msg["id"] !is JsonNull
+                if (method != null && !hasId) {
+                    // Уведомления — СТРого в порядке прихода и без своей корутины.
+                    // Раньше каждый кадр уходил в `launch`, и два agent_message_chunk
+                    // могли примениться в обратном порядке: текст в ленте перепутался бы
+                    // байтами. Плюс хвостовые кадры хода (message/usage/config_option)
+                    // успевали отстать от response, и клиенты теряли конец ответа.
+                    // Разворачивать обратно безопасно: обработчик session/update —
+                    // синхронный callback, а канал UNLIMITED, так что читателя это не заблокирует.
+                    runCatching { dispatch(msg) }
+                } else {
+                    // Запросы агента (пермишн, элиситация, терминал) могут висеть на
+                    // пользователем неопределённо долго. Ждать их в этом цикле — значит
+                    // поставить весь входящий поток на паузу до тапа. Их — параллельно.
+                    launch { runCatching { dispatch(msg) } }
+                }
             }
             _state.value = ClientState.DEAD
             pending.values.forEach { it.completeExceptionally(AcpException(-32000, "ACP connection closed")) }

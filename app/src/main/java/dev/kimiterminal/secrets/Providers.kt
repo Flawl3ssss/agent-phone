@@ -67,14 +67,18 @@ class InMemorySecretBox : SecretBox {
  */
 fun maskSecret(secret: String?): String {
     val s = secret?.trim() ?: ""
-    if (s.length < 16) return if (s.isEmpty()) "" else "•".repeat(s.length)
+    // Короткий ключ — фиксированные 6 точек, а не repeat(length): длина маски
+    // сама по себе подсказывает длину ключа, а это уже утечка.
+    if (s.length < 16) return if (s.isEmpty()) "" else "••••••"
     return "${s.take(2)}…${s.takeLast(4)}"
 }
 
 /** Форма для проверки «похоже на ключ», а не «равно эталону». */
 fun looksLikeApiKey(s: String): Boolean {
     val t = s.trim()
-    return t.length >= 20 && t.none { it.isWhitespace() } && t.all { !it.isISOControl() }
+    // 20..256: ниже 20 — это не ключ, а обрывок; выше 256 — дамп буфера обмена,
+    // который человек вставил вместо поля «название».
+    return t.length in 20..256 && t.none { it.isWhitespace() } && t.all { !it.isISOControl() }
 }
 
 /**
@@ -121,8 +125,14 @@ class ProviderRegistry(
         val p0 = doc.providers.firstOrNull { it.id == id }
         var masked = p0?.masked ?: ""
         var hasKey = p0?.hasKey ?: false
-        val key = apiKey?.trim()?.takeIf { it.isNotEmpty() }
+        // Разница принципиальная: «не менять существующий» — это null, а "" — это
+        // это поле, которое человек оставил пустым. Молча принять "" значило бы завести
+        // провайдера без ключа и получить 401 вместо внятной ошибки здесь.
+        val key = apiKey?.trim()
         if (key != null) {
+            require(key.isNotEmpty()) {
+                "пустой ключ: «не менять» передаётся как null, а не как пустая строка"
+            }
             require(looksLikeApiKey(key)) { "ключ слишком короткий или содержит пробелы" }
             box.put(id, key)
             masked = maskSecret(key); hasKey = true
@@ -131,7 +141,9 @@ class ProviderRegistry(
             id = id,
             label = label.ifBlank { kind.title },
             kind = kind,
-            baseUrl = b,
+            // Пресет материализуется в запись: и UI, и env, и отладочный лог
+            // видят один и тот же адрес, а не «пусто, но effectiveBaseUrl() дорешит».
+            baseUrl = b.ifBlank { kind.defaultBaseUrl },
             model = model.trim().ifBlank { defaultModel(kind) },
             masked = masked,
             hasKey = hasKey,
@@ -161,7 +173,11 @@ class ProviderRegistry(
      */
     fun envFor(p: Provider = active() ?: error("нет активного провайдера")): Map<String, String> = mapOf(
         p.kind.envVar to (box.get(p.id) ?: ""),
-        "AGENT_PHONE_PROVIDER" to p.id,
+        // Единое имя ключа: мок и живой агент читают одно и то же, не зная,
+        // какой SDK какого имени ждёт (см. envVar выше — он для чужих библиотек).
+        "AGENT_PHONE_API_KEY" to (box.get(p.id) ?: ""),
+        // Тип, а не id: id придумывает человек и он может быть чем угодно.
+        "AGENT_PHONE_PROVIDER" to p.kind.name.lowercase(),
         "AGENT_PHONE_MODEL" to p.model,
         "AGENT_PHONE_BASE_URL" to p.effectiveBaseUrl(),
     )

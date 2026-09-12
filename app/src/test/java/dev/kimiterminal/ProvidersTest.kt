@@ -145,7 +145,14 @@ class ProvidersTest {
 
         h.reg.remove("b")
         assertNull("последний удалён — актива нет", h.reg.active())
-        assertTrue(h.reg.envFor().isEmpty())
+        // Здесь стояло `assertTrue(envFor().isEmpty())`, что прямо противоречит
+        // `без активного провайдера окружение не строится`: тот же вызов требует
+        // IllegalStateException. Два разных ответа на одно состояние быть не могло,
+        // и в этом тесте стрелял именно этот последний assertion. Оставляю бросок —
+        // он задокументирован как продуктовое правило: молча отдать агенту пустой
+        // env значит получить 401 вместо внятной ошибки.
+        val ex = kotlin.runCatching { h.reg.envFor() }.exceptionOrNull()
+        assertTrue("без активного провайдера env не отдаём", ex is IllegalStateException)
     }
 
     @Test fun `правкой нельзя потерять уже сохранённый ключ`() {

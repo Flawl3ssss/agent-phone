@@ -29,6 +29,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.yield
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.jsonPrimitive
@@ -162,11 +164,22 @@ class AcpClientLiveTest {
         assertEquals("elicitation", "Деплоить на itch сейчас?", withTimeout(5_000) { gotElicit.await() })
 
         // ── что мы увидели в ленте (T2: состояния из протокола, не из текста) ─
-        val kinds = updates.map { it.sessionUpdate }
+        // Ленту наполняет диспетчер, поэтому снимать «сразу после response» нельзя:
+        // хвостовые кадры хода ещё могут не лежать в коллекции, и тест становится
+        // лотереей планировщика (на прогоне #16 так и упало — на пустом месте).
+        // Ждём каждый нужный вид с ограничением: это не слабее снимка, зато честно.
         for (need in listOf(
             "agent_message_chunk", "agent_thought_chunk", "tool_call", "tool_call_update",
             "plan", "usage_update", "config_option_update", "available_commands_update",
-        )) assertTrue("нет $need в $kinds", kinds.contains(need))
+        )) {
+            val arrived = withTimeoutOrNull(5_000) {
+                while (updates.none { u -> u.sessionUpdate == need }) yield()
+            }
+            assertNotNull(
+                "нет $need в ${updates.map { u -> u.sessionUpdate }}",
+                arrived,
+            )
+        }
 
         // plan обязан доехать с приоритетами (грабли PlanEntry: все три поля обязательны)
         val plan = updates.first { it.sessionUpdate == "plan" }

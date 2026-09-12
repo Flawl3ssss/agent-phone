@@ -100,10 +100,17 @@ class AgentViewModel(
         id: String, label: String, kind: dev.kimiterminal.secrets.ProviderKind,
         baseUrl: String, model: String, apiKey: String,
     ): String? {
+        // Пустое поле в UI означает «не менять», а реестр понимает «не менять» только
+        // как null: пустая строка — явная ошибка, чтобы не заводить провайдера без
+        // ключа. Без этого перевода обычное переименование падало бы на «пустой ключ».
+        val key = apiKey.ifBlank { null }
+        if (key == null && _providers.value.none { it.id == id }) {
+            return "новому провайдеру нужен ключ: без него агент уйдёт в API пустым"
+        }
         // runCatching без явного параметра вывел бы Result<Nothing?> из `null` в блоке,
         // и getOrElse с String уже не подошёл бы по типу.
         return runCatching<String?> {
-            registry.upsert(id, label, kind, baseUrl, model, apiKey)
+            registry.upsert(id, label, kind, baseUrl, model, key)
             refreshProviders()
             null
         }.getOrElse { it.message ?: "не сохранилось" }
