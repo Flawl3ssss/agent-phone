@@ -66,15 +66,27 @@ jobs:
           # Сверка обязательна: без неё битая закачка превращается в «загадочный» Segfault.
           sha256sum -c "$F.sha256"
           mkdir -p "$HOME/kimi-bin"
-          tar -xzf "$F" -C "$HOME/kimi-bin" --strip-components=1
-          find "$HOME/kimi-bin" -maxdepth 2 -name kimi -type f -exec chmod +x {} \;
-          echo "KIMI_BIN=$(find "$HOME/kimi-bin" -maxdepth 2 -name kimi -type f | head -1)" >> "$GITHUB_ENV"
+          # БЕЗ --strip-components=1: в этом архиве ОДИН файл в корне (`kimi`).
+          # Срезание единственной компоненты даёт tar пустое имя, запись
+          # отбрасывается, каталог выходит пустым — отсюда KIMI_BIN="" и
+          # «spawn kimi ENOENT» через два шага от места поломки. Проверено на этом
+          # же архиве: со strip извлекается 0 файлов, без strip — бинарь 180 МБ.
+          tar -xzf "$F" -C "$HOME/kimi-bin"
+          KB=$(find "$HOME/kimi-bin" -maxdepth 2 -name kimi | head -1)
+          # Пустое значение раньше уходило незаметно: шаг «версия» ниже зовёт
+          # "$KIMI_BIN" --version 2>&1 | head, а пайп глотает код отказа — шаг
+          # зелёный, и ничего не запускалось.
+          [ -n "$KB" ] || { echo "!! в $HOME/kimi-bin нет бинаря kimi"; exit 1; }
+          chmod +x "$KB"
+          echo "KIMI_BIN=$KB" >> "$GITHUB_ENV"
           echo "домашний каталог агента: $HOME/kimi-bin"
           ls -la "$HOME/kimi-bin"
 
       - name: Version and capability surface
         run: |
+          [ -n "$KIMI_BIN" ] || { echo "!! KIMI_BIN пуст — шаг Download не сработал"; exit 1; }
           echo "=== версия ==="; "$KIMI_BIN" --version 2>&1 | head -3
+          [ "${PIPESTATUS[0]}" = "0" ] || { echo "!! kimi не запустился"; exit 1; }
           echo "=== хелп (нужен, чтобы не угадывать формат config.toml) ==="
           "$KIMI_BIN" --help 2>&1 | head -40 || true
           for sub in acp provider config models login; do
