@@ -134,7 +134,7 @@ class RuntimeManifestTest {
         val candidates = listOf(File(relative), File("../$relative"), File("../../$relative"))
         return candidates.firstOrNull { it.isFile }
             ?: throw AssertionError(
-                "нет $relative; cwd=${File(".").absolutePath}, искали: ${candidates.map { it.invariantPath }}",
+                "нет $relative; cwd=${File(".").absolutePath}, искали: ${candidates.map { it.absolutePath }}",
             )
     }
 }
