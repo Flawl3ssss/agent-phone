@@ -8,12 +8,13 @@
  *
  *   ptysh <rows> <cols> <файл-размера> <программа> [аргументы…]
  *
- * Размер меняется по SIGWINCH: приложение пишет "cols rows" в файл и шлёт сигнал,
- * потому что stdin насоса — труба, а не tty, и вычитать размер из него нельзя.
+ * Размер меняется файлом: приложение пишет "rows cols" в файл, насос перечитывает
+ * его на каждом тике. SIGWINCH не используется — stdin насоса труба, не tty.
  */
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
+#include <pty.h>          /* openpty: в glibc, musl и bionic — именно здесь */
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,14 +25,12 @@
 #include <termios.h>
 #include <unistd.h>
 
-static volatile sig_atomic_t g_pending = 0;
+/*
+ * Размер перечитывается из файла на каждом тике poll. Сигнальный вариант (SIGWINCH
+ * от приложения) отвергнут: он требует pid дочерней программы со стороны Kotlin,
+ * а процесс к моменту resize мог уже завершиться — гонка без выигрыша в скорости.
+ */
 static char g_size_path[512];
-
-static void on_winch(int signo)
-{
-    (void)signo;
-    g_pending = 1;
-}
 
 static void apply_size(int master, int rows, int cols)
 {
@@ -63,7 +62,7 @@ int main(int argc, char **argv)
 {
     int rows, cols, master, slave, pid;
     struct winsize ws;
-    struct sigaction sa;
+    int cur_rows = 0, cur_cols = 0;
 
     if (argc < 5) {
         fprintf(stderr, "usage: ptysh <rows> <cols> <sizefile> <prog> [args...]\n");
@@ -85,10 +84,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    sa.sa_handler = on_winch;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_RESTART;
-    sigaction(SIGWINCH, &sa, NULL);
     signal(SIGPIPE, SIG_IGN);
 
     pid = fork();
@@ -119,16 +114,17 @@ int main(int argc, char **argv)
         ssize_t n;
         int status;
 
-        if (g_pending) {
-            g_pending = 0;
-            if (read_size(&rows, &cols))
-                apply_size(master, rows, cols);
+        if (read_size(&rows, &cols) && (rows != cur_rows || cols != cur_cols)) {
+            cur_rows = rows;
+            cur_cols = cols;
+            apply_size(master, rows, cols);
         }
 
         fds[0].fd = STDIN_FILENO;
         fds[1].fd = master;
         fds[0].events = fds[1].events = POLLIN;
-        if (poll(fds, 2, -1) < 0) {
+        /* тик 250 мс: ровно столько терминал может «не знать» о повороте экрана */
+        if (poll(fds, 2, 250) < 0) {
             if (errno == EINTR)
                 continue;
             break;

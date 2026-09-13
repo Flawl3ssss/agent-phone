@@ -106,7 +106,8 @@ private fun makeWebView(
 ): WebView {
     val web = WebView(ctx)
     web.settings.javaScriptEnabled = true
-    web.setBackgroundColor(Color.rgb(13, 17, 23))
+    // Число, а не Color.rgb: фон виден до первой отрисовки xterm, иначе при открытии вспыхивает белое.
+    web.setBackgroundColor(0xFF0D1117.toInt())
     web.isVerticalScrollBarEnabled = false
     web.webViewClient = object : android.webkit.WebViewClient() {
         override fun onPageFinished(view: WebView, url: String?) {

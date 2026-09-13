@@ -1,7 +1,6 @@
 package dev.kimiterminal.terminal
 
 import android.content.Context
-import android.system.Os
 import dev.kimiterminal.runtime.RuntimeManager
 import java.io.File
 import java.io.InputStream
@@ -79,10 +78,12 @@ class TerminalBridge(private val context: Context, private val manager: RuntimeM
         }
     }
 
+    /**
+     * Размер сообщается файлом: stdin насоса — труба, а не tty, и вычитать размер из него
+     * нельзя, а сигнал требует pid процесса, которого к тому моменту может уже не быть.
+     */
     fun resize(cols: Int, rows: Int) {
         writeSize(cols, rows)
-        val p = process ?: return
-        runCatching { Os.kill(p.pid, 28) } // SIGWINCH: ядро само разошлёт его по группе
     }
 
     fun stop() {
