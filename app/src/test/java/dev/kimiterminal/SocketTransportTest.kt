@@ -194,6 +194,10 @@ class SocketTransportTest {
             withTimeout(8000) { while (link.alive.value) yield() }
         }
         assertEquals(false, link.alive.value)
+        // Сокет отпускается в finally читателя, а alive гасится строкой раньше: между
+        // ними есть окно. Ждём именно потому, что событие гарантировано, — если оно не
+        // наступит, withTimeout крикнет об этом, а не молча пропустит проверку.
+        runBlocking { withTimeout(8000) { while (agent!!.connected) yield() } }
         assertEquals("сокет должен быть отпущен", false, agent!!.connected)
     }
 }
