@@ -116,10 +116,16 @@ class RuntimeManager(context: Context) {
         return RuntimeProbes.specs(l).map { runOnce(it.argv, env, it.name, it.expect, it.optional) }
     }
 
-    private fun runOnce(cmd: List<String>, env: Map<String, String>, name: String, expect: String): Probe {
+    private fun runOnce(
+        cmd: List<String>,
+        env: Map<String, String>,
+        name: String,
+        expect: String,
+        optional: Boolean = false,
+    ): Probe {
         val p = runCatching {
             ProcessBuilder(cmd).redirectErrorStream(false).also { it.environment().putAll(env) }.start()
-        }.getOrElse { return Probe(name, false, "старт не удался: " + it.message) }
+        }.getOrElse { return Probe(name, false, "старт не удался: " + it.message, optional) }
         val out = StringBuilder()
         val err = StringBuilder()
         val t1 = thread(start = true) {
@@ -130,7 +136,7 @@ class RuntimeManager(context: Context) {
         }
         if (!p.waitFor(25, TimeUnit.SECONDS)) {
             p.destroyForcibly()
-            return Probe(name, false, "таймаут 25 с (возможно, exec завис в проверке прав)")
+            return Probe(name, false, "таймаут 25 с (возможно, exec завис в проверке прав)", optional)
         }
         t1.join(1000)
         t2.join(1000)
@@ -141,7 +147,7 @@ class RuntimeManager(context: Context) {
         } else {
             "код " + p.exitValue() + " · out: " + text.take(120) + " · err: " + err.toString().trim().take(200)
         }
-        return Probe(name, ok, detail)
+        return Probe(name, ok, detail, optional)
     }
 
     /**
