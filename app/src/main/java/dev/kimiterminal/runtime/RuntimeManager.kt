@@ -42,7 +42,6 @@ class RuntimeManager(context: Context) {
 
     private class AssetSource(val ctx: Context) : PayloadSource {
         override fun open(name: String): InputStream? = runCatching { ctx.assets.open(name) }.getOrNull()
-        override fun describe(name: String): String = "assets/" + name
     }
 
     private fun readAssetManifest(): RuntimeManifest? {
@@ -70,13 +69,16 @@ class RuntimeManager(context: Context) {
         manifest = m
         _status.value = RuntimeStatus.Installing(0, m.entries.size, "подготовка")
         val problems = RuntimeInstaller(
-            AssetSource(app), l, m,
-            progress = { done, total, entry ->
-                _status.value = RuntimeStatus.Installing(done, total, entry.path.substringAfterLast('/'))
+            source = AssetSource(app),
+            layout = l,
+            manifest = m,
+            onProgress = { p ->
+                _status.value = RuntimeStatus.Installing(p.done, p.total, p.current.substringAfterLast('/'))
             },
-        ).install { step ->
-            _status.value = RuntimeStatus.Installing(0, m.entries.size, step)
-        }
+            log = { step ->
+                _status.value = RuntimeStatus.Installing(0, m.entries.size, step)
+            },
+        ).install()
         if (problems.isNotEmpty()) {
             _status.value = RuntimeStatus.Broken(problems)
             return emptyList()

@@ -64,6 +64,8 @@ class AgentViewModel(
     private val appContext: Context,
     private val javaBin: String?,
     private val classpath: String?,
+    /** In-app рантайм: нужен и экрану (статус/установка), и connect() (команда с окружением). */
+    val localRuntime: dev.kimiterminal.runtime.RuntimeManager? = null,
 ) : ViewModel() {
 
     private val workRoot = File(appContext.filesDir, "work").apply { mkdirs() }
@@ -198,7 +200,8 @@ class AgentViewModel(
                     // никаких сокетов — то есть путь, который мы не можем проверить с хоста,
                     // зато проверяем одной строкой статуса ниже.
                     if (!local.agentUsable()) {
-                        _status.value = "Рантайм не установлен: нажми «Установить» в баннере ниже."
+                        log("Рантайм не установлен: нажми «Установить» в баннере рантайма.")
+                        _connecting.value = false
                         return@launch
                     }
                     runtime.spawnLocal(local.agentCommand(), local.agentEnvironment(), name = "proj")
@@ -329,10 +332,16 @@ class AgentViewModel(
         private val EMPTY_BUSY = MutableStateFlow(false)
         private val EMPTY_SID = MutableStateFlow<String?>(null)
 
-        fun factory(ctx: Context, javaBin: String?, classpath: String?) = object : ViewModelProvider.Factory {
+        fun factory(
+            ctx: Context,
+            javaBin: String?,
+            classpath: String?,
+            localRuntime: dev.kimiterminal.runtime.RuntimeManager? =
+                dev.kimiterminal.runtime.RuntimeManager(ctx),
+        ) = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T =
-                AgentViewModel(ctx.applicationContext, javaBin, classpath) as T
+                AgentViewModel(ctx.applicationContext, javaBin, classpath, localRuntime) as T
         }
     }
 }
