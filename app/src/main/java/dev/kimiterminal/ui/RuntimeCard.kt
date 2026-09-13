@@ -40,13 +40,20 @@ import kotlinx.coroutines.withContext
  * конкретного устройства, и молчать об этом нельзя.
  */
 @Composable
-fun RuntimeCard(manager: RuntimeManager) {
+fun RuntimeCard(manager: RuntimeManager, onReady: () -> Unit = {}) {
     val status by manager.status.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
 
     // Приход на экран: проверяем уже установленный payload, а не начинаем качать заново.
-    LaunchedEffect(Unit) { withContext(Dispatchers.IO) { manager.resume() } }
+    // Первый запуск ставим сами: содержимое лежит внутри APK, сети нет, спрашивать не о чем.
+    LaunchedEffect(Unit) {
+        withContext(Dispatchers.IO) {
+            manager.resume()
+            if (manager.status.value is RuntimeStatus.Empty) manager.install()
+            if (manager.status.value is RuntimeStatus.Ready) onReady()
+        }
+    }
 
     val ready = status as? RuntimeStatus.Ready
     // Факультативная проба (kimi) не прячет карточку: её отказ — это «поставь CLI»,

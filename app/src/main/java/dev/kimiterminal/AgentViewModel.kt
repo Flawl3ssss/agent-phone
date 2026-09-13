@@ -188,6 +188,18 @@ class AgentViewModel(
 
     fun setMode(m: Mode) { _mode.value = m }
 
+    /**
+     * Рантайм подтверждён пробой — переводим с мока на настоящий агент.
+     * Только с мока: пользовательский выбор Termux или glibc-канала не перебиваем.
+     */
+    fun adoptLocalIfReady() {
+        val m = _mode.value
+        if (m is Mode.Local) return
+        if (m is Mode.MockProcess || m is Mode.MockInProcess) {
+            if (localRuntime?.agentUsable() == true) _mode.value = Mode.Local
+        }
+    }
+
     fun connect() {
         if (_connecting.value) return
         _connecting.value = true

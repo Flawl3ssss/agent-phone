@@ -231,7 +231,7 @@ fun MainScreen(vm: AgentViewModel) {
         Column(Modifier.padding(pad).fillMaxSize().imePadding()) {
             // Рантайм выше ленты: пока цепочка не подтверждена, она и есть ответ
             // на вопрос «почему агент не запускается».
-            vm.localRuntime?.let { RuntimeCard(it) }
+            vm.localRuntime?.let { RuntimeCard(it, onReady = { vm.adoptLocalIfReady() }) }
             Feed(items, Modifier.weight(1f))
             Composer(
                 enabled = !busy && init != null,
