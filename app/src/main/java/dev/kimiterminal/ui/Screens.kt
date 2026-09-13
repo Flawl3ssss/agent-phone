@@ -187,7 +187,7 @@ fun MainScreen(vm: AgentViewModel) {
                             // будет полчаса искать, почему «Kimi» ничего не думает.
                             // Termux-режим — тоже НЕ мок: там агент настоящий,
                             // вешать на него знак «МОК» значит врать пользователю.
-                            if (mode !is Mode.Kimi && mode !is Mode.Termux) {
+                            if (mode !is Mode.Kimi && mode !is Mode.Termux && mode !is Mode.Local) {
                                 AssistChip(
                                     onClick = { showCaps = true },
                                     label = { Text("МОК", fontSize = 10.sp, fontWeight = FontWeight.Bold) },
@@ -225,6 +225,9 @@ fun MainScreen(vm: AgentViewModel) {
         },
     ) { pad ->
         Column(Modifier.padding(pad).fillMaxSize().imePadding()) {
+            // Рантайм выше ленты: пока цепочка не подтверждена, она и есть ответ
+            // на вопрос «почему агент не запускается».
+            vm.localRuntime?.let { RuntimeCard(it) }
             Feed(items, Modifier.weight(1f))
             Composer(
                 enabled = !busy && init != null,
@@ -524,6 +527,7 @@ fun LogDialog(lines: List<String>, onClose: () -> Unit) {
 @Composable
 private fun ModeDialog(current: Mode, onDismiss: () -> Unit, onPick: (Mode) -> Unit) {
     val options = listOf(
+        Mode.Local to "kimi из in-app рантайма: терминал и агент внутри приложения, снаружи не ставится ничего",
         Mode.MockInProcess to "мок в этом процессе — UI и протокол работают без внешнего агента",
         Mode.MockProcess to "мок отдельным JVM — нужен java на устройстве",
         Mode.Termux() to "настоящий kimi acp из Termux: мост слушает 127.0.0.1:8712",
