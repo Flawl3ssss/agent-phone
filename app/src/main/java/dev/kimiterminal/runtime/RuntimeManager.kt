@@ -64,7 +64,7 @@ class RuntimeManager(context: Context) {
             )
             return emptyList()
         }
-        val l = RuntimeLayout(File(app.nativeLibraryDir), app.filesDir, m.executables)
+        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables)
         layout = l
         manifest = m
         _status.value = RuntimeStatus.Installing(0, m.entries.size, "подготовка")
@@ -89,7 +89,7 @@ class RuntimeManager(context: Context) {
     /** Рантайм уже на месте? Проверяем READY и ещё раз пробегаем пробы. */
     fun resume(): List<Probe> {
         val m = readAssetManifest() ?: return emptyList()
-        val l = RuntimeLayout(File(app.nativeLibraryDir), app.filesDir, m.executables)
+        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables)
         if (!l.isReady()) {
             _status.value = RuntimeStatus.Empty
             return emptyList()
