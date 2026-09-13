@@ -19,7 +19,8 @@ for j in json.load(sys.stdin).get("jobs",[]):
         print(j["id"]); break
 ')
 [ -n "$job" ] || { echo "упавших джобов нет"; exit 1; }
+rm -f /tmp/ci.log
 loc=$(curl -sS -o /dev/null -w '%{redirect_url}' --retry 4 --connect-timeout 20 --max-time 60 \
-  -H "Authorization: Bearer $GH_TOKEN" "$api/actions/runs/$id/jobs/$job/logs")
+  -H "Authorization: Bearer $GH_TOKEN" "$api/actions/jobs/$job/logs")
 [ -n "$loc" ] || { echo "редиректа нет"; exit 1; }
 curl -sS --connect-timeout 20 --max-time 120 "$loc" -o /tmp/ci.log && echo "лог: $(wc -l </tmp/ci.log) строк"

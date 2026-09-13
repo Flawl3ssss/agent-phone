@@ -8,3 +8,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra")
 # установщик выкладывает в nativeLibraryDir, и только оттуда разрешён execve.
 add_executable(kexec kexec.c)
 set_target_properties(kexec PROPERTIES PREFIX "lib" SUFFIX ".so")
+
+# Насос PTY. Тоже «lib*.so» по той же причине: единственное место, откуда
+# разрешён exec, — nativeLibraryDir, а по факту это обычная программа.
+add_executable(ptysh ptysh.c)
+set_target_properties(ptysh PROPERTIES PREFIX "lib" SUFFIX ".so")

@@ -170,6 +170,7 @@ fun MainScreen(vm: AgentViewModel) {
     var showMode by remember { mutableStateOf(false) }
     var showLog by remember { mutableStateOf(false) }
     var showProviders by remember { mutableStateOf(false) }
+    var showTerm by remember { mutableStateOf(false) }
 
     Scaffold(
         containerColor = Bg,
@@ -213,6 +214,9 @@ fun MainScreen(vm: AgentViewModel) {
                                 fontSize = 12.sp, fontFamily = FontFamily.Monospace,
                             )
                         }
+                        // Терминал рядом с чатом: агент и оболочка должны видеть один и тот
+                        // же рантайм, иначе «проверить, что он вообще жив» приходится вслепую.
+                        TextButton(onClick = { showTerm = true }) { Text("терминал", color = Secondary, fontSize = 13.sp) }
                         TextButton(onClick = { showLog = true }) { Text("лог", color = Secondary, fontSize = 13.sp) }
                         OutlinedButton(onClick = { vm.connectOrRestart() }, shape = RoundedCornerShape(12.dp)) {
                             Text(if (init == null) "старт" else "рестарт", fontSize = 13.sp)
@@ -247,6 +251,7 @@ fun MainScreen(vm: AgentViewModel) {
     )
     if (showLog) LogDialog(vm.stderrTail()) { showLog = false }
     if (showProviders) ProvidersDialog(vm) { showProviders = false }
+    if (showTerm) TerminalOverlay(vm) { showTerm = false }
 }
 
 @Composable
