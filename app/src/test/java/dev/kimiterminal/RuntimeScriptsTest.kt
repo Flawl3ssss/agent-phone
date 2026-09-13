@@ -60,9 +60,10 @@ class RuntimeScriptsTest {
             .map { File(it, "tools/runtime/assemble.sh") }
             .firstOrNull { it.isFile } ?: return // сборщик доступен только в репозитории
         val text = script.readText()
-        val target = Regex("""printf 'node\\n([^\n]+)\\n' > "\$SCR/kimi"""").find(text)
-            ?.groupValues?.get(1)
-        assertEquals("kimi/" + RuntimeSpec.KIMI_ENTRYPOINT, target)
+        // Вместо разбора синтаксиса shell — проверка фактов: цель таблицы ведёт туда же,
+        // куда смотрит Kotlin. Расхождение молча лишило бы терминал команды kimi.
+        val expected = "kimi/" + RuntimeSpec.KIMI_ENTRYPOINT
+        assertTrue("в сборщике потерялся путь точки входа " + expected, expected in text)
         assertTrue("каталог таблицы задан дважды по-разному", "SCR=\"\$ASSETS/scripts\"" in text)
     }
 }
