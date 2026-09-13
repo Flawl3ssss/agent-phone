@@ -205,6 +205,16 @@ KDIR="$ASSETS/kimi/node_modules/@moonshot-ai/kimi-code"
 rm -rf "$KDIR/dist-web" "$KDIR/native"
 chmod 644 "$KDIR/dist/main.mjs" 2>/dev/null || true
 
+# Таблица диспетчера: имя → интерпретатор и цель. Цель относительна корня рантайма:
+# путь приложения на устройстве известен только после установки. Тот же путь живёт в
+# RuntimeSpec.KIMI_ENTRYPOINT — их сверяет тест, иначе две правки разъедутся молча.
+SCR="$ASSETS/scripts"
+mkdir -p "$SCR"
+printf 'node\nkimi/node_modules/@moonshot-ai/kimi-code/dist/main.mjs\n' > "$SCR/kimi"
+# Пустая группа манифеста — не ошибка для сборщика, поэтому проверяем здесь: иначе
+# «kimi» просто исчезнет из PATH на устройстве, и ничего не упадёт.
+[ -s "$SCR/kimi" ] || { echo "assemble: таблица $SCR/kimi не создана" >&2; exit 1; }
+
 say "== 7. MANIFEST"
 python3 - "$ROOT" "$SPEC_VERSION" "$UBUNTU_VERSION" "$NODE_VERSION" "$KIMI_VERSION" <<'PY'
 import hashlib, json, os, pathlib, sys
@@ -222,9 +232,11 @@ nat = os.path.join(root, "app/src/main/jniLibs/arm64-v8a")
 ssl = os.path.join(root, "app/src/main/assets/runtime/ssl")
 lib = os.path.join(root, "app/src/main/assets/runtime/lib")
 kim = os.path.join(root, "app/src/main/assets/runtime/kimi")
+scr = os.path.join(root, "app/src/main/assets/runtime/scripts")
 man = {"spec_version": spec, "ubuntu_base": ub, "node": node, "kimi_version": kimi,
        "native": rows(nat, root), "runtime_lib": rows(lib, root),
-       "kimi_files": rows(kim, root), "ssl_files": rows(ssl, root)}
+       "kimi_files": rows(kim, root), "ssl_files": rows(ssl, root),
+       "scripts": rows(scr, root)}
 for target in ("app/src/main/assets/runtime/MANIFEST.json", "runtime/MANIFEST.json"):
     path = pathlib.Path(root, target)
     path.parent.mkdir(parents=True, exist_ok=True)

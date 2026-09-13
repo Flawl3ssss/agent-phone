@@ -16,6 +16,8 @@ class RuntimeLayout(
     val nativeLibDir: File,
     val filesDir: File,
     val executables: List<String> = RuntimeSpec.CORE_EXECUTABLES,
+    /** Имена не-ELF (kimi), которых нет среди lib….so: их раздаёт диспетчер по таблице scripts/. */
+    val scripts: List<String> = emptyList(),
 ) {
 
     val root = File(filesDir, "runtime")
@@ -39,7 +41,8 @@ class RuntimeLayout(
     fun lib(soname: String): File = File(libDir, soname)
 
     /** Имена, которые стоит раздать в PATH. Загрузчик и диспетчер сами по себе команды. */
-    fun linkedNames(): List<String> = executables.filter { it != "ldr" && it != "kexec" }.sorted()
+    fun linkedNames(): List<String> =
+        (executables.filter { it != "ldr" && it != "kexec" } + scripts).distinct().sorted()
 
     /**
      * Команда через glibc-загрузчик: `libldr.so --library-path <lib> lib<name>.so args…`.
@@ -94,8 +97,11 @@ class RuntimeLayout(
         // Требуем бандл только когда в наборе есть git: агенту он не нужен, а ложная
         // тревога в диагностике хуже отсутствия диагностики.
         if ("git" in executables && !sslCertFile.isFile) out += "ssl:ca-certificates"
-        for (name in RuntimeSpec.ALWAYS_LINKED) {
-            if (name in executables && !File(binDir, name).exists()) out += "link:$name"
+        for (name in linkedNames()) {
+            if (!File(binDir, name).exists()) out += "link:$name"
+        }
+        for (name in scripts) {
+            if (!File(root, "scripts/$name").isFile) out += "table:$name"
         }
         return out
     }

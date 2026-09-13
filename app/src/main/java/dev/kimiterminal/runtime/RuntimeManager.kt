@@ -17,8 +17,14 @@ sealed class RuntimeStatus {
 }
 
 /** Одна проверка цепочки запуска. Детали идут в UI дословно — гадать по «не работает» нельзя. */
-data class Probe(val name: String, val ok: Boolean, val detail: String) {
-    fun render(): String = (if (ok) "OK  " else "НЕТ ") + name + " — " + detail
+data class Probe(
+    val name: String,
+    val ok: Boolean,
+    val detail: String,
+    val optional: Boolean = false,
+) {
+    fun render(): String =
+        (if (ok) "OK  " else "НЕТ ") + name + " — " + detail + if (optional) " (не критично)" else ""
 }
 
 /**
@@ -64,7 +70,7 @@ class RuntimeManager(context: Context) {
             )
             return emptyList()
         }
-        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables)
+        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables, m.scripts)
         layout = l
         manifest = m
         _status.value = RuntimeStatus.Installing(0, m.entries.size, "подготовка")
@@ -89,7 +95,7 @@ class RuntimeManager(context: Context) {
     /** Рантайм уже на месте? Проверяем READY и ещё раз пробегаем пробы. */
     fun resume(): List<Probe> {
         val m = readAssetManifest() ?: return emptyList()
-        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables)
+        val l = RuntimeLayout(File(app.applicationInfo.nativeLibraryDir), app.filesDir, m.executables, m.scripts)
         if (!l.isReady()) {
             _status.value = RuntimeStatus.Empty
             return emptyList()
@@ -107,7 +113,7 @@ class RuntimeManager(context: Context) {
 
     private fun verify(l: RuntimeLayout): List<Probe> {
         val env = l.environment()
-        return RuntimeProbes.commands(l).map { (name, cmd, expect) -> runOnce(cmd, env, name, expect) }
+        return RuntimeProbes.specs(l).map { runOnce(it.argv, env, it.name, it.expect, it.optional) }
     }
 
     private fun runOnce(cmd: List<String>, env: Map<String, String>, name: String, expect: String): Probe {
@@ -138,14 +144,21 @@ class RuntimeManager(context: Context) {
         return Probe(name, ok, detail)
     }
 
-    /** Агенту достаточно первой пробы: его мы запускаем абсолютными путями. */
-    fun agentUsable(): Boolean = (layout?.missingPieces() ?: listOf("нет")).isEmpty() &&
-        (status.value as? RuntimeStatus.Ready)?.checks?.any { it.startsWith("OK") } == true
+    /**
+     * Агенту достаточно проверки загрузчика: мы запускаем его абсолютными путями,
+     * без симлинков и без PATH. остальные пробы для него не обязательны.
+     */
+    fun agentUsable(): Boolean {
+        val l = layout ?: return false
+        if (l.missingPieces().isNotEmpty()) return false
+        val checks = (status.value as? RuntimeStatus.Ready)?.checks ?: return false
+        return checks.any { it.startsWith("OK") && it.contains(RuntimeProbes.LOADER) }
+    }
 
     /** Терминалу и дочерним процессам kimi нужны симлинки и PATH — то есть пробы 2 и 3. */
     fun terminalUsable(): Boolean {
         val checks = (status.value as? RuntimeStatus.Ready)?.checks ?: return false
-        return checks.count { it.startsWith("OK") } >= 3
+        return checks.count { it.startsWith("OK") && "не критично" !in it } >= RuntimeProbes.REQUIRED
     }
 
     fun agentCommand(): List<String> = layout?.agentCommand() ?: emptyList()

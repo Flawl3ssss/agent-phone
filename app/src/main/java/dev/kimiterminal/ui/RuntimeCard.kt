@@ -49,7 +49,10 @@ fun RuntimeCard(manager: RuntimeManager) {
     LaunchedEffect(Unit) { withContext(Dispatchers.IO) { manager.resume() } }
 
     val ready = status as? RuntimeStatus.Ready
-    val allOk = ready != null && ready.checks.isNotEmpty() && ready.checks.all { it.startsWith("OK") }
+    // Факультативная проба (kimi) не прячет карточку: её отказ — это «поставь CLI»,
+    // а не «платформа не пускает», и пользователю видно различие.
+    val allOk = ready != null && ready.checks.isNotEmpty() &&
+        ready.checks.none { it.startsWith("НЕТ") && "не критично" !in it }
     if (allOk && !expanded) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 2.dp)) {
             Text(

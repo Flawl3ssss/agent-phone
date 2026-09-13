@@ -53,9 +53,14 @@ data class RuntimeManifest(
         return out
     }
 
+    /** Имена из таблицы скриптов: то, что исполняется не напрямую, а через интерпретатор. */
+    val scripts: List<String>
+        get() = entries.filter { "/runtime/scripts/" in it.path }
+            .map { it.path.substringAfterLast('/') }.distinct().sorted()
+
     companion object {
         private val HEX = Regex("^[0-9a-f]{64}$")
-        private val GROUPS = listOf("native", "runtime_lib", "kimi_files", "ssl_files")
+        private val GROUPS = listOf("native", "runtime_lib", "kimi_files", "ssl_files", "scripts")
 
         /** Разбор без исключений: кривой манифест должен становиться понятной ошибкой в UI. */
         fun parse(text: String): Result<RuntimeManifest> = runCatching {

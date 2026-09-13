@@ -16,6 +16,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -35,6 +36,14 @@ static const char *base_of(const char *p)
 {
     const char *slash = strrchr(p, '/');
     return (slash != NULL) ? slash + 1 : p;
+}
+
+static void strip_eol(char *s)
+{
+    size_t n = strlen(s);
+    while (n > 0 && (s[n - 1] == '\n' || s[n - 1] == '\r')) {
+        s[--n] = '\0';
+    }
 }
 
 int main(int argc, char **argv)
@@ -84,20 +93,85 @@ int main(int argc, char **argv)
     snprintf(wanted, sizeof(wanted), "%s/lib%s.so", ndir, target);
     snprintf(libs, sizeof(libs), "%s/lib", root);
 
+    /*
+     * Не-ELF (kimi и прочие node-скрипты) не может быть «lib…so»: его исполняет
+     * нода. Таблица scripts/<имя> кладётся на диск при установке, поэтому смена
+     * пути внутри пакета не требует пересборки C. Первая строка — интерпретатор,
+     * вторая — цель; "host" означает «цель лежит в PATH» (точка для .deb).
+     */
+    char interp[PATHMAX], sarg[PATHMAX];
+    int script = 0;
+    struct stat st;
+    if (stat(wanted, &st) != 0) {
+        char entry[PATHMAX];
+        FILE *f;
+        interp[0] = '\0';
+        sarg[0] = '\0';
+        snprintf(entry, sizeof(entry), "%s/scripts/%s", root, target);
+        f = fopen(entry, "r");
+        if (f != NULL) {
+            if (fgets(interp, sizeof(interp), f) == NULL)
+                interp[0] = '\0';
+            if (fgets(sarg, sizeof(sarg), f) == NULL)
+                sarg[0] = '\0';
+            fclose(f);
+            strip_eol(interp);
+            strip_eol(sarg);
+            script = interp[0] != '\0' && sarg[0] != '\0';
+        }
+    }
+
     char **a = calloc((size_t)argc + 8, sizeof(char *));
     if (a == NULL) {
         fprintf(stderr, "kexec: нет памяти\n");
         return 127;
     }
     int i = 0;
+    /*
+     * Цель в таблице пишется относительно корня рантайма: абсолютный путь приложения
+     * на устройстве известен только после установки, а пересобирать C из-за смены
+     * пути внутри пакета — лишний источник расхождений.
+     */
+    if (script && sarg[0] != '/') {
+        static char abs[PATHMAX];
+        snprintf(abs, sizeof(abs), "%s/%s", root, sarg);
+        snprintf(sarg, sizeof(sarg), "%s", abs);
+    }
+
+    if (script && strcmp(interp, "host") == 0) {
+        /* утилита из PATH: без нашего загрузчика и без glibc-библиотек.
+         * argv[0] обязан быть путём программы — просто &argv[1] отдаёт первым
+         * аргументом само имя исполняемого файла, и утилита получает «--login»
+         * там, где ожидает собственный путь. */
+        char **ha = calloc((size_t)argc + 1, sizeof(char *));
+        if (ha == NULL) {
+            fprintf(stderr, "kexec: нет памяти\n");
+            return 127;
+        }
+        ha[0] = sarg;
+        for (int j = 1; j < argc; j++) {
+            ha[j] = argv[j];
+        }
+        ha[argc] = NULL;
+        execv(sarg, ha);
+        perror("kexec: host");
+        return 127;
+    }
     a[i++] = xstrdup(ldr);
     a[i++] = xstrdup("--library-path");
     a[i++] = xstrdup(libs);
-    a[i++] = xstrdup(wanted);
-    if (subcommand != NULL) {
-        a[i++] = xstrdup(subcommand);
+    if (script) {
+        char soname[PATHMAX];
+        snprintf(soname, sizeof(soname), "%s/lib%s.so", ndir, interp);
+        a[i++] = xstrdup(soname);
+        a[i++] = xstrdup(sarg);
+    } else {
+        a[i++] = xstrdup(wanted);
+        if (subcommand != NULL) {
+            a[i++] = xstrdup(subcommand);
+        }
     }
-    for (int j = 1; j < argc && i < argc + 6; j++) {
+    for (int j = 1; j < argc && i < argc + 8; j++) {
         a[i++] = argv[j];
     }
     a[i] = NULL;
