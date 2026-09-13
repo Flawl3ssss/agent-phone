@@ -34,7 +34,6 @@ class RuntimeScriptsTest {
         assertTrue("ссылка не названа: $missing", "link:kimi" in missing)
         assertTrue("таблица не названа: $missing", "table:kimi" in missing)
     }
-}
 
     @Test
     fun `манифест отдаёт имена из группы scripts`() {
